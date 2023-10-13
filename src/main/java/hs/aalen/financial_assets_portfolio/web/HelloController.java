@@ -1,4 +1,4 @@
-package hs.aalen.financial_assets_portfolio;
+package hs.aalen.financial_assets_portfolio.web;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
