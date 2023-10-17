@@ -15,6 +15,8 @@ public class Message {
     private Long id;
     private String message;
 
+    private String secondMessage;
+
     public Long getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getSecondMessage() {
+        return secondMessage;
+    }
+
+    public void setSecondMessage(String secondMessage) {
+        this.secondMessage = secondMessage;
     }
 }
