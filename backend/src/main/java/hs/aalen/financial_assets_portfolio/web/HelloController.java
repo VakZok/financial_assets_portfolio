@@ -27,7 +27,7 @@ public class HelloController {
 
     @GetMapping(value = "/message-list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getMessageList(){
-        return new ResponseEntity<Object>(messageService.getMessageList(), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.getMessageList(), HttpStatus.OK);
     }
 
     @PostMapping("/message")
