@@ -3,6 +3,7 @@ package hs.aalen.financial_assets_portfolio.web;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemPreviewDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
+import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,5 +41,15 @@ public class PortfolioItemController {
         List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
         List<PItemPreviewDTO> pItemPreviewDTOList = pItemList.stream().map(PItemPreviewDTO::new).toList();
         return new ResponseEntity<Object>(pItemPreviewDTOList, HttpStatus.OK);
+    }
+
+    @PostMapping("portfolioItems/add")
+    public ResponseEntity<Object> savePortFolioItem(@RequestBody PortfolioItem portfolioItem){
+        try{
+            PortfolioItem pItemList = portfolioItemService.savePortfolioItem(portfolioItem);
+            return new ResponseEntity<>(pItemList, HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
