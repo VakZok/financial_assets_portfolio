@@ -37,13 +37,7 @@ export class ItemInputFormComponent {
       Validators.required]) // Added Validators.required and a pattern validator for numbers with up to 2 decimal places
   })
 
-  onInputDescription(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    console.log(inputElement.value.length)
-    if (inputElement.value.length >= 255){
-      inputElement.value = inputElement.value.slice(0,255)
-    }
-  }
+
   onKeyUpDescription(event: Event) {
     console.log('triggered')
     const inputElement = event.target as HTMLInputElement;
