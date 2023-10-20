@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DateValidator} from "../../../../../../core/validators/date-validator";
 import {ShareModel} from "../../../../../../core/models/share.model"
@@ -14,6 +14,8 @@ export class ItemInputFormComponent implements OnInit {
 
   shares: ShareModel[] = [];
   sharesFiltered: ShareModel[] = [];
+  description: string = '';
+  cat: string = '';
 
   wknError: String = '';
   nameError: String = '';
@@ -30,10 +32,10 @@ export class ItemInputFormComponent implements OnInit {
       Validators.minLength(6)]), // Added Validators.required
     name: new FormControl('',
       Validators.required), // Added Validators.required
-    description: new FormControl('', [
+    description: new FormControl({value: '', disabled: true}, [
       Validators.required,
       Validators.maxLength(255)]), // Added Validators.required
-    cat: new FormControl('',
+    cat: new FormControl({value: '', disabled: true},
       Validators.required), // Added Validators.required
     quantity: new FormControl('', [
       Validators.required]), // Added Validators.required and a pattern validator for digits
