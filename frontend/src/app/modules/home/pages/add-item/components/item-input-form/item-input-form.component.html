@@ -2,19 +2,22 @@
 
   <p>Bitte füllen Sie alle Felder aus.</p>
 
-  <div>
-
-  </div>
 
   <div>
     <label id="wkn-label" for="wkn">WKN: </label>
-    <input id="wkn" name="wkn" type="text" oninput="this.value = this.value.slice(0,6)" formControlName="wkn"/>
+    <input #wkn id="wkn" name="wkn" list="wkn-suggestions" type="text" oninput="this.value = this.value.slice(0,6)" (keyup)="onKeyUpWkn($event)" (blur)="onBlur()" formControlName="wkn"/>
+    <datalist id="wkn-suggestions">
+      <option *ngFor = "let share of this.sharesFiltered" [value]="share.wkn" >{{share.wkn}}</option>
+    </datalist>
     <div id="wkn-alert"> {{this.wknError}} </div>
   </div>
 
   <div>
     <label id="name-label" for="name">Name: </label>
-    <input id="name" name="name" type="text" formControlName="name" />
+    <input #name id="name" name="name" list="name-suggestions" type="text" (keyup)="onKeyUpName($event)" (blur)="onBlur()" formControlName="name" />
+    <datalist id="name-suggestions">
+      <option *ngFor = "let share of this.sharesFiltered" [value]="share.name" >{{share.name}}</option>
+    </datalist>
     <div id="name-alert"> {{this.nameError}} </div>
   </div>
 

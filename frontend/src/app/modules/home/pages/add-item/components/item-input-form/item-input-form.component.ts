@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DateValidator} from "../../../../../../core/validators/date-validator";
-
-interface Share {
-  total: String
-}
+import {ShareModel} from "../../../../../../core/models/share.model"
+import {ShareService} from "../../../../../../core/services/share.service";
 
 @Component({
   selector: 'item-input-form',
@@ -14,7 +12,8 @@ interface Share {
 
 export class ItemInputFormComponent implements OnInit {
 
-
+  shares: ShareModel[] = [];
+  sharesFiltered: ShareModel[] = [];
 
   wknError: String = '';
   nameError: String = '';
@@ -44,16 +43,59 @@ export class ItemInputFormComponent implements OnInit {
       Validators.required]) // Added Validators.required and a pattern validator for numbers with up to 2 decimal places
   })
 
-  ngOnInit() {
-
+  constructor(private shareService: ShareService) {
   }
 
+  ngOnInit() {
+    this.shareService.getShares().subscribe({
+      next: (data) => this.shares = data,
+      error: (error) => console.error(error),
+      complete: () => console.info('complete')
+    })
+    //console.log(this.shares)
+  }
+
+  existingElements(element: ShareModel, propertyName:string, text: string): any {
+    return(element[propertyName].startsWith(text));
+  }
+
+  onKeyUpWkn(event: Event) {
+
+    const inputElement = event.target as HTMLInputElement;
+    console.log(this.shares)
+
+    this.sharesFiltered = this.shares.filter(
+      share => this.existingElements(share, "wkn", inputElement.value)
+    );
+  }
+
+  onKeyUpName(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    console.log(this.shares)
+    const nameSelected = document.activeElement === document.querySelector('name')
+    console.log(nameSelected)
+    this.sharesFiltered = this.shares.filter(
+      share => this.existingElements(share, "name", inputElement.value)
+    );
+  }
+
+  onBlur() {
+    if(this.sharesFiltered.length == 1){
+      this.pItemForm.patchValue({
+        wkn: this.sharesFiltered[0].wkn,
+        name: this.sharesFiltered[0].name,
+        description: this.sharesFiltered[0].description,
+        cat: this.sharesFiltered[0].category
+      })
+    }
+  }
 
   onKeyUpDescription(event: Event) {
     console.log('triggered')
     const inputElement = event.target as HTMLInputElement;
     this.leftSigns = String(255 - inputElement.value.length)
   }
+
   onKeyDownPrice(event: KeyboardEvent) {
     const inputElement = event.target as HTMLInputElement;
     if (event.key == ',' && inputElement.value.length == 0){
@@ -96,9 +138,6 @@ export class ItemInputFormComponent implements OnInit {
       //this.pItemForm.reset();
     }
   }
-
-
-
 
   clearForm() {
     this.pItemForm.reset();
