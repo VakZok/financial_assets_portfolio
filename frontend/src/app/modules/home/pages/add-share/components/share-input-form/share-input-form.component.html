@@ -1,0 +1,35 @@
+<form [formGroup]="shareForm" (ngSubmit)="onSubmit()">
+
+  <p>Bitte füllen Sie alle Felder aus.</p>
+
+  <div>
+    <label id="wkn-label" for="wkn">WKN: </label>
+    <input id="wkn" name="wkn" type="text" oninput="this.value = this.value.slice(0,6)" formControlName="wkn"/>
+    <div id="wkn-alert"> {{this.wknError}} </div>
+  </div>
+
+  <div>
+    <label id="name-label" for="name">Name: </label>
+    <input  id="name" name="name" type="text"  formControlName="name" />
+    <div id="name-alert"> {{this.nameError}} </div>
+  </div>
+
+  <div>
+    <label id="description-label" for="description">Beschreibung: </label>
+    <textarea id="description"  name="description" type="text" oninput="this.value = this.value.slice(0,255)" (keyup)="onKeyUpDescription($event)" formControlName="description"></textarea>
+    <div>{{this.leftSigns}} von 255 Zeichen</div>
+    <div id="description-alert"> {{this.descriptionError}} </div>
+  </div>
+
+  <div>
+    <label id="cat-label" for="cat">Kategorie: </label>
+    <input id="cat" name="cat" type="text" formControlName="cat" />
+    <div id="cat-alert"> {{this.catError}} </div>
+  </div>
+
+  <div>
+    <button type="submit">Hinzufügen</button>
+    <button type="button" (click)="clearForm()">Zurücksetzen</button>
+  </div>
+
+</form>

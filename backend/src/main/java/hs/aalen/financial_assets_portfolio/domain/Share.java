@@ -1,5 +1,8 @@
 package hs.aalen.financial_assets_portfolio.domain;
 
+import hs.aalen.financial_assets_portfolio.data.PItemDTO;
+import hs.aalen.financial_assets_portfolio.data.ShareDTO;
+import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -20,6 +23,13 @@ public class Share {
         this.name = name;
         this.category = category;
         this.description = description;
+    }
+
+    public Share(ShareDTO shareDTO){
+        this.wkn = shareDTO.getWkn();
+        this.name = shareDTO.getName();
+        this.category = shareDTO.getCategory();
+        this.description = shareDTO.getDescription();
     }
 
     public Share() {
