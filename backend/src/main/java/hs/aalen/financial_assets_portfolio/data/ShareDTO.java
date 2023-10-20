@@ -24,6 +24,8 @@ public class ShareDTO {
         this.description = share.getDescription();
     }
 
+    public ShareDTO(){}
+
     public String getWkn() {
         return wkn;
     }

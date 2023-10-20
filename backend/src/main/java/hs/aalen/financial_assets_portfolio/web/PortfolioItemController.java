@@ -3,8 +3,10 @@ package hs.aalen.financial_assets_portfolio.web;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemPreviewDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
+import hs.aalen.financial_assets_portfolio.exceptions.ShareAlreadyExistsException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PortfolioItemController {
-    private final PortfolioItemService portfolioItemService;
+    @Autowired
+    private PortfolioItemService portfolioItemService;
 
     public PortfolioItemController(PortfolioItemService portfolioItemService) {
         this.portfolioItemService = portfolioItemService;
@@ -44,12 +47,12 @@ public class PortfolioItemController {
     }
 
     @PostMapping("portfolioItems/add")
-    public ResponseEntity<Object> savePortFolioItem(@RequestBody PortfolioItem portfolioItem){
+    public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO){
         try{
-            PortfolioItem pItemList = portfolioItemService.savePortfolioItem(portfolioItem);
-            return new ResponseEntity<>(pItemList, HttpStatus.OK);
+            portfolioItemService.addPortfolioItem(pItemDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
         }catch(NoSuchElementException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }
