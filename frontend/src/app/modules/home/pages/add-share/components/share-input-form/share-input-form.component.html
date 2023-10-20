@@ -2,7 +2,6 @@
 
   <p>Bitte füllen Sie alle Felder aus.</p>
 
-
   <div>
     <label id="wkn-label" for="wkn">WKN: </label>
     <input id="wkn" name="wkn" type="text" oninput="this.value = this.value.slice(0,6)" formControlName="wkn"/>
@@ -17,7 +16,7 @@
 
   <div>
     <label id="description-label" for="description">Beschreibung: </label>
-    <textarea id="description"  name="description" type="text" oninput="this.value = this.value.slice(0,255)" formControlName="description"></textarea>
+    <textarea id="description"  name="description" type="text" oninput="this.value = this.value.slice(0,255)" (keyup)="onKeyUpDescription($event)" formControlName="description"></textarea>
     <div>{{this.leftSigns}} von 255 Zeichen</div>
     <div id="description-alert"> {{this.descriptionError}} </div>
   </div>

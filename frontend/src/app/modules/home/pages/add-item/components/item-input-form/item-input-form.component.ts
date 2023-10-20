@@ -14,8 +14,6 @@ export class ItemInputFormComponent implements OnInit {
 
   shares: ShareModel[] = [];
   sharesFiltered: ShareModel[] = [];
-  description: string = '';
-  cat: string = '';
 
   wknError: String = '';
   nameError: String = '';
@@ -32,10 +30,10 @@ export class ItemInputFormComponent implements OnInit {
       Validators.minLength(6)]), // Added Validators.required
     name: new FormControl('',
       Validators.required), // Added Validators.required
-    description: new FormControl({value: '', disabled: true}, [
+    description: new FormControl('', [
       Validators.required,
       Validators.maxLength(255)]), // Added Validators.required
-    cat: new FormControl({value: '', disabled: true},
+    cat: new FormControl('',
       Validators.required), // Added Validators.required
     quantity: new FormControl('', [
       Validators.required]), // Added Validators.required and a pattern validator for digits
@@ -54,30 +52,25 @@ export class ItemInputFormComponent implements OnInit {
       error: (error) => console.error(error),
       complete: () => console.info('complete')
     })
-    //console.log(this.shares)
   }
 
   existingElements(element: ShareModel, propertyName:string, text: string): any {
-    return(element[propertyName].startsWith(text));
+    let elText = element[propertyName].toLowerCase();
+    return(elText.startsWith(text.toLowerCase()));
   }
 
   onKeyUpWkn(event: Event) {
-
     const inputElement = event.target as HTMLInputElement;
-    console.log(this.shares)
-
     this.sharesFiltered = this.shares.filter(
-      share => this.existingElements(share, "wkn", inputElement.value)
+      share => this.existingElements(share, "wkn", inputElement.value.toLowerCase())
     );
   }
 
   onKeyUpName(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    console.log(this.shares)
     const nameSelected = document.activeElement === document.querySelector('name')
-    console.log(nameSelected)
     this.sharesFiltered = this.shares.filter(
-      share => this.existingElements(share, "name", inputElement.value)
+      share => this.existingElements(share, "name", inputElement.value.toLowerCase())
     );
   }
 
@@ -136,7 +129,9 @@ export class ItemInputFormComponent implements OnInit {
       }
 
     } else {
+
       console.log(this.pItemForm.value)
+
       //this.pItemForm.reset();
     }
   }

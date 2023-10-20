@@ -67,6 +67,7 @@ export class ShareInputFormComponent {
       console.log(this.shareForm.value)
       //this.pItemForm.reset();
     }
+
   }
 
   clearForm() {
