@@ -31,6 +31,8 @@ public class PItemDTO {
         this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
 
+    public PItemDTO(){}
+
     public Long getId() {
         return id;
     }

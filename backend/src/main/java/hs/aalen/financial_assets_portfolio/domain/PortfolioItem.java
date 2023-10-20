@@ -11,7 +11,7 @@ public class PortfolioItem {
     /*PROPERTIES OF ENTITY*/
     @Id
     @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator="increment")
     private Long id;
 
     @DateTimeFormat(pattern="dd.MM.yyyy")
@@ -22,7 +22,6 @@ public class PortfolioItem {
 
     /* MAPPED RELATIONSHIPS */
     @ManyToOne
-    @MapsId("wkn")
     @JoinColumn(name = "wkn")
     private Share share;
 
@@ -37,6 +36,7 @@ public class PortfolioItem {
         this.purchasePrice = pItemDTO.getPurchasePrice();
         this.quantity = pItemDTO.getQuantity();
         this.share = new Share(pItemDTO.getShareDTO());
+        System.out.println("testttt");
     }
 
     public PortfolioItem() {

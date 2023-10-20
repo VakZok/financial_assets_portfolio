@@ -1,6 +1,8 @@
 package hs.aalen.financial_assets_portfolio.domain;
 
+import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
+import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ public class Share {
     private String category;
     private String description;
 
-    @OneToMany(mappedBy = "share", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
     Set<PortfolioItem> portfolioItems;
 
     public Share(String wkn, String name, String category, String description) {
@@ -22,6 +24,7 @@ public class Share {
         this.category = category;
         this.description = description;
     }
+
     public Share(ShareDTO shareDTO){
         this.wkn = shareDTO.getWkn();
         this.name = shareDTO.getName();

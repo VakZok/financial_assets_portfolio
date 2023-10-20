@@ -1,15 +1,14 @@
 package hs.aalen.financial_assets_portfolio.service;
 
 import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.ShareAlreadyExistsException;
 import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ShareService {
+
     @Autowired
     private ShareRepository shareRepository;
 
