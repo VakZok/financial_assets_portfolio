@@ -3,5 +3,5 @@ interface PortfolioItem {
   purchasePrice: number
   purchaseDate: Date
   quantity: number
-  share: Share
+  share: ShareModel
 }
