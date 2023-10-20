@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DateValidator} from "../functions/validators/date-validator";
+import {DateValidator} from "../../../../../../core/validators/date-validator";
+
+interface Share {
+  total: String
+}
 
 @Component({
   selector: 'item-input-form',
@@ -8,7 +12,10 @@ import {DateValidator} from "../functions/validators/date-validator";
   styleUrls: ['./item-input-form.component.css']
 })
 
-export class ItemInputFormComponent {
+export class ItemInputFormComponent implements OnInit {
+
+
+
   wknError: String = '';
   nameError: String = '';
   descriptionError: String = '';
@@ -36,6 +43,10 @@ export class ItemInputFormComponent {
     purchasePrice: new FormControl('', [
       Validators.required]) // Added Validators.required and a pattern validator for numbers with up to 2 decimal places
   })
+
+  ngOnInit() {
+
+  }
 
 
   onKeyUpDescription(event: Event) {
@@ -85,6 +96,9 @@ export class ItemInputFormComponent {
       //this.pItemForm.reset();
     }
   }
+
+
+
 
   clearForm() {
     this.pItemForm.reset();
