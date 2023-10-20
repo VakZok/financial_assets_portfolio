@@ -1,5 +1,6 @@
 package hs.aalen.financial_assets_portfolio.domain;
 
+import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public class Share {
     private String category;
     private String description;
 
-    @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "share", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<PortfolioItem> portfolioItems;
 
     public Share(String wkn, String name, String category, String description) {
@@ -20,6 +21,12 @@ public class Share {
         this.name = name;
         this.category = category;
         this.description = description;
+    }
+    public Share(ShareDTO shareDTO){
+        this.wkn = shareDTO.getWkn();
+        this.name = shareDTO.getName();
+        this.category = shareDTO.getCategory();
+        this.description = shareDTO.getDescription();
     }
 
     public Share() {

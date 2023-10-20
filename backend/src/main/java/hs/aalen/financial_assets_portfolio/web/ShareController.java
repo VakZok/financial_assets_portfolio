@@ -4,6 +4,7 @@ import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import java.util.List;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ShareController {
-    private final ShareService shareService;
+    @Autowired
+    private ShareService shareService;
 
     public ShareController(ShareService shareService) {
         this.shareService = shareService;
