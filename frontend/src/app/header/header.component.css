@@ -1,0 +1,12 @@
+header {
+  background-color: black;
+  display: flex; /* Use Flexbox to arrange items horizontally */
+  justify-content: normal; /* Put space between items */
+}
+
+.logo {
+  height: 50px;
+  margin-top: 54px;
+  margin-bottom: 2px;
+  margin-left: 15px;
+}
