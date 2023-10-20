@@ -1,0 +1,11 @@
+footer {
+  position: relative; /* position does not dynamically change */
+  bottom: 0; /* stick footer to bottom of the page */
+  width: 100%; /* stretch footer over whole website */
+  background-color: black;
+  justify-content: normal; /* Put space between items */
+  color: white; /* makes the link white insteal of standard blue */
+  display: flex;
+  align-items: center;
+  min-height: 10vh; /* Minimum height to push footer to the bottom */
+}
