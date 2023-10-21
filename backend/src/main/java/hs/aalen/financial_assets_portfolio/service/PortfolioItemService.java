@@ -47,7 +47,7 @@ public class PortfolioItemService {
             ShareDTO shareDTO = pItemDTO.getShareDTO();
             Share share = new Share(shareDTO);
             if(!(shareService.checkShareExists(share))){
-                shareRepository.save(share); // Has to be replaced with shareService.addShare(shareDTO) after it is implemented
+                shareService.addShare(shareDTO);
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
             }else {
