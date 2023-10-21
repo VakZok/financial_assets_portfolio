@@ -1,18 +1,20 @@
 package hs.aalen.financial_assets_portfolio.service;
 
-import hs.aalen.financial_assets_portfolio.data.PItemDTO;
+import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
-import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
-import hs.aalen.financial_assets_portfolio.exceptions.ShareException;
+import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ShareService {
+
+    public static final int WKN_LENGTH = 6;
 
     @Autowired
     private ShareRepository shareRepository;
@@ -33,13 +35,13 @@ public class ShareService {
         return shareRepository.findByWkn(wkn);
     }
 
-    public void addShare(ShareDTO shareDTO) {
-        Share share = new Share(shareDTO);
-        if(!(checkShareExists(share))) {
+    public void addShare(ShareDTO shareDTO) throws FormNotValidException {
+        ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
+        if(exceptions.size() == 0){
+            Share share = new Share(shareDTO);
             shareRepository.save(share);
-        } else{
-            Share newShare = new Share(shareDTO);
-            shareRepository.save(newShare);
+        } else {
+            throw new FormNotValidException("Formfehler", exceptions);
         }
     }
 
@@ -51,5 +53,29 @@ public class ShareService {
             return false;
         }
 
+    }
+
+    public ArrayList<ExceptionDTO> validateForm(ShareDTO shareDTO){
+        ArrayList<ExceptionDTO> exceptions = new ArrayList<ExceptionDTO>();
+        if (shareDTO.getWkn().length() != WKN_LENGTH ){
+            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss exakt 6 Zeichen enthalten."));
+        }
+        if(shareDTO.getWkn() == null || shareDTO.getWkn().length() == 0){
+            exceptions.add(new ExceptionDTO("wkn", "Die WKN darf nicht leer sein."));
+        }
+        if(shareDTO.getName() == null || shareDTO.getName().length() == 0){
+            exceptions.add(new ExceptionDTO("name", "Der Name darf nicht leer sein."));
+        }
+        if(shareDTO.getCategory() == null || shareDTO.getCategory().length() == 0){
+            exceptions.add(new ExceptionDTO("cat", "Die Kategorie darf nicht leer sein."));
+        }
+        if(shareDTO.getDescription() == null || shareDTO.getDescription().length() == 0){
+            exceptions.add(new ExceptionDTO("description", "Die Beschreibung darf nicht leer sein."));
+        }
+        if(shareDTO.getDescription().length() >= 255){
+            exceptions.add(new ExceptionDTO(
+                    "description", "Die Beschreibung darf nicht mehr als 255 Zeichen beeinhalten."));
+        }
+        return exceptions;
     }
 }

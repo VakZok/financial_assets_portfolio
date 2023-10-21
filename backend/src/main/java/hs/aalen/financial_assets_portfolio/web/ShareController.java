@@ -1,16 +1,13 @@
 package hs.aalen.financial_assets_portfolio.web;
 
-import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
-import hs.aalen.financial_assets_portfolio.exceptions.ShareException;
+import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,8 +43,8 @@ public class ShareController {
         try{
             shareService.addShare(shareDTO);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch(NoSuchElementException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }catch(FormNotValidException e){
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }

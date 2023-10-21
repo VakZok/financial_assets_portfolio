@@ -3,7 +3,7 @@ package hs.aalen.financial_assets_portfolio.web;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemPreviewDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
-import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
+import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,8 +48,8 @@ public class PortfolioItemController {
         try{
             portfolioItemService.addPortfolioItem(pItemDTO);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch(PortfolioItemException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }catch(FormNotValidException e){
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }

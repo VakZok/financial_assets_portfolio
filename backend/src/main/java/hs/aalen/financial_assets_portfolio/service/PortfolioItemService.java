@@ -1,16 +1,20 @@
 package hs.aalen.financial_assets_portfolio.service;
 
 
+import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.PortfolioItemException;
+import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
 import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,7 +22,10 @@ import java.util.Optional;
 @Service
 public class PortfolioItemService {
 
-    public static final int WKN_LENGTH = 6;
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private static final LocalDate MIN_DATE = LocalDate.of(1903,04,22);
+    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
 
     @Autowired
     private PortfolioItemRepository portfolioItemRepository;
@@ -42,17 +49,25 @@ public class PortfolioItemService {
         }
     }
 
-    public void addPortfolioItem(PItemDTO pItemDTO) throws PortfolioItemException {
-        if(formIsValid(pItemDTO)){
-            ShareDTO shareDTO = pItemDTO.getShareDTO();
-            Share share = new Share(shareDTO);
-            if(!(shareService.checkShareExists(share))){
-                shareService.addShare(shareDTO);
+    public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
+        ShareDTO shareDTO = pItemDTO.getShareDTO();
+        Share share = new Share(shareDTO);
+        if(!(shareService.checkShareExists(share))){
+            shareService.addShare(shareDTO);
+            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
+            if(exceptions.size() == 0){
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
-            }else {
+            } else{
+                throw new FormNotValidException("Formfehler", exceptions);
+            }
+        }else {
+            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
+            if(exceptions.size() == 0){
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
+            } else{
+                throw new FormNotValidException("Formfehler", exceptions);
             }
         }
     }
@@ -61,12 +76,23 @@ public class PortfolioItemService {
         return portfolioItemRepository.findAll();
     }
 
-    public boolean formIsValid(PItemDTO pItemDTO) throws PortfolioItemException{
-        if (pItemDTO.getShareDTO().getWkn().length() != WKN_LENGTH ){
-            throw new PortfolioItemException("Die WKN muss exakt 6 Zeichen enthalten.");
-        } else {
-            return true;
+    public ArrayList<ExceptionDTO> formIsValid(PItemDTO pItemDTO){
+        ArrayList<ExceptionDTO> exceptions = new ArrayList<ExceptionDTO>();
+        if(pItemDTO.getPurchasePrice() == 0){
+            exceptions.add(new ExceptionDTO("purchasePrice", "Der Kaufpreis darf nicht null sein."));
         }
+        if(pItemDTO.getQuantity() == 0){
+            exceptions.add(new ExceptionDTO("quantity", "Die Anzahl muss mindestens eins betragen."));
+        }
+        if(pItemDTO.getPurchaseDate().isBefore(MIN_DATE)){
+            exceptions.add(new ExceptionDTO(
+                    "purchaseDate", "Das Kaufdatum muss nach dem " + MIN_DATE + " liegen."));
+        }
+        if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
+            exceptions.add(new ExceptionDTO(
+                    "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE + " liegen."));
+        }
+        return exceptions;
     }
 
 }
