@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "46066cc0-1e98-4de1-9b0f-49520cbe236a",
+		"_postman_id": "01aeaceb-3097-4383-9605-babeb317903c",
 		"name": "FinancialAssetsPortfolio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30588899"
+		"_exporter_id": "30314660"
 	},
 	"item": [
 		{
@@ -84,6 +84,66 @@
 						"v1",
 						"portfolioItems",
 						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/portfolioItems/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"purchaseDate\": \"2023-11-10\",\r\n    \"purchasePrice\": 124,\r\n    \"quantity\": 5,\r\n    \"shareDTO\": {\r\n        \"wkn\": \"234451\",\r\n        \"name\": \"Siemens AG\",\r\n        \"category\": \"Industrie\",\r\n        \"description\": \"Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/portfolioItems/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"portfolioItems",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/portfolioItems/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"purchaseDate\": \"2023-11-15\",\r\n    \"purchasePrice\": 70,\r\n    \"quantity\": 7,\r\n    \"shareDTO\": {\r\n        \"wkn\": \"234\",\r\n        \"name\": \"Volkswagen AG\",\r\n        \"category\": \"Automobil\",\r\n        \"description\": \"Volkswagen AG ist ein deutscher Automobilhersteller mit Sitz in Wolfsburg, Deutschland.\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/portfolioItems/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"portfolioItems",
+						"add"
 					]
 				}
 			},
