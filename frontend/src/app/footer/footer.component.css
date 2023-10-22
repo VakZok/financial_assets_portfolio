@@ -1,5 +1,5 @@
 footer {
-  position: relative; /* position does not dynamically change */
+  position: absolute; /* position does not dynamically change */
   bottom: 0; /* stick footer to bottom of the page */
   width: 100%; /* stretch footer over whole website */
   background-color: black;

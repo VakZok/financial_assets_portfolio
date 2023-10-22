@@ -19,7 +19,7 @@ import {AddShareComponent} from "./modules/home/pages/add-share/add-share.compon
     AppComponent,
     HeaderComponent,
     NavigationComponent,
-    FooterComponent
+    FooterComponent,
     AddItemComponent,
     ItemInputFormComponent,
     ShareInputFormComponent,
