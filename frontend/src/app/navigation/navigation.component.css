@@ -1,16 +1,1 @@
-.navigation-list {
-  list-style: none; /* removes default list-style */
-  display: flex; /* creates horizontal layout */
-  font-size: 40px; /* sets font-size */
-  margin-top: 50px; /* sets top margin */
-  margin-left: 200px; /* sets top margin */
-}
 
-.navigation-list li {
-  margin: 10px; /* puts space between the two links */
-}
-
-.navigation-list a {
-  text-decoration: none; /* removes link underscore from navigation menue */
-  color: white; /* makes the link white insteal of standard blue */
-}
