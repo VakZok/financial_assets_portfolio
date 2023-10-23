@@ -3,6 +3,13 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DateValidator} from "../../../../../../core/validators/date-validator";
 import {ShareModel} from "../../../../../../core/models/share.model"
 import {ShareService} from "../../../../../../core/services/share.service";
+import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
+import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
+import {ExceptionsModel} from "../../../../../../core/models/exceptions.model";
+
+const maxDate = new Date("2123-12-31");
+const minDate: Date = new Date("1903-04-22");
+const maxSigns : number = 255;
 
 @Component({
   selector: 'item-input-form',
@@ -15,35 +22,45 @@ export class ItemInputFormComponent implements OnInit {
   shares: ShareModel[] = [];
   sharesFiltered: ShareModel[] = [];
 
-  wknError: String = '';
-  nameError: String = '';
-  descriptionError: String = '';
-  catError: String = '';
-  quantityError: String = '';
-  purchaseDateError: String = '';
-  purchasePriceError: String = '';
-  leftSigns: String = '255';
+  errorMap = new Map<string, string>([
+    ["wkn", ""],
+    ["name", ""],
+    ["description", ""],
+    ["cat", ""],
+    ["quantity", ""],
+    ["purchaseDate", ""],
+    ["purchasePrice", ""]
+  ]);
 
+  leftSigns: string = '255';
+  itemAdded: boolean = false;
+
+  /* Form Validation, check for completeness and sanity */
   pItemForm = new FormGroup({
     wkn: new FormControl('', [
       Validators.required,
-      Validators.minLength(6)]), // Added Validators.required
+      Validators.minLength(6)]),
     name: new FormControl('',
-      Validators.required), // Added Validators.required
+      Validators.required),
     description: new FormControl('', [
       Validators.required,
-      Validators.maxLength(255)]), // Added Validators.required
+      Validators.maxLength(255)]),
     cat: new FormControl('',
-      Validators.required), // Added Validators.required
+      Validators.required),
     quantity: new FormControl('', [
-      Validators.required]), // Added Validators.required and a pattern validator for digits
+      Validators.required,
+      Validators.min(1)]),
     purchaseDate: new FormControl('', [
-      Validators.required, DateValidator()]), // Added Validators.required
+      Validators.required,
+      //DateValidator()
+    ]),
     purchasePrice: new FormControl('', [
-      Validators.required]) // Added Validators.required and a pattern validator for numbers with up to 2 decimal places
+      Validators.required,
+      Validators.min(1e-7)
+      ])
   })
 
-  constructor(private shareService: ShareService) {
+  constructor(private shareService: ShareService, private pItemService: PortfolioItemService) {
   }
 
   ngOnInit() {
@@ -54,27 +71,22 @@ export class ItemInputFormComponent implements OnInit {
     })
   }
 
-  existingElements(element: ShareModel, propertyName:string, text: string): any {
-    let elText = element[propertyName].toLowerCase();
-    return(elText.startsWith(text.toLowerCase()));
+  // function for autocomplete
+  shareExists(element: ShareModel, propertyName:string, text: string): any {
+    let elText = (element as any)[propertyName]?.toLowerCase();
+    return(elText?.startsWith(text.toLowerCase()));
   }
 
-  onKeyUpWkn(event: Event) {
+  //function that searches for matches
+  onKeyUpAuto(event: Event, propertyName:string) {
     const inputElement = event.target as HTMLInputElement;
     this.sharesFiltered = this.shares.filter(
-      share => this.existingElements(share, "wkn", inputElement.value.toLowerCase())
+      share => this.shareExists(share, propertyName, inputElement.value.toLowerCase())
     );
   }
 
-  onKeyUpName(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const nameSelected = document.activeElement === document.querySelector('name')
-    this.sharesFiltered = this.shares.filter(
-      share => this.existingElements(share, "name", inputElement.value.toLowerCase())
-    );
-  }
-
-  onBlur() {
+  //autocompletion for share
+  autoFill() {
     if(this.sharesFiltered.length == 1){
       this.pItemForm.patchValue({
         wkn: this.sharesFiltered[0].wkn,
@@ -85,12 +97,13 @@ export class ItemInputFormComponent implements OnInit {
     }
   }
 
+  // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {
-    console.log('triggered')
     const inputElement = event.target as HTMLInputElement;
-    this.leftSigns = String(255 - inputElement.value.length)
+    this.leftSigns = String(maxSigns - inputElement.value.length)
   }
 
+  //function to prevent writing more than one comma into purchasePrice
   onKeyDownPrice(event: KeyboardEvent) {
     const inputElement = event.target as HTMLInputElement;
     if (event.key == ',' && inputElement.value.length == 0){
@@ -99,43 +112,126 @@ export class ItemInputFormComponent implements OnInit {
   }
 
   onSubmit() {
+
+    //initialize
+    this.itemAdded = false;
+
+    //replace ',' with '.' of purchasePrice for further processing
+    const price = this.pItemForm.get('purchasePrice')?.value;
+    if (price !== null && price !== undefined) {
+      this.pItemForm.get('purchasePrice')?.setValue(price.replace(',', '.'));
+    }
+
+    // loop over input form and remove leading/trailing whitespaces
+    for (const controlName in this.pItemForm.controls) {
+      if (this.pItemForm.controls.hasOwnProperty(controlName)) {
+        const control = this.pItemForm.get(controlName);
+        control?.setValue(control?.value.trim())
+      }
+    }
+
+    //check input form. If an input field is invalid, set error text
     if(this.pItemForm.invalid){
       if(this.pItemForm.controls.wkn.errors?.['minlength']){
-        this.wknError = "Die WKN muss aus 6 Stellen bestehen"
+        this.errorMap.set("wkn", "Die WKN muss aus 6 Stellen bestehen");
       } else if (this.pItemForm.controls.wkn.errors?.['required']){
-        this.wknError = "Bitte füllen sie die WKN aus"
+        this.errorMap.set("wkn","Bitte füllen sie die WKN aus");
+      } else {
+        this.errorMap.set("wkn", "");
       }
+
       if(this.pItemForm.controls.name.errors?.['required']){
-        this.nameError = "Bitte tragen Sie einen Namen ein"
+        this.errorMap.set("name", "Bitte tragen Sie einen Namen ein");
+      } else {
+        this.errorMap.set("name", "");
       }
+
       if(this.pItemForm.controls.description.errors?.['maxLength']){
-        this.descriptionError = "Die Beschreibung darf nicht länger als 255 Zeichen sein"
+        this.errorMap.set("description", "Die Beschreibung darf nicht länger als 255 Zeichen sein");
       } else if (this.pItemForm.controls.description.errors?.['required']){
-        this.descriptionError = "Bitte tragen Sie die Beschreibung ein"
+        this.errorMap.set("description", "Bitte tragen Sie die Beschreibung ein");
+      } else {
+        this.errorMap.set("description", "");
       }
+
       if(this.pItemForm.controls.cat.errors?.['required']){
-        this.catError = "Bitte wählen Sie eine Kategorie"
+        this.errorMap.set("cat", "Bitte wählen Sie eine Kategorie");
+      } else {
+        this.errorMap.set("cat", "");
       }
+
       if(this.pItemForm.controls.quantity.errors?.['required']){
-        this.quantityError = "Bitte tragen Sie eine Anzahl ein"
+        this.errorMap.set("quantity", "Bitte tragen Sie eine Anzahl ein");
+      } else if (this.pItemForm.controls.quantity.errors?.['min']){
+        this.errorMap.set("quantity", "Bitte tragen Sie eine Anzahl ein");
+      } else {
+        this.errorMap.set("quantity", "");
       }
+
       if(this.pItemForm.controls.purchaseDate.errors?.['required']){
-        this.purchaseDateError = "Bitte tragen Sie ein Datum ein"
-      } else if(this.pItemForm.controls.purchaseDate.errors?.['dateInvalid']){
-        this.purchaseDateError = 'Datum ist ungültig.'
+        this.errorMap.set("purchaseDate", "Bitte tragen Sie ein Kaufdatum ein");
+      } else if(this.pItemForm.controls.purchaseDate.errors?.['dateFutureErr']) {
+        this.errorMap.set("purchaseDate",
+          "Das Kaufdatum muss vor dem " + maxDate.toLocaleDateString('de-DE',
+            {day: 'numeric', month: 'numeric', year:'numeric'}) + " liegen");
+
+      } else if(this.pItemForm.controls.purchaseDate.errors?.['datePastErr']){
+        this.errorMap.set("purchaseDate",
+          "Das Kaufdatum muss nach dem " + minDate.toLocaleDateString(
+            'de-DE', {day: 'numeric', month: 'numeric', year:'numeric'}) + " liegen");
+      } else {
+        this.errorMap.set("purchaseDate", "");
       }
+
       if (this.pItemForm.controls.purchasePrice.errors?.['required']){
-        this.purchasePriceError = "Bitte tragen Sie einen Kaufpreis ein"
+        this.errorMap.set("purchasePrice", "Bitte tragen Sie einen Kaufpreis ein");
+      } else if (this.pItemForm.controls.purchasePrice.errors?.['min']){
+        this.errorMap.set("purchasePrice", "Der Kaufpreis muss größer als 0 sein");
+      }else {
+        this.errorMap.set("purchasePrice", "");
+      }
+
+      if (price !== null && price !== undefined) {
+        this.pItemForm.get('purchasePrice')?.setValue(price.replace('.', ','));
       }
 
     } else {
+      // initialize errors if form is valid
+      for (let [key, error] of this.errorMap){
+        this.errorMap.set(key, '');
+      }
 
-      console.log(this.pItemForm.value)
+      // create shareDTO
+      const shareDTO: ShareModel = {
+        wkn: this.pItemForm.controls.wkn.value || '',
+        name: this.pItemForm.controls.name.value || '',
+        category: this.pItemForm.controls.cat.value || '',
+        description: this.pItemForm.controls.description.value || ''
+      }
+      //create portfolioItemDTO
+      const pItemDTO: PortfolioItemModel = {
+        purchaseDate: new Date(this.pItemForm.controls.purchaseDate.value || ''),
+        purchasePrice: parseFloat(this.pItemForm.controls.purchasePrice.value?.replace(',', '.') || ''),
+        quantity: parseInt(this.pItemForm.controls.quantity.value || ''),
+        shareDTO: shareDTO
+      }
 
-      //this.pItemForm.reset();
+      //send portfolioItemDTO to backend. If exception is risen in backend, populate error messages to errorMap
+      //successfull set "itemAdded" = true and show the success message
+      this.pItemService.postPItem(pItemDTO).subscribe({
+        next: (data) => {
+          console.log(data)
+          this.pItemForm.reset();
+        },
+        error: (errors) => errors.error.forEach((item:any) => {
+          this.errorMap.set(item.name, item.message);
+        }),
+        complete: () => this.itemAdded = true
+      })
     }
   }
 
+  // method to clear the input form
   clearForm() {
     this.pItemForm.reset();
   }

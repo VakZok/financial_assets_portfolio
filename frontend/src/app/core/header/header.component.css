@@ -1,7 +1,9 @@
-.header {
+header {
   background-color: black;
-  align-content: normal; /* Put space between items */
+  display: flex; /* Use Flexbox to arrange items horizontally */
+  align-content: normal;
   height: 100px;
+  justify-content: normal; /* Put space between items */
 }
 
 .logo {
@@ -14,3 +16,4 @@
   color: blue; /* Change the color to your desired color */
   text-decoration: none; /* Remove underline if needed */
 }
+

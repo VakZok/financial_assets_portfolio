@@ -37,7 +37,7 @@ public class ShareService {
 
     public void addShare(ShareDTO shareDTO) throws FormNotValidException {
         ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
-        if(exceptions.size() == 0){
+        if(exceptions.isEmpty()){
             Share share = new Share(shareDTO);
             shareRepository.save(share);
         } else {
@@ -58,23 +58,23 @@ public class ShareService {
     public ArrayList<ExceptionDTO> validateForm(ShareDTO shareDTO){
         ArrayList<ExceptionDTO> exceptions = new ArrayList<ExceptionDTO>();
         if (shareDTO.getWkn().length() != WKN_LENGTH ){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss exakt 6 Zeichen enthalten."));
+            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));
         }
-        if(shareDTO.getWkn() == null || shareDTO.getWkn().length() == 0){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN darf nicht leer sein."));
+        if(shareDTO.getWkn() == null || shareDTO.getWkn().isEmpty()){
+            exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));
         }
-        if(shareDTO.getName() == null || shareDTO.getName().length() == 0){
-            exceptions.add(new ExceptionDTO("name", "Der Name darf nicht leer sein."));
+        if(shareDTO.getName() == null || shareDTO.getName().isEmpty()){
+            exceptions.add(new ExceptionDTO("name", "Bitte tragen Sie einen Namen ein"));
         }
-        if(shareDTO.getCategory() == null || shareDTO.getCategory().length() == 0){
-            exceptions.add(new ExceptionDTO("cat", "Die Kategorie darf nicht leer sein."));
+        if(shareDTO.getCategory() == null || shareDTO.getCategory().isEmpty()){
+            exceptions.add(new ExceptionDTO("cat", "Bitte wählen Sie eine Kategorie"));
         }
-        if(shareDTO.getDescription() == null || shareDTO.getDescription().length() == 0){
-            exceptions.add(new ExceptionDTO("description", "Die Beschreibung darf nicht leer sein."));
+        if(shareDTO.getDescription() == null || shareDTO.getDescription().isEmpty()){
+            exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));
         }
         if(shareDTO.getDescription().length() >= 255){
             exceptions.add(new ExceptionDTO(
-                    "description", "Die Beschreibung darf nicht mehr als 255 Zeichen beeinhalten."));
+                    "description", "Die Beschreibung darf nicht länger als 255 Zeichen sein"));
         }
         return exceptions;
     }

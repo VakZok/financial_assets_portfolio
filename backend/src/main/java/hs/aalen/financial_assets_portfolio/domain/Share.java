@@ -24,7 +24,7 @@ public class Share {
     }
 
     public Share(ShareDTO shareDTO){
-        this.wkn = shareDTO.getWkn();
+        this.wkn = shareDTO.getWkn().toUpperCase();
         this.name = shareDTO.getName();
         this.category = shareDTO.getCategory();
         this.description = shareDTO.getDescription();
