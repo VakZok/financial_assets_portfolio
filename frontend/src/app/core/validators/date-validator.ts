@@ -6,8 +6,10 @@ export function DateValidator(): ValidatorFn {
         const minDate: Date = new Date("1903-04-22");
         const inputDate = new Date(control.value);
 
-        if (!(inputDate < maxDate && inputDate > minDate)) {
-            return { 'dateInvalid': true };
+        if (!(inputDate < maxDate)) {
+          return {'dateFutureErr': true};
+        } else if (!(inputDate > minDate)){
+          return{'datePastErr':true}
         }
         return null;
     };

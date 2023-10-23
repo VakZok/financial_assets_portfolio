@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './core/header/header.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { FooterComponent } from './footer/footer.component';
+import { FooterComponent } from './core/footer/footer.component';
 import { AddItemComponent } from './modules/home/pages/add-item/add-item.component';
 import { ItemInputFormComponent } from './modules/home/pages/add-item/components/item-input-form/item-input-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -19,7 +19,7 @@ import {AddShareComponent} from "./modules/home/pages/add-share/add-share.compon
     AppComponent,
     HeaderComponent,
     NavigationComponent,
-    FooterComponent
+    FooterComponent,
     AddItemComponent,
     ItemInputFormComponent,
     ShareInputFormComponent,

@@ -2,6 +2,10 @@
 
   <p>Bitte füllen Sie alle Felder aus.</p>
 
+  <div class="success" hidden>
+    <p>Wertpapier erfolgreich angelegt!</p>
+  </div>
+
   <div>
     <label id="wkn-label" for="wkn">WKN: </label>
     <input id="wkn" name="wkn" type="text" oninput="this.value = this.value.slice(0,6)" formControlName="wkn"/>

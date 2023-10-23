@@ -1,84 +1,91 @@
-<form [formGroup]="pItemForm" (ngSubmit)="onSubmit()">
+<form class = "form" [formGroup]="pItemForm" (ngSubmit)="onSubmit()">
 
-  <p>Bitte füllen Sie alle Felder aus.</p>
+  <div *ngIf="itemAdded" class="success" hidden>
+    <p>Portfolioitem erfolgreich angelegt!</p>
+  </div>
 
-  <dialog id="shareDialog">
-    <div>
-      <h2>
-        Wertpapier nicht vorhanden
-      </h2>
-      Das gewünschte Wertpapier ist nicht vorhanden:
+  <div class="row">
 
-      <p>WKN: </p>
-      <p>Name: </p>
-      <p>Beschreibung: </p>
-      <p>Kategorie: </p>
-
-      <p>Wollen Sie es anlegen?</p>
+      <div [ngClass]="{'normal' : (this.errorMap.get('wkn')?.length || 0) <=1,
+                       'not-valid' : (this.errorMap.get('wkn')?.length || 0) >= 1}">
+        <label id="wkn-label" for="wkn">WKN: </label>
+        <input id="wkn" name="wkn" list="wkn-suggestions" type="text"
+               oninput="this.value = this.value.slice(0,6)" (keyup)="onKeyUpAuto($event, 'wkn')"
+               (focusout)="autoFill()" formControlName="wkn" autocomplete="off"/>
+        <datalist id="wkn-suggestions">
+          <option *ngFor = "let share of this.sharesFiltered" [value]="share.wkn" >{{share.wkn}}</option>
+        </datalist>
+        <div id="wkn-alert" class="alert-text"> {{this.errorMap.get('wkn')}} </div>
 
     </div>
 
-    <div>
-      <button id="dialog-accepted-button">Ja</button>
-      <button id="dialog-aborted-button">Abbrechen</button>
+    <div [ngClass]="{'normal' : (this.errorMap.get('name')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('name')?.length || 0) >= 1}">
+        <label id="name-label" for="name">Name: </label>
+        <input id="name" name="name" list="name-suggestions" type="text"
+               (keyup)="onKeyUpAuto($event, 'wkn')"
+               (focusout)="autoFill()" formControlName="name" autocomplete="off" />
+        <datalist id="name-suggestions">
+          <option *ngFor = "let share of this.sharesFiltered" [value]="share.name" >{{share.name}}</option>
+        </datalist>
+        <div id="name-alert" class="alert-text"> {{this.errorMap.get('name')}} </div>
     </div>
-  </dialog>
 
-  <div>
-    <label id="wkn-label" for="wkn">WKN: </label>
-    <input id="wkn" name="wkn" list="wkn-suggestions" type="text" oninput="this.value = this.value.slice(0,6)" (keyup)="onKeyUpWkn($event)" (blur)="onBlur()" formControlName="wkn"/>
-    <datalist id="wkn-suggestions">
-      <option *ngFor = "let share of this.sharesFiltered" [value]="share.wkn" >{{share.wkn}}</option>
-    </datalist>
-    <div id="wkn-alert"> {{this.wknError}} </div>
-  </div>
 
-  <div>
-    <label id="name-label" for="name">Name: </label>
-    <input id="name" name="name" list="name-suggestions" type="text" (keyup)="onKeyUpName($event)" (blur)="onBlur()" formControlName="name" />
-    <datalist id="name-suggestions">
-      <option *ngFor = "let share of this.sharesFiltered" [value]="share.name" >{{share.name}}</option>
-    </datalist>
-    <div id="name-alert"> {{this.nameError}} </div>
+    <div [ngClass]="{'normal' : (this.errorMap.get('cat')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('cat')?.length || 0) >= 1}">
+      <label id="cat-label" for="cat">Kategorie: </label>
+      <input id="cat" name="cat" type="text" formControlName="cat" autocomplete="off"/>
+      <div id="cat-alert" class="alert-text"> {{this.errorMap.get('cat')}} </div>
+    </div>
+
   </div>
 
 
-  <div>
+  <div [ngClass]="{'normal' : (this.errorMap.get('description')?.length || 0) <= 1,
+                   'not-valid' : (this.errorMap.get('description')?.length || 0) >= 1}">
     <label id="description-label" for="description">Beschreibung: </label>
-    <textarea id="description" (keyup)="onKeyUpDescription($event)" name="description" type="text" oninput="this.value = this.value.slice(0,255)" formControlName="description"></textarea>
-    <div>{{this.leftSigns}} von 255 Zeichen</div>
-    <div id="description-alert"> {{this.descriptionError}} </div>
+    <textarea id="description" (keyup)="onKeyUpDescription($event)" name="description"
+              type="text" oninput="this.value = this.value.slice(0,255)"
+              formControlName="description" autocomplete="off"></textarea>
+    <div id="description-footer">
+      <div id="description-alert" class="alert-text"> {{this.errorMap.get('description')}} </div>
+      <div id="left-signs">{{this.leftSigns}} von 255 Zeichen</div>
+    </div>
+
   </div>
 
-  <div>
-    <label id="cat-label" for="cat">Kategorie: </label>
-    <input id="cat" name="cat" type="text" formControlName="cat"/>
-    <div id="cat-alert"> {{this.catError}} </div>
+  <div class="row">
+    <div [ngClass]="{'normal' : (this.errorMap.get('quantity')?.length || 0) <=1,
+                     'not-valid' : (this.errorMap.get('quantity')?.length || 0) >= 1}">
+      <label id="quantity-label" for="quantity">Anzahl: </label>
+      <input id = "quantity" name="quantity" formControlName="quantity"
+             oninput="this.value=this.value.replace(/\D/g,'');" />
+      <div id="quantity-alert" class="alert-text"> {{this.errorMap.get('quantity')}} </div>
+    </div>
+
+    <div [ngClass]="{'normal' : (this.errorMap.get('purchaseDate')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('purchaseDate')?.length || 0) >= 1}">
+      <label id="purchase-date-label" for="purchase-date">Kaufdatum: </label>
+      <input id="purchase-date" name="buy-date" type="date" formControlName="purchaseDate" autocomplete="off" />
+      <div id="purchase-date-alert" class="alert-text"> {{this.errorMap.get('purchaseDate')}} </div>
+    </div>
+
+    <div [ngClass]="{'normal' : (this.errorMap.get('purchasePrice')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('purchasePrice')?.length || 0) >= 1}">
+      <label id="purchase-price-label" for="purchase-price">Kaufpreis in Euro: </label>
+      <input id="purchase-price" name="purchase-price" type="text"
+             formControlName="purchasePrice" (keydown)="onKeyDownPrice($event)"
+             oninput="this.value=this.value.replace(/[^\d,]/g,'').replace(/(,.*)\,/g,'$1').replace(/^(\d+\,?\d*).*/g,'$1');"
+             autocomplete="off"/>
+      <div id="purchase-price-alert" class="alert-text"> {{this.errorMap.get('purchasePrice')}} </div>
+    </div>
   </div>
 
-  <div>
-    <label id="quantity-label" for="quantity">Anzahl: </label>
-    <input id = "quantity" name="quantity" formControlName="quantity" oninput="this.value=this.value.replace(/[^\d]/g,'');" />
-    <div id="quantity-alert"> {{this.quantityError}} </div>
-  </div>
-
-  <div>
-    <label id="purchase-date-label" for="purchase-date">Kaufdatum: </label>
-    <input id="purchase-date" name="buy-date" type="date" formControlName="purchaseDate" />
-    <div id="purchase-date-alert"> {{this.purchaseDateError}} </div>
-  </div>
-
-  <div>
-    <label id="purchase-price-label" for="purchase-price">Kaufpreis: </label>
-    <input id="purchase-price" name="purchase-price" type="text"
-           formControlName="purchasePrice" (keydown)="onKeyDownPrice($event)"
-           oninput="this.value=this.value.replace(/[^\d,]/g,'').replace(/(,.*)\,/g, '$1').replace(/^(\d+\,\d{2}).*/g, '$1');" />
-    <div id="purchase-price-alert"> {{this.purchasePriceError}} </div>
-  </div>
-
-  <div>
+  <div class="button-area">
     <button type="submit">Hinzufügen</button>
     <button type="button" (click)="clearForm()">Zurücksetzen</button>
   </div>
-
 </form>
+
+

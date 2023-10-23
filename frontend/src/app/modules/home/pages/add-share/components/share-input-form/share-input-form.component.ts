@@ -1,6 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ShareService} from "../../../../../../core/services/share.service";
+import {ShareModel} from "../../../../../../core/models/share.model";
+import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
 
 @Component({
   selector: 'share-input-form',
@@ -64,8 +66,23 @@ export class ShareInputFormComponent {
       }
 
     } else {
+      const shareDTO: ShareModel = {
+        wkn: this.shareForm.controls.wkn.value || '',
+        name: this.shareForm.controls.name.value || '',
+        category: this.shareForm.controls.cat.value || '',
+        description: this.shareForm.controls.cat.value|| ''
+      }
+
+      this.shareService.postShare(shareDTO).subscribe({
+        next: (data) => {
+          console.log(data)
+          this.shareForm.reset();
+        },
+        error: (error) => console.error(error),
+        complete: () => console.info('complete')
+      })
       console.log(this.shareForm.value)
-      //this.pItemForm.reset();
+      this.shareForm.reset();
     }
 
   }

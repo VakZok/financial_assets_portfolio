@@ -8,12 +8,11 @@ import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
-import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,17 +20,14 @@ import java.util.Optional;
 
 @Service
 public class PortfolioItemService {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    @DateTimeFormat(pattern="dd.MM.yyyy")
-    private static final LocalDate MIN_DATE = LocalDate.of(1903,04,22);
-    @DateTimeFormat(pattern="dd.MM.yyyy")
+    private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
+
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
 
     @Autowired
     private PortfolioItemRepository portfolioItemRepository;
-
-    @Autowired
-    private ShareRepository shareRepository;
 
     @Autowired
     private ShareService shareService;
@@ -53,9 +49,11 @@ public class PortfolioItemService {
         ShareDTO shareDTO = pItemDTO.getShareDTO();
         Share share = new Share(shareDTO);
         if(!(shareService.checkShareExists(share))){
-            shareService.addShare(shareDTO);
+            ArrayList<ExceptionDTO> exceptionsShare = shareService.validateForm(shareDTO);
             ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            if(exceptions.size() == 0){
+            exceptions.addAll(exceptionsShare);
+            if(exceptions.isEmpty()){
+                shareService.addShare(shareDTO);
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
             } else{
@@ -63,7 +61,7 @@ public class PortfolioItemService {
             }
         }else {
             ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            if(exceptions.size() == 0){
+            if(exceptions.isEmpty()){
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
             } else{
@@ -77,20 +75,23 @@ public class PortfolioItemService {
     }
 
     public ArrayList<ExceptionDTO> formIsValid(PItemDTO pItemDTO){
-        ArrayList<ExceptionDTO> exceptions = new ArrayList<ExceptionDTO>();
+        ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
         if(pItemDTO.getPurchasePrice() == 0){
-            exceptions.add(new ExceptionDTO("purchasePrice", "Der Kaufpreis darf nicht null sein."));
+            exceptions.add(new ExceptionDTO("purchasePrice", "Bitte tragen Sie einen Kaufpreis ein"));
         }
         if(pItemDTO.getQuantity() == 0){
-            exceptions.add(new ExceptionDTO("quantity", "Die Anzahl muss mindestens eins betragen."));
+            exceptions.add(new ExceptionDTO("quantity", "Bitte tragen Sie eine Anzahl ein"));
         }
-        if(pItemDTO.getPurchaseDate().isBefore(MIN_DATE)){
+        if(pItemDTO.getPurchaseDate() == null){
+            System.out.println("test");
             exceptions.add(new ExceptionDTO(
-                    "purchaseDate", "Das Kaufdatum muss nach dem " + MIN_DATE + " liegen."));
-        }
-        if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
+                    "purchaseDate", "Bitte tragen Sie ein Kaufdatum ein"));
+        }else if(pItemDTO.getPurchaseDate().isBefore(MIN_DATE)) {
             exceptions.add(new ExceptionDTO(
-                    "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE + " liegen."));
+                    "purchaseDate", "Das Kaufdatum muss nach dem " + MIN_DATE.format(formatter) + " liegen"));
+        } else if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
+            exceptions.add(new ExceptionDTO(
+                    "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(formatter) + " liegen"));
         }
         return exceptions;
     }
