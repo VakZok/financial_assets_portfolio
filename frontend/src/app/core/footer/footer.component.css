@@ -1,5 +1,4 @@
 footer {
-  min-height:10vh;
   width: 100%; /* stretch footer over whole website */
   background-color: black;
   justify-content: normal; /* Put space between items */
