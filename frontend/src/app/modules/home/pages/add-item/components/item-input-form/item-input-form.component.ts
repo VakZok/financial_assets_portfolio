@@ -71,36 +71,6 @@ export class ItemInputFormComponent implements OnInit {
     })
   }
 
-  // function for autocomplete
-  shareExists(element: ShareModel, propertyName:string, text: string): any {
-    let elText = (element as any)[propertyName]?.toLowerCase();
-    return(elText?.startsWith(text.toLowerCase()));
-  }
-
-  //function that searches for matches
-  onKeyUpAuto(event: Event, propertyName:string) {
-    const inputElement = event.target as HTMLInputElement;
-    this.sharesFiltered = this.shares.filter(
-      share => this.shareExists(share, propertyName, inputElement.value.toLowerCase())
-    );
-  }
-
-  //autocompletion for share
-  autoFill(event: Event, propertyName: string) {
-    const inputElement = event.target as HTMLInputElement;
-    this.sharesFiltered = this.shares.filter(
-      share => this.shareExists(share, propertyName, inputElement.value.toLowerCase())
-    );
-    if(this.sharesFiltered.length == 1){
-      this.pItemForm.patchValue({
-        wkn: this.sharesFiltered[0].wkn,
-        name: this.sharesFiltered[0].name,
-        description: this.sharesFiltered[0].description,
-        cat: this.sharesFiltered[0].category
-      })
-    }
-  }
-
   // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {
     const inputElement = event.target as HTMLInputElement;
