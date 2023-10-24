@@ -1,15 +1,27 @@
 footer {
-  width: 100%; /* stretch footer over whole website */
   background-color: black;
-  justify-content: normal; /* Put space between items */
-  color: white; /* makes the link white insteal of standard blue */
-  display: flex;
-  align-items: center;
-
+  height: 70px;
+  display: flex; /* Use Flexbox to arrange items horizontally */
+  align-items: center; /* vertically center items */
 }
 
-.container a {
-  text-decoration: none; /* removes link underscore from navigation menue */
-  color: white; /* makes the link white insteal of standard blue */
-  margin: 10px;
+.footer-left {
+  color: white; /* text color to white */
+  height: 50px; /* customize logo size */
+  margin-left: 10px; /* so that the container is not directly on the side end of the window */
+}
+
+.footer-right {
+  margin-left: auto; /* aligns right header part on the right side */
+  margin-right: 20px; /* so that the container is not directly on the side end of the window */
+}
+
+.footer-right a {
+  color: white; /* Change the color to your desired color */
+  text-decoration: none; /* Remove underline if needed */
+  margin-left: 20px; /* put space between the two router links */
+}
+
+.footer-right a:hover {
+  text-decoration: underline;
 }
