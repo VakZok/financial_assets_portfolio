@@ -11,10 +11,11 @@ const maxSigns : number = 255;
   styleUrls: ['./share-input-form.component.css']
 })
 
-export class ShareInputFormComponent implements OnInit {
+export class ShareInputFormComponent {
 
   shares: ShareModel[] = [];
-  sharesFiltered: ShareModel[] = [];
+  leftSigns: string = '255';
+  shareAdded: boolean = false;
 
   errorMap = new Map<string, string>([
     ["wkn", ""],
@@ -22,9 +23,6 @@ export class ShareInputFormComponent implements OnInit {
     ["description", ""],
     ["cat", ""],
   ]);
-
-  leftSigns: string = '255';
-  shareAdded: boolean = false;
 
   /* Form Validation, check for completeness and sanity */
   shareForm = new FormGroup({
@@ -41,14 +39,6 @@ export class ShareInputFormComponent implements OnInit {
   })
 
   constructor(private shareService: ShareService) {
-  }
-
-  ngOnInit() {
-    this.shareService.getShares().subscribe({
-      next: (data) => this.shares = data,
-      error: (error) => console.error(error),
-      complete: () => console.info('complete')
-    })
   }
 
   // function that counts the amount of left signs
@@ -111,6 +101,8 @@ export class ShareInputFormComponent implements OnInit {
         category: this.shareForm.controls.cat.value || '',
         description: this.shareForm.controls.description.value || ''
       }
+
+      this.shareService.getShares()
 
       //send shareDTO to backend. If exception is risen in backend, populate error messages to errorMap
       //successful set "shareAdded" = true and show the success message

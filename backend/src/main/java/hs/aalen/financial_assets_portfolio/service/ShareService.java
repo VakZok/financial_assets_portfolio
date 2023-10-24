@@ -65,12 +65,7 @@ public class ShareService {
     /* Method that checks if the share already exists */
     public boolean checkShareExists(Share share){
         Share shareElement = shareRepository.findByWkn(share.getWkn());
-        if(shareElement != null){
-            return true;
-        }else {
-            return false;
-        }
-
+        return shareElement != null;
     }
 
     /* Method that checks the validity of the input */
