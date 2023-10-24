@@ -10,17 +10,15 @@ header {
   margin-left: 10px; /* so that the container is not directly on the side end of the window */
 }
 
-
- .header-right {
-   margin-left: auto; /* aligns right header part on the right side */
-   margin-right: 20px; /* so that the container is not directly on the side end of the window */
- }
+.header-right {
+  margin-left: auto; /* aligns right header part on the right side */
+  margin-right: 20px; /* so that the container is not directly on the side end of the window */
+}
 
 .header-right a {
   color: white; /* Change the color to your desired color */
   text-decoration: none; /* Remove underline if needed */
   font-size: xx-large; /* set font size*/
-  align-content: normal;
   margin-left: 20px; /* put space between the two router links */
 }
 
