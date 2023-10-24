@@ -20,23 +20,26 @@ import java.util.Optional;
 
 @Service
 public class PortfolioItemService {
+    /* Portfolio item service class to process
+     *  the requests received in the controller class
+     */
+
+    /* CONSTANTS */
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
     private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
-
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
 
-
+    /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
-
-
     private final ShareService shareService;
 
+    /* PROCESSING METHODS */
     public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, ShareService shareService) {
         this.portfolioItemRepository = portfolioItemRepository;
         this.shareService = shareService;
     }
 
+    /* Method that returns the portfolio item searched by the id */
     public PortfolioItem getPortfolioItem(Long id)throws NoSuchElementException {
         Optional<PortfolioItem> item = portfolioItemRepository.findById(id);
         if (item.isPresent()){
@@ -46,6 +49,7 @@ public class PortfolioItemService {
         }
     }
 
+    /* Method that adds a new portfolio item when the form is correct */
     public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
         ShareDTO shareDTO = pItemDTO.getShareDTO();
         Share share = new Share(shareDTO);
@@ -71,10 +75,12 @@ public class PortfolioItemService {
         }
     }
 
+    /* Method that returns the portfolio item list */
     public List<PortfolioItem> getPortfolioItemList(){
         return portfolioItemRepository.findAll();
     }
 
+    /* Method that checks the validity of the input */
     public ArrayList<ExceptionDTO> formIsValid(PItemDTO pItemDTO){
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
         if(pItemDTO.getPurchasePrice() == 0){

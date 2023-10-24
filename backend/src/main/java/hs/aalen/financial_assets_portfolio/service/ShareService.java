@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ShareService {
     /* Share service class to process
-     *  the requests received in the controller class
+     * the requests received in the controller class
      */
 
     /* CONSTANTS */
@@ -24,7 +24,7 @@ public class ShareService {
     /* CONNECTED REPOSITORIES */
     private final ShareRepository shareRepository;
 
-    /*PROCESSING METHODS */
+    /* PROCESSING METHODS */
     public ShareService(ShareRepository shareRepository) {
         this.shareRepository = shareRepository;
     }

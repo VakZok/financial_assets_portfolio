@@ -23,6 +23,7 @@ public class ShareController {
         this.shareService = shareService;
     }
 
+    /* GET REQUESTS */
     @GetMapping("/shares/{wkn}")
     public ResponseEntity<Object> getShare(@PathVariable String wkn){
         Share share = shareService.getShare(wkn);
@@ -37,6 +38,7 @@ public class ShareController {
         return new ResponseEntity<Object>(shareDTOList, HttpStatus.OK);
     }
 
+    /* POST REQUESTS */
     @PostMapping("/shares/add")
     public ResponseEntity<Object> addShare(@RequestBody ShareDTO shareDTO){
         try{
@@ -47,6 +49,7 @@ public class ShareController {
         }
     }
 
+    /* PUT REQUESTS */
     @PutMapping("/shares/update/{wkn}")
     public ResponseEntity<Object> updateShare(@PathVariable String wkn,
                                               @RequestBody ShareDTO shareDTO){

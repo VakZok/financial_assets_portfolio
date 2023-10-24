@@ -25,6 +25,7 @@ public class PortfolioItemController {
         this.portfolioItemService = portfolioItemService;
     }
 
+    /* GET REQUESTS */
     @GetMapping("portfolioItems/{id}")
     public ResponseEntity<Object> getPortfolioItem(@PathVariable Long id){
         try{
@@ -43,6 +44,7 @@ public class PortfolioItemController {
         return new ResponseEntity<Object>(pItemPreviewDTOList, HttpStatus.OK);
     }
 
+    /* POST REQUESTS */
     @PostMapping("portfolioItems/add")
     public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO){
         try{
