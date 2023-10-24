@@ -1,19 +1,30 @@
 header {
   background-color: black;
-  display: flex; /* Use Flexbox to arrange items horizontally */
-  align-content: normal;
   height: 100px;
-  justify-content: normal; /* Put space between items */
+  display: flex; /* Use Flexbox to arrange items horizontally */
+  align-items: center; /* vertically center items */
 }
 
 .logo {
-  height: 50px;
-  margin-top: 28px;
-  margin-left: 15px;
+  height: 50px; /* customize logo size */
+  margin-left: 10px; /* so that the container is not directly on the side end of the window */
 }
 
-.header-right {
-  color: blue; /* Change the color to your desired color */
+
+ .header-right {
+   margin-left: auto; /* aligns right header part on the right side */
+   margin-right: 20px; /* so that the container is not directly on the side end of the window */
+ }
+
+.header-right a {
+  color: white; /* Change the color to your desired color */
   text-decoration: none; /* Remove underline if needed */
+  font-size: xx-large; /* set font size*/
+  align-content: normal;
+  margin-left: 20px; /* put space between the two router links */
+}
+
+.header-right a:hover {
+  text-decoration: underline;
 }
 
