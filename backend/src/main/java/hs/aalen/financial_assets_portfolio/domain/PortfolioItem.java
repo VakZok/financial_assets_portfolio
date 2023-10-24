@@ -37,7 +37,6 @@ public class PortfolioItem {
         this.purchasePrice = pItemDTO.getPurchasePrice();
         this.quantity = pItemDTO.getQuantity();
         this.share = new Share(pItemDTO.getShareDTO());
-        System.out.println("testttt");
     }
 
     public PortfolioItem() {}
