@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 public class Share {
+    /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
     private String wkn;
@@ -13,9 +14,11 @@ public class Share {
     private String category;
     private String description;
 
+    /* MAPPED RELATIONSHIPS */
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
     Set<PortfolioItem> portfolioItems;
 
+    /* Constructors */
     public Share(String wkn, String name, String category, String description) {
         this.wkn = wkn;
         this.name = name;
@@ -37,9 +40,9 @@ public class Share {
         this.description = shareDTO.getDescription();
     }
 
-    public Share() {
+    public Share() {}
 
-    }
+    /* Getters and Setters */
     public String getWkn() {
         return wkn;
     }

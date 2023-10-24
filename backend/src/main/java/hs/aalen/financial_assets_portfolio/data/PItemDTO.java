@@ -4,6 +4,9 @@ import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import java.time.LocalDate;
 
 public class PItemDTO {
+    /* Class to create Data Transfer Objects for portfolio items used for communication with the frontend
+     * and not exposing too much information.
+     */
 
     private Long id;
     private LocalDate purchaseDate;
@@ -11,6 +14,7 @@ public class PItemDTO {
     private int quantity;
     private ShareDTO shareDTO;
 
+    /* Constructors inclusive copy constructors */
     public PItemDTO(
             Long id, LocalDate purchaseDate,
             double purchasePrice, int quantity, ShareDTO shareDTO
@@ -33,6 +37,7 @@ public class PItemDTO {
 
     public PItemDTO(){}
 
+    /* Getters and Setters */
     public Long getId() {
         return id;
     }

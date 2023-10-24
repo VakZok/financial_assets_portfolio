@@ -10,13 +10,16 @@ import jakarta.persistence.OneToMany;
 import java.util.Set;
 
 public class ShareDTO {
+    /* Class to create Data Transfer Objects for shares used for communication with the frontend
+     * and not exposing too much information.
+     */
 
     private String wkn;
     private String name;
     private String category;
     private String description;
 
-
+    /* Constructors */
     public ShareDTO(Share share) {
         this.wkn = share.getWkn();
         this.name = share.getName();
@@ -26,6 +29,7 @@ public class ShareDTO {
 
     public ShareDTO(){}
 
+    /* Getters and Setters */
     public String getWkn() {
         return wkn;
     }

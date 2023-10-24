@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 public class PortfolioItem {
-    /*PROPERTIES OF ENTITY*/
+    /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
     @GeneratedValue(generator="increment")
@@ -25,6 +25,7 @@ public class PortfolioItem {
     @JoinColumn(name = "wkn")
     private Share share;
 
+    /* Constructors */
     public PortfolioItem(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
@@ -36,13 +37,11 @@ public class PortfolioItem {
         this.purchasePrice = pItemDTO.getPurchasePrice();
         this.quantity = pItemDTO.getQuantity();
         this.share = new Share(pItemDTO.getShareDTO());
-        System.out.println("testttt");
     }
 
-    public PortfolioItem() {
+    public PortfolioItem() {}
 
-    }
-
+    /* Getters and Setters */
     public Long getId() {
         return id;
     }
