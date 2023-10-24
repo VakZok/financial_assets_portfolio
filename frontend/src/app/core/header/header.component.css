@@ -6,8 +6,8 @@ header {
 }
 
 .logo {
-  height: 50px; /* customize logo size */
-  margin-left: 10px; /* so that the container is not directly on the side end of the window */
+  height: 80px; /* customize logo size */
+  margin-left: 20px; /* so that the container is not directly on the side end of the window */
 }
 
 .header-right {

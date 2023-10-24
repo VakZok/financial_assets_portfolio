@@ -1,6 +1,6 @@
 footer {
   background-color: black;
-  height: 70px;
+  height: 100px;
   display: flex; /* Use Flexbox to arrange items horizontally */
   align-items: center; /* vertically center items */
 }
@@ -9,6 +9,15 @@ footer {
   color: white; /* text color to white */
   height: 50px; /* customize logo size */
   margin-left: 10px; /* so that the container is not directly on the side end of the window */
+}
+
+.footer-left a {
+  color: white; /* Change the color to your desired color */
+  text-decoration: none; /* Remove underline if needed */
+}
+
+.footer-left a:hover {
+  text-decoration: underline;
 }
 
 .footer-right {
