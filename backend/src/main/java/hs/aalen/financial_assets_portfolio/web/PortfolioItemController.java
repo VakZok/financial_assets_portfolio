@@ -18,8 +18,8 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PortfolioItemController {
-    @Autowired
-    private PortfolioItemService portfolioItemService;
+
+    private final PortfolioItemService portfolioItemService;
 
     public PortfolioItemController(PortfolioItemService portfolioItemService) {
         this.portfolioItemService = portfolioItemService;

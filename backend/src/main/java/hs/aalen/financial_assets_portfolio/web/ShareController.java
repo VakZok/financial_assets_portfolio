@@ -17,8 +17,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ShareController {
-    @Autowired
-    private ShareService shareService;
+    private final ShareService shareService;
 
     public ShareController(ShareService shareService) {
         this.shareService = shareService;
@@ -43,7 +42,18 @@ public class ShareController {
         try{
             shareService.addShare(shareDTO);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch(FormNotValidException e){
+        } catch (FormNotValidException e){
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PutMapping("/shares/update/{wkn}")
+    public ResponseEntity<Object> updateShare(@PathVariable String wkn,
+                                              @RequestBody ShareDTO shareDTO){
+        try{
+            shareService.updateShare(wkn, shareDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (FormNotValidException e){
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
