@@ -178,7 +178,7 @@ export class ItemInputFormComponent implements OnInit {
       }
 
       // create shareDTO
-      const shareDTO: ShareModel = {
+      let shareDTO: ShareModel = {
         wkn: this.pItemForm.controls.wkn.value || '',
         name: this.pItemForm.controls.name.value || '',
         category: this.pItemForm.controls.cat.value || '',
@@ -192,17 +192,55 @@ export class ItemInputFormComponent implements OnInit {
         shareDTO: shareDTO
       }
 
-      //send portfolioItemDTO to backend. If exception is risen in backend, populate error messages to errorMap
-      //successfull set 'itemAdded' = true and show the success message
-      this.pItemService.postPItem(pItemDTO).subscribe({
-        next: (data) => {
-          console.log(data)
-          this.pItemForm.reset();
+      //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share
+      //Finally portfolioItemDTO is sent to backend using post request
+      this.shareService.getShare(shareDTO.wkn).subscribe({
+        next: (data) => { //if share does not exist in database, an empty shareDTO is returned
+          if (data.wkn != null && data.name != null && data.category != null && data.description != null) {
+            // if returned shareDTO is not empty, send a put request to modify attributes of existing share in database
+            this.shareService.putShare(shareDTO.wkn, shareDTO).subscribe({
+              next:(data: ShareModel) => {
+                //after successful put request, add portfolioItem with a post request
+                this.pItemService.postPItem(pItemDTO).subscribe({
+                  next: (data) => {
+                    console.log(data)
+                    this.pItemForm.reset();
+                  },
+                  // if backend validation produces exceptions on postPItem, set them on the errorMap
+                  error: (errors) => errors.error.forEach((item:any) => {
+                    this.errorMap.set(item.name, item.message);
+                  }),
+                  complete: () => this.itemAdded = true
+                })
+              },
+              // if backend validation produces exceptions on putShare, set them on the errorMap
+              error: (errors) => errors.error.forEach((item:any) => {
+                this.errorMap.set(item.name, item.message);
+              }),
+            })
+          } else { // if an empty share is returned, add the share to database using post request
+            this.shareService.postShare(shareDTO).subscribe({
+              next:() => {
+                //afterwards add portfolioItem using post request
+                this.pItemService.postPItem(pItemDTO).subscribe({
+                  next: (data) => {
+                    console.log(data)
+                    this.pItemForm.reset();
+                  },
+                  // if backend validation produces exceptions on postPItem, set them on the errorMap
+                  error: (errors) => errors.error.forEach((item:any) => {
+                    this.errorMap.set(item.name, item.message);
+                  }),
+                  complete: () => this.itemAdded = true
+                })
+              },
+              // if backend validation produces exceptions on postShare, set them on the errorMap
+              error: (errors) => errors.error.forEach((item:any) => {
+                this.errorMap.set(item.name, item.message);
+              }),
+            })
+          }
         },
-        error: (errors) => errors.error.forEach((item:any) => {
-          this.errorMap.set(item.name, item.message);
-        }),
-        complete: () => this.itemAdded = true
       })
     }
   }
@@ -210,6 +248,9 @@ export class ItemInputFormComponent implements OnInit {
   // method to clear the input form
   clearForm() {
     this.pItemForm.reset();
+    for (let [key, error] of this.errorMap){
+      this.errorMap.set(key, '');
+    }
   }
 
 }

@@ -1,8 +1,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form class = "form" [formGroup]="shareForm" (ngSubmit)="onSubmit()">
 
-  <div *ngIf="shareAdded" class="success" hidden>
+  <div *ngIf="this.shareAdded" class="success">
     <p>Wertpapier erfolgreich angelegt!</p>
+  </div>
+
+  <div *ngIf="this.shareChanged" class="success">
+    <p>Wertpapier erfolgreich geändert!</p>
   </div>
 
   <div class="row">
@@ -42,7 +46,7 @@
   </div>
 
   <div class="button-area">
-    <button type="submit">Hinzufügen</button>
+    <button type="submit">Hinzufügen/Ändern</button>
     <button type="button" (click)="clearForm()">Zurücksetzen</button>
   </div>
 </form>

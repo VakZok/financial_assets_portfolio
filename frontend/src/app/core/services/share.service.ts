@@ -17,9 +17,16 @@ export class ShareService {
     return this.http.get<ShareModel[]>(this.apiUrl);
   }
 
+  getShare(wkn:string): Observable<ShareModel> {
+    return this.http.get<ShareModel>(this.apiUrl + '/' + wkn);
+  }
+
+  putShare(wkn:string, share: ShareModel): Observable<ShareModel>{
+    return this.http.put<any>(this.apiUrl + '/update/' + wkn, share)
+  }
+
   postShare(share: ShareModel): Observable<ShareModel>{
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + '/add', share, { headers: headers })
+    return this.http.post<any>(this.apiUrl + '/add', share)
   }
 
 }

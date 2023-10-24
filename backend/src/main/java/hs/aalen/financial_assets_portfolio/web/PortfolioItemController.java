@@ -49,7 +49,7 @@ public class PortfolioItemController {
             portfolioItemService.addPortfolioItem(pItemDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

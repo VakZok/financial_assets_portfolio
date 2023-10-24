@@ -31,12 +31,11 @@ public class PortfolioItemService {
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
-    private final ShareService shareService;
+
 
     /* PROCESSING METHODS */
     public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, ShareService shareService) {
         this.portfolioItemRepository = portfolioItemRepository;
-        this.shareService = shareService;
     }
 
     /* Method that returns the portfolio item searched by the id */
@@ -51,27 +50,12 @@ public class PortfolioItemService {
 
     /* Method that adds a new portfolio item when the form is correct */
     public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
-        ShareDTO shareDTO = pItemDTO.getShareDTO();
-        Share share = new Share(shareDTO);
-        if(!(shareService.checkShareExists(share))){
-            ArrayList<ExceptionDTO> exceptionsShare = shareService.validateForm(shareDTO);
-            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            exceptions.addAll(exceptionsShare);
-            if(exceptions.isEmpty()){
-                shareService.addShare(shareDTO);
-                PortfolioItem pItem = new PortfolioItem(pItemDTO);
-                portfolioItemRepository.save(pItem);
-            } else{
-                throw new FormNotValidException("Formfehler", exceptions);
-            }
+        ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
+        if(exceptions.isEmpty()){
+            PortfolioItem pItem = new PortfolioItem(pItemDTO);
+            portfolioItemRepository.save(pItem);
         }else {
-            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            if(exceptions.isEmpty()){
-                PortfolioItem pItem = new PortfolioItem(pItemDTO);
-                portfolioItemRepository.save(pItem);
-            } else{
-                throw new FormNotValidException("Formfehler", exceptions);
-            }
+            throw new FormNotValidException("Formfehler", exceptions);
         }
     }
 
@@ -90,7 +74,6 @@ public class PortfolioItemService {
             exceptions.add(new ExceptionDTO("quantity", "Bitte tragen Sie eine Anzahl ein"));
         }
         if(pItemDTO.getPurchaseDate() == null){
-            System.out.println("test");
             exceptions.add(new ExceptionDTO(
                     "purchaseDate", "Bitte tragen Sie ein Kaufdatum ein"));
         }else if(pItemDTO.getPurchaseDate().isBefore(MIN_DATE)) {

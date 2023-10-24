@@ -27,8 +27,12 @@ public class ShareController {
     @GetMapping("/shares/{wkn}")
     public ResponseEntity<Object> getShare(@PathVariable String wkn){
         Share share = shareService.getShare(wkn);
-        ShareDTO shareDTO = new ShareDTO(share);
-        return new ResponseEntity<>(shareDTO, HttpStatus.OK);
+        if(share == null) {
+            return new ResponseEntity<>(new ShareDTO(), HttpStatus.OK);
+        } else {
+            ShareDTO shareDTO = new ShareDTO(share);
+            return new ResponseEntity<>(shareDTO, HttpStatus.OK);
+        }
     }
 
     @GetMapping(value = "/shares", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +49,7 @@ public class ShareController {
             shareService.addShare(shareDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -57,7 +61,8 @@ public class ShareController {
             shareService.updateShare(wkn, shareDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
+
     }
 }

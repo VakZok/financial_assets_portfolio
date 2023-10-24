@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ShareModel} from "../../../../../../core/models/share.model"
 import {ShareService} from "../../../../../../core/services/share.service";
@@ -13,9 +13,9 @@ const maxSigns : number = 255;
 
 export class ShareInputFormComponent {
 
-  shares: ShareModel[] = [];
   leftSigns: string = '255';
   shareAdded: boolean = false;
+  shareChanged: boolean = false;
 
   errorMap = new Map<string, string>([
     ["wkn", ""],
@@ -50,6 +50,7 @@ export class ShareInputFormComponent {
   onSubmit() {
     //initialize
     this.shareAdded = false;
+    this.shareChanged = false;
     // loop over input form and remove leading/trailing whitespaces
     for (const controlName in this.shareForm.controls) {
       if (this.shareForm.controls.hasOwnProperty(controlName)) {
@@ -101,20 +102,41 @@ export class ShareInputFormComponent {
         category: this.shareForm.controls.cat.value || '',
         description: this.shareForm.controls.description.value || ''
       }
-
-      this.shareService.getShares()
-
-      //send shareDTO to backend. If exception is risen in backend, populate error messages to errorMap
-      //successful set "shareAdded" = true and show the success message
-      this.shareService.postShare(shareDTO).subscribe({
-        next: (data) => {
-          console.log(data)
-          this.shareForm.reset();
+      //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share
+      this.shareService.getShare(shareDTO.wkn).subscribe({
+        next: (data) => { //if share does not exist in database, an empty shareDTO is returned
+          if (data.wkn != null && data.name != null && data.category != null && data.description != null) {
+            // if returned shareDTO is not empty, send a put request to modify attributes of existing share in database
+            this.shareService.putShare(shareDTO.wkn, shareDTO).subscribe({
+              next:(data: ShareModel) => {
+                this.shareForm.reset();
+              },
+              error: (errors) => errors.error.forEach((item:any) => {
+                this.errorMap.set(item.name, item.message);
+              }),
+              complete: () => {
+                this.shareChanged = true;
+                this.shareAdded = false;
+              }
+            })
+          } else {
+            this.shareService.postShare(shareDTO).subscribe({
+              next:() => {
+                this.shareForm.reset();
+              },
+              error: (errors) => errors.error.forEach((item:any) => {
+                this.errorMap.set(item.name, item.message);
+              }),
+              complete: () => {
+                this.shareAdded = true;
+                this.shareChanged = false;
+              }
+            })
+          }
         },
-        error: (errors) => errors.error.forEach((item:any) => {
-          this.errorMap.set(item.name, item.message);
-        }),
-        complete: () => this.shareAdded = true
+        error: err => {
+          console.log(err)
+        },
       })
     }
   }
@@ -122,6 +144,11 @@ export class ShareInputFormComponent {
   // method to clear the input form
   clearForm() {
     this.shareForm.reset();
+    this.shareChanged = false;
+    this.shareAdded = false;
+    for (let [key, error] of this.errorMap){
+      this.errorMap.set(key, '');
+    }
   }
 
 }
