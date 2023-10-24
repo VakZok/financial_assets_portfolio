@@ -11,6 +11,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ShareInputFormComponent } from './modules/home/pages/add-share/components/share-input-form/share-input-form.component';
 import {AddShareComponent} from "./modules/home/pages/add-share/add-share.component";
 import {AppRoutingModule} from "./app-routing.module";
+import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
+import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.component";
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import {AppRoutingModule} from "./app-routing.module";
     ItemInputFormComponent,
     ShareInputFormComponent,
     AddShareComponent,
-
+    MeinPortfolioComponent,
+    ImpressumComponent
   ],
   imports: [
     BrowserModule,

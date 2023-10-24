@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/mein_portfolio', pathMatch: 'full'}, // redirects to home page which is mein_portfolio
   { path: 'mein_portfolio', component: MeinPortfolioComponent},
   { path: 'asset_hinzufuegen', component: AddItemComponent},
-  { path: 'add_share', component: AddShareComponent},
+  { path: 'share_hinzufuegen', component: AddShareComponent},
   { path: 'impressum', component: ImpressumComponent}
 ];
 
