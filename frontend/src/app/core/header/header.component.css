@@ -19,7 +19,7 @@ header {
   color: white; /* Change the color to your desired color */
   text-decoration: none; /* Remove underline if needed */
   font-size: xx-large; /* set font size*/
-  margin-left: 20px; /* put space between the two router links */
+  margin-left: 40px; /* put space between the two router links */
 }
 
 .header-right a:hover {

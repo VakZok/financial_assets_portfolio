@@ -13,6 +13,7 @@ import {AddShareComponent} from "./modules/home/pages/add-share/add-share.compon
 import {AppRoutingModule} from "./app-routing.module";
 import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
 import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.component";
+import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.compo
     ShareInputFormComponent,
     AddShareComponent,
     MeinPortfolioComponent,
-    ImpressumComponent
+    ImpressumComponent,
+    DatenschutzComponent
   ],
   imports: [
     BrowserModule,
