@@ -19,10 +19,10 @@ public class ShareService {
 
     /* CONSTANTS */
     public static final int WKN_LENGTH = 6;
+    public static final int STRING_MAX_LENGTH = 255;
 
     /* CONNECTED REPOSITORIES */
-    @Autowired
-    private ShareRepository shareRepository;
+    private final ShareRepository shareRepository;
 
     /*PROCESSING METHODS */
     public ShareService(ShareRepository shareRepository) {
@@ -39,12 +39,24 @@ public class ShareService {
         return shareRepository.findByWkn(wkn);
     }
 
-    /* Method that returns the share searched by the wkn */
-    public void addShare(ShareDTO shareDTO) throws FormNotValidException {
+    /* Method that adds a new share when the form is correct */
+    public void addShare(ShareDTO shareDTO) throws FormNotValidException{
         ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
         if(exceptions.isEmpty()){
             Share share = new Share(shareDTO);
             shareRepository.save(share);
+        } else {
+            throw new FormNotValidException("Formfehler", exceptions);
+        }
+    }
+
+    /* Method that changes a share when the form is correct */
+    public void updateShare(String wkn, ShareDTO shareDTO) throws FormNotValidException{
+        ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
+        if(exceptions.isEmpty()){
+            Share share = shareRepository.findByWkn(wkn);
+            Share shareNew = new Share(shareDTO, share);
+            shareRepository.save(shareNew);
         } else {
             throw new FormNotValidException("Formfehler", exceptions);
         }
@@ -79,15 +91,15 @@ public class ShareService {
         if(shareDTO.getDescription() == null || shareDTO.getDescription().isEmpty()){
             exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));
         }
-        if(shareDTO.getDescription().length() >= 255){
+        if(shareDTO.getDescription().length() >= STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "description", "Die Beschreibung darf nicht länger als 255 Zeichen sein"));
         }
-        if(shareDTO.getName().length() >= 255){
+        if(shareDTO.getName().length() >= STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "name", "Der Name darf nicht länger als 255 Zeichen sein"));
         }
-        if(shareDTO.getCategory().length() >= 255){
+        if(shareDTO.getCategory().length() >= STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "cat", "Die Kategorie darf nicht länger als 255 Zeichen sein"));
         }
