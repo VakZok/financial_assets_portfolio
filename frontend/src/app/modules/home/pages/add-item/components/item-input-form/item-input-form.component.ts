@@ -23,13 +23,13 @@ export class ItemInputFormComponent implements OnInit {
   sharesFiltered: ShareModel[] = [];
 
   errorMap = new Map<string, string>([
-    ["wkn", ""],
-    ["name", ""],
-    ["description", ""],
-    ["cat", ""],
-    ["quantity", ""],
-    ["purchaseDate", ""],
-    ["purchasePrice", ""]
+    ['wkn', ''],
+    ['name', ''],
+    ['description', ''],
+    ['cat', ''],
+    ['quantity', ''],
+    ['purchaseDate', ''],
+    ['purchasePrice', '']
   ]);
 
   leftSigns: string = '255';
@@ -86,7 +86,11 @@ export class ItemInputFormComponent implements OnInit {
   }
 
   //autocompletion for share
-  autoFill() {
+  autoFill(event: Event, propertyName: string) {
+    const inputElement = event.target as HTMLInputElement;
+    this.sharesFiltered = this.shares.filter(
+      share => this.shareExists(share, propertyName, inputElement.value.toLowerCase())
+    );
     if(this.sharesFiltered.length == 1){
       this.pItemForm.patchValue({
         wkn: this.sharesFiltered[0].wkn,
@@ -126,69 +130,71 @@ export class ItemInputFormComponent implements OnInit {
     for (const controlName in this.pItemForm.controls) {
       if (this.pItemForm.controls.hasOwnProperty(controlName)) {
         const control = this.pItemForm.get(controlName);
-        control?.setValue(control?.value.trim())
+        if(control?.value != null){
+          control?.setValue(control?.value.trim())
+        }
       }
     }
 
     //check input form. If an input field is invalid, set error text
     if(this.pItemForm.invalid){
       if(this.pItemForm.controls.wkn.errors?.['minlength']){
-        this.errorMap.set("wkn", "Die WKN muss aus 6 Stellen bestehen");
+        this.errorMap.set('wkn', 'Die WKN muss aus 6 Stellen bestehen');
       } else if (this.pItemForm.controls.wkn.errors?.['required']){
-        this.errorMap.set("wkn","Bitte füllen sie die WKN aus");
+        this.errorMap.set('wkn','Bitte füllen sie die WKN aus');
       } else {
-        this.errorMap.set("wkn", "");
+        this.errorMap.set('wkn', '');
       }
 
       if(this.pItemForm.controls.name.errors?.['required']){
-        this.errorMap.set("name", "Bitte tragen Sie einen Namen ein");
+        this.errorMap.set('name', 'Bitte tragen Sie einen Namen ein');
       } else {
-        this.errorMap.set("name", "");
+        this.errorMap.set('name', '');
       }
 
       if(this.pItemForm.controls.description.errors?.['maxLength']){
-        this.errorMap.set("description", "Die Beschreibung darf nicht länger als 255 Zeichen sein");
+        this.errorMap.set('description', 'Die Beschreibung darf nicht länger als 255 Zeichen sein');
       } else if (this.pItemForm.controls.description.errors?.['required']){
-        this.errorMap.set("description", "Bitte tragen Sie die Beschreibung ein");
+        this.errorMap.set('description', 'Bitte tragen Sie die Beschreibung ein');
       } else {
-        this.errorMap.set("description", "");
+        this.errorMap.set('description', '');
       }
 
       if(this.pItemForm.controls.cat.errors?.['required']){
-        this.errorMap.set("cat", "Bitte wählen Sie eine Kategorie");
+        this.errorMap.set('cat', 'Bitte wählen Sie eine Kategorie');
       } else {
-        this.errorMap.set("cat", "");
+        this.errorMap.set('cat', '');
       }
 
       if(this.pItemForm.controls.quantity.errors?.['required']){
-        this.errorMap.set("quantity", "Bitte tragen Sie eine Anzahl ein");
+        this.errorMap.set('quantity', 'Bitte tragen Sie eine Anzahl ein');
       } else if (this.pItemForm.controls.quantity.errors?.['min']){
-        this.errorMap.set("quantity", "Bitte tragen Sie eine Anzahl ein");
+        this.errorMap.set('quantity', 'Bitte tragen Sie eine Anzahl ein');
       } else {
-        this.errorMap.set("quantity", "");
+        this.errorMap.set('quantity', '');
       }
 
       if(this.pItemForm.controls.purchaseDate.errors?.['required']){
-        this.errorMap.set("purchaseDate", "Bitte tragen Sie ein Kaufdatum ein");
+        this.errorMap.set('purchaseDate', 'Bitte tragen Sie ein Kaufdatum ein');
       } else if(this.pItemForm.controls.purchaseDate.errors?.['dateFutureErr']) {
-        this.errorMap.set("purchaseDate",
-          "Das Kaufdatum muss vor dem " + maxDate.toLocaleDateString('de-DE',
-            {day: 'numeric', month: 'numeric', year:'numeric'}) + " liegen");
+        this.errorMap.set('purchaseDate',
+          'Das Kaufdatum muss vor dem ' + maxDate.toLocaleDateString('de-DE',
+            {day: 'numeric', month: 'numeric', year:'numeric'}) + ' liegen');
 
       } else if(this.pItemForm.controls.purchaseDate.errors?.['datePastErr']){
-        this.errorMap.set("purchaseDate",
-          "Das Kaufdatum muss nach dem " + minDate.toLocaleDateString(
-            'de-DE', {day: 'numeric', month: 'numeric', year:'numeric'}) + " liegen");
+        this.errorMap.set('purchaseDate',
+          'Das Kaufdatum muss nach dem ' + minDate.toLocaleDateString(
+            'de-DE', {day: 'numeric', month: 'numeric', year:'numeric'}) + ' liegen');
       } else {
-        this.errorMap.set("purchaseDate", "");
+        this.errorMap.set('purchaseDate', '');
       }
 
       if (this.pItemForm.controls.purchasePrice.errors?.['required']){
-        this.errorMap.set("purchasePrice", "Bitte tragen Sie einen Kaufpreis ein");
+        this.errorMap.set('purchasePrice', 'Bitte tragen Sie einen Kaufpreis ein');
       } else if (this.pItemForm.controls.purchasePrice.errors?.['min']){
-        this.errorMap.set("purchasePrice", "Der Kaufpreis muss größer als 0 sein");
+        this.errorMap.set('purchasePrice', 'Der Kaufpreis muss größer als 0 sein');
       }else {
-        this.errorMap.set("purchasePrice", "");
+        this.errorMap.set('purchasePrice', '');
       }
 
       if (price !== null && price !== undefined) {
@@ -217,7 +223,7 @@ export class ItemInputFormComponent implements OnInit {
       }
 
       //send portfolioItemDTO to backend. If exception is risen in backend, populate error messages to errorMap
-      //successfull set "itemAdded" = true and show the success message
+      //successfull set 'itemAdded' = true and show the success message
       this.pItemService.postPItem(pItemDTO).subscribe({
         next: (data) => {
           console.log(data)

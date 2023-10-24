@@ -5,6 +5,7 @@ footer {
   color: white; /* makes the link white insteal of standard blue */
   display: flex;
   align-items: center;
+
 }
 
 .container a {

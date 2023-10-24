@@ -12,8 +12,8 @@ import { ItemInputFormComponent } from './modules/home/pages/add-item/components
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ShareInputFormComponent } from './modules/home/pages/add-share/components/share-input-form/share-input-form.component';
 import {AddShareComponent} from "./modules/home/pages/add-share/add-share.component";
-import { MeinPortfolioComponent } from './modules/home/pages/mein-portfolio/mein-portfolio.component';
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {RouterModule} from "@angular/router";
+import {AppRoutingModule} from "./app-routing.module";
 
 
 @NgModule({
@@ -26,7 +26,6 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
     ItemInputFormComponent,
     ShareInputFormComponent,
     AddShareComponent,
-    MeinPortfolioComponent,
 
   ],
   imports: [
@@ -34,9 +33,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

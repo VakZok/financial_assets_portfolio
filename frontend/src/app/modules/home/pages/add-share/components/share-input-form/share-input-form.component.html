@@ -1,39 +1,60 @@
-<form [formGroup]="shareForm" (ngSubmit)="onSubmit()">
+<form class = "form" [formGroup]="shareForm" (ngSubmit)="onSubmit()">
 
-  <p>Bitte füllen Sie alle Felder aus.</p>
-
-  <div class="success" hidden>
+  <div *ngIf="shareAdded" class="success" hidden>
     <p>Wertpapier erfolgreich angelegt!</p>
   </div>
 
-  <div>
-    <label id="wkn-label" for="wkn">WKN: </label>
-    <input id="wkn" name="wkn" type="text" oninput="this.value = this.value.slice(0,6)" formControlName="wkn"/>
-    <div id="wkn-alert"> {{this.wknError}} </div>
+  <div class="row">
+
+    <div [ngClass]="{'normal' : (this.errorMap.get('wkn')?.length || 0) <=1,
+                       'not-valid' : (this.errorMap.get('wkn')?.length || 0) >= 1}">
+      <label for="wkn">WKN: </label>
+      <input id="wkn" name="wkn" list="wkn-suggestions" type="text" [placeholder]="'6-stellige WKN'"
+             oninput="this.value = this.value.slice(0,6)" (keyup)="onKeyUpAuto($event, 'wkn')"
+             (focusout)="autoFill($event, 'wkn')" formControlName="wkn" autocomplete="off"/>
+      <datalist id="wkn-suggestions">
+        <option *ngFor = "let share of this.sharesFiltered" [value]="share.wkn" >{{share.wkn}}</option>
+      </datalist>
+      <div class="alert-text"> {{this.errorMap.get('wkn')}} </div>
+    </div>
+
+    <div [ngClass]="{'normal' : (this.errorMap.get('name')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('name')?.length || 0) >= 1}">
+      <label for="name">Name: </label>
+      <input id="name" name="name" list="name-suggestions" type="text" [placeholder]="'Name'"
+             (keyup)="onKeyUpAuto($event, 'name')"
+             (focusout)="autoFill($event, 'name')" formControlName="name" autocomplete="off" />
+      <datalist id="name-suggestions">
+        <option *ngFor = "let share of this.sharesFiltered" [value]="share.name" >{{share.name}}</option>
+      </datalist>
+      <div class="alert-text"> {{this.errorMap.get('name')}} </div>
+    </div>
+
+    <div [ngClass]="{'normal' : (this.errorMap.get('cat')?.length || 0) <= 1,
+                     'not-valid' : (this.errorMap.get('cat')?.length || 0) >= 1}">
+      <label for="cat">Kategorie: </label>
+      <input id="cat" name="cat" type="text" [placeholder]="'Kategorie'" formControlName="cat" autocomplete="off"/>
+      <div class="alert-text"> {{this.errorMap.get('cat')}} </div>
+    </div>
+
   </div>
 
-  <div>
-    <label id="name-label" for="name">Name: </label>
-    <input  id="name" name="name" type="text"  formControlName="name" />
-    <div id="name-alert"> {{this.nameError}} </div>
+  <div [ngClass]="{'normal' : (this.errorMap.get('description')?.length || 0) <= 1,
+                   'not-valid' : (this.errorMap.get('description')?.length || 0) >= 1}">
+    <label for="description">Beschreibung: </label>
+    <textarea id="description" (keyup)="onKeyUpDescription($event)" name="description" [placeholder]="'Beschreibung'"
+              type="text" oninput="this.value = this.value.slice(0,255)"
+              formControlName="description" autocomplete="off"></textarea>
+    <div id="description-footer">
+      <div class="alert-text"> {{this.errorMap.get('description')}} </div>
+      <div id="left-signs">{{this.leftSigns}} von 255 Zeichen</div>
+    </div>
   </div>
 
-  <div>
-    <label id="description-label" for="description">Beschreibung: </label>
-    <textarea id="description"  name="description" type="text" oninput="this.value = this.value.slice(0,255)" (keyup)="onKeyUpDescription($event)" formControlName="description"></textarea>
-    <div>{{this.leftSigns}} von 255 Zeichen</div>
-    <div id="description-alert"> {{this.descriptionError}} </div>
-  </div>
-
-  <div>
-    <label id="cat-label" for="cat">Kategorie: </label>
-    <input id="cat" name="cat" type="text" formControlName="cat" />
-    <div id="cat-alert"> {{this.catError}} </div>
-  </div>
-
-  <div>
+  <div class="button-area">
     <button type="submit">Hinzufügen</button>
     <button type="button" (click)="clearForm()">Zurücksetzen</button>
   </div>
-
 </form>
+
+

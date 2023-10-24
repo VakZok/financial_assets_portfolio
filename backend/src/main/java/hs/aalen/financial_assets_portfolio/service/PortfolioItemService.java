@@ -26,14 +26,15 @@ public class PortfolioItemService {
 
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
 
-    @Autowired
-    private PortfolioItemRepository portfolioItemRepository;
 
-    @Autowired
-    private ShareService shareService;
+    private final PortfolioItemRepository portfolioItemRepository;
 
-    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository) {
+
+    private final ShareService shareService;
+
+    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, ShareService shareService) {
         this.portfolioItemRepository = portfolioItemRepository;
+        this.shareService = shareService;
     }
 
     public PortfolioItem getPortfolioItem(Long id)throws NoSuchElementException {

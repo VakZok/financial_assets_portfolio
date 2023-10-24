@@ -11,7 +11,6 @@ header {
 main {
   flex: 1 1 auto;
   background-color: whitesmoke;
-  overflow-y: auto;
 }
 
 footer {
