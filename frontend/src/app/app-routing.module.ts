@@ -7,12 +7,13 @@ import { ImpressumComponent} from "./modules/home/pages/impressum/impressum.comp
 import { DatenschutzComponent} from "./modules/home/pages/datenschutz/datenschutz.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/mein_portfolio', pathMatch: 'full'}, // redirects to home page which is mein_portfolio
   { path: 'mein_portfolio', component: MeinPortfolioComponent},
   { path: 'asset_hinzufuegen', component: AddItemComponent},
   { path: 'share_hinzufuegen', component: AddShareComponent},
   { path: 'impressum', component: ImpressumComponent},
-  { path: 'datenschutz', component: DatenschutzComponent}
+  { path: 'datenschutz', component: DatenschutzComponent},
+  // wildcard route
+  { path: '**', component: MeinPortfolioComponent} // redirects any unspecified request to home page which is mein_portfolio
 ];
 
 @NgModule({
