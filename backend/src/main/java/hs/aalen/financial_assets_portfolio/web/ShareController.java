@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,11 +36,18 @@ public class ShareController {
         }
     }
 
-    @GetMapping(value = "/shares", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/shares")
     public ResponseEntity<Object> getShareList() {
         List<Share> shareList = shareService.getShareList();
-        List<ShareDTO> shareDTOList = shareList.stream().map(ShareDTO::new).toList();
-        return new ResponseEntity<Object>(shareDTOList, HttpStatus.OK);
+        ArrayList<ShareDTO> shareDTOList = new ArrayList<ShareDTO>();
+
+        if(shareList.isEmpty()) {
+            shareDTOList.add(new ShareDTO());
+            return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
+        } else {
+            shareDTOList.addAll(shareList.stream().map(ShareDTO::new).toList());
+            return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
+        }
     }
 
     /* POST REQUESTS */
