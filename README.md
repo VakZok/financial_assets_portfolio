@@ -1,4 +1,4 @@
-# financial_assets_portfolio TEAM 1
+# Financial Assets Portfolio Manager TEAM 1
 
 Backend Port: 8080 
 Frontend Port: 4200
