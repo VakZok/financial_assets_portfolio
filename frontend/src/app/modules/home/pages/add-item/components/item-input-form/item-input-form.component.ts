@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {DateValidator} from "../../../../../../core/validators/date-validator";
-import {ShareModel} from "../../../../../../core/models/share.model"
-import {ShareService} from "../../../../../../core/services/share.service";
+
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
 import {ExceptionsModel} from "../../../../../../core/models/exceptions.model";
@@ -17,10 +16,7 @@ const maxSigns : number = 255;
   styleUrls: ['./item-input-form.component.css']
 })
 
-export class ItemInputFormComponent implements OnInit {
-
-  shares: ShareModel[] = [];
-  sharesFiltered: ShareModel[] = [];
+export class ItemInputFormComponent {
 
   errorMap = new Map<string, string>([
     ['wkn', ''],
@@ -34,6 +30,7 @@ export class ItemInputFormComponent implements OnInit {
 
   leftSigns: string = '255';
   itemAdded: boolean = false;
+  @ViewChild(FormGroupDirective) form: any;
 
   /* Form Validation, check for completeness and sanity */
   pItemForm = new FormGroup({
@@ -60,21 +57,22 @@ export class ItemInputFormComponent implements OnInit {
       ])
   })
 
-  constructor(private shareService: ShareService, private pItemService: PortfolioItemService) {
+  constructor(private pItemService: PortfolioItemService) {
   }
 
-  ngOnInit() {
-    this.shareService.getShares().subscribe({
-      next: (data) => this.shares = data,
-      error: (error) => console.error(error),
-      complete: () => console.info('complete')
-    })
+  onKeyDownWkn(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = inputElement.value.slice(0,5)
   }
-
   // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.leftSigns = String(maxSigns - inputElement.value.length)
+  }
+
+  onInputQuantity(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = inputElement.value.replace(/[^0-9.]/g, '');
   }
 
   //function to prevent writing more than one comma into purchasePrice
@@ -85,6 +83,12 @@ export class ItemInputFormComponent implements OnInit {
     }
   }
 
+  onInputPurchasePrice(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = inputElement.value.replace(
+      /[^\d,]/g,'').replace(
+      /(,.*)\,/g,'$1').replace(/^(\d+\,?\d*).*/g,'$1');
+  }
   onSubmit() {
 
     //initialize
@@ -177,77 +181,38 @@ export class ItemInputFormComponent implements OnInit {
         this.errorMap.set(key, '');
       }
 
-      // create shareDTO
-      let shareDTO: ShareModel = {
-        wkn: this.pItemForm.controls.wkn.value || '',
-        name: this.pItemForm.controls.name.value || '',
-        category: this.pItemForm.controls.cat.value || '',
-        description: this.pItemForm.controls.description.value || ''
-      }
       //create portfolioItemDTO
       const pItemDTO: PortfolioItemModel = {
         purchaseDate: new Date(this.pItemForm.controls.purchaseDate.value || ''),
         purchasePrice: parseFloat(this.pItemForm.controls.purchasePrice.value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls.quantity.value || ''),
-        shareDTO: shareDTO
+        wkn: this.pItemForm.controls.wkn.value || '',
+        name: this.pItemForm.controls.name.value || '',
+        category: this.pItemForm.controls.cat.value || '',
+        description: this.pItemForm.controls.description.value || ''
       }
-
       //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share
       //Finally portfolioItemDTO is sent to backend using post request
-      this.shareService.getShare(shareDTO.wkn).subscribe({
-        next: (data) => { //if share does not exist in database, an empty shareDTO is returned
-          if (data.wkn != null && data.name != null && data.category != null && data.description != null) {
-            // if returned shareDTO is not empty, send a put request to modify attributes of existing share in database
-            this.shareService.putShare(shareDTO.wkn, shareDTO).subscribe({
-              next:(data: ShareModel) => {
-                //after successful put request, add portfolioItem with a post request
-                this.pItemService.postPItem(pItemDTO).subscribe({
-                  next: (data) => {
-                    console.log(data)
-                    this.pItemForm.reset();
-                  },
-                  // if backend validation produces exceptions on postPItem, set them on the errorMap
-                  error: (errors) => errors.error.forEach((item:any) => {
-                    this.errorMap.set(item.name, item.message);
-                  }),
-                  complete: () => this.itemAdded = true
-                })
-              },
-              // if backend validation produces exceptions on putShare, set them on the errorMap
-              error: (errors) => errors.error.forEach((item:any) => {
-                this.errorMap.set(item.name, item.message);
-              }),
-            })
-          } else { // if an empty share is returned, add the share to database using post request
-            this.shareService.postShare(shareDTO).subscribe({
-              next:() => {
-                //afterwards add portfolioItem using post request
-                this.pItemService.postPItem(pItemDTO).subscribe({
-                  next: (data) => {
-                    console.log(data)
-                    this.pItemForm.reset();
-                  },
-                  // if backend validation produces exceptions on postPItem, set them on the errorMap
-                  error: (errors) => errors.error.forEach((item:any) => {
-                    this.errorMap.set(item.name, item.message);
-                  }),
-                  complete: () => this.itemAdded = true
-                })
-              },
-              // if backend validation produces exceptions on postShare, set them on the errorMap
-              error: (errors) => errors.error.forEach((item:any) => {
-                this.errorMap.set(item.name, item.message);
-              }),
-            })
-          }
+      this.pItemService.postPItem(pItemDTO).subscribe({
+        next: (data) => {
+          console.log(data)
+          this.pItemForm.reset();
+          this.form.resetForm();
         },
+        // if backend validation produces exceptions on postPItem, set them on the errorMap
+        error: (errors) => errors.error.forEach((item:any) => {
+          this.errorMap.set(item.name, item.message);
+        }),
+        complete: () => this.itemAdded = true
       })
     }
   }
 
   // method to clear the input form
   clearForm() {
+    this.form.resetForm();
     this.pItemForm.reset();
+    this.leftSigns = '255';
     for (let [key, error] of this.errorMap){
       this.errorMap.set(key, '');
     }

@@ -31,34 +31,9 @@ button:active{
   font-size: 1em;
 }
 
-input{
-  float: left;
-  width: 90%;
-  border: white;
-  font-size: 1em;
-  padding: 1.2vh 0.5vw 1.2vh 0.5vw; /*1.2vh 20px, 0.5vw 10px*/
-  border-radius: 1vh;
-}
 
-input:hover{
-  border: white;
-  font-size: 1em;
-  padding: 1.2vh 0.5vw 1.2vh 0.5vw;
-  border-radius: 1vh;
-  box-shadow: 0.10vw 0.2vh 0.10vw rgba(0, 0, 0, 0.3);
-}
-
-input:focus{
-  outline:none;
-  border: white;
-  font-size: 1em;
-  padding: 1.2vh 0.5vw 1.2vh 0.5vw;
-  border-radius: 1vh;
-  box-shadow: 0.10vw 0.2vh 0.10vw rgba(0, 0, 0, 0.3);
-}
 
 .success {
-  font-size: 1.2em;
   background-color: palegreen;
   border-radius: 1vh;
   display: flex;
@@ -68,7 +43,7 @@ input:focus{
   margin-right: 0.8vw;
 }
 
-.normal {
+.container {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -77,26 +52,10 @@ input:focus{
   border: 0.11em solid lightgrey;
   border-radius: 1vh;
   margin-bottom: 2vh;
-  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  padding: 1.2vh 1.2vw 1.8vh 0.7vw;
   margin-left: 0.5vw;
   margin-right: 0.5vw;
   color: black;
-}
-
-.not-valid {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  font-size: 1.2em;
-  background-color: whitesmoke;
-  border-radius: 1vh;
-  margin-bottom: 2vh;
-  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
-  margin-left: 0.5vw;
-  margin-right: 0.5vw;
-  background-color: rgba(255,51,51, 0.2);
-  border: 0.11em solid darkred;
-  color: darkred;
 }
 
 .row{
@@ -115,13 +74,8 @@ input:focus{
   border-radius: 1vh;
 }
 
-#description:hover{
-  box-shadow: 0.10vw 0.2vh 0.10vw rgba(0, 0, 0, 0.3);
-}
-
 #description:focus{
   outline: none;
-  box-shadow: 0.10vw 0.2vh 0.10vw rgba(0, 0, 0, 0.3);
 }
 
 #description-footer{
@@ -130,10 +84,14 @@ input:focus{
   width: 100%;
 }
 
-#left-signs{
-  font-size: 0.8em;
+input {
+  border-radius: 3vh;
 }
 
+.error{
+  font-size: 0.7em;
+}
 
-
-
+.hint{
+  font-size: 0.7em;
+}

@@ -2,29 +2,29 @@
 <div class="body">
   <h1>Meine Portfolioitems</h1>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-     
+
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
-  
+
     <!-- WKN Column -->
     <ng-container matColumnDef="wkn">
       <th mat-header-cell *matHeaderCellDef> WKN </th>
       <td mat-cell *matCellDef="let element"> {{element.wkn}} </td>
     </ng-container>
-  
+
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
-  
+
     <!-- Purchase Price Column -->
     <ng-container matColumnDef="purchasePrice">
       <th mat-header-cell *matHeaderCellDef> Kaufpreis </th>
-      <td mat-cell *matCellDef="let element"> {{element.purchasePrice}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.purchasePrice |currency:'EUR':true}} </td>
     </ng-container>
 
     <!-- Quantity Column -->
@@ -32,27 +32,10 @@
       <th mat-header-cell *matHeaderCellDef> Anzahl </th>
       <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
     </ng-container>
-  
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row (click)="goToPItem(row.id)" *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  
-  
-  
-  
-  <!-- <div>
-    <ul class="liststyle">
-      <li class="itemstyle">
-        <a routerLink="/show_item">Portfolioitem 1 (Platzhalterlink)</a>
-      </li>
-      <li class="itemstyle">
-        <a routerLink="/show_item">Portfolioitem 2 (Platzhalterlink)</a>
-      </li>
-      <li class="itemstyle">
-        <a routerLink="/show_item">Portfolioitem 3 (Platzhalterlink)</a>
-      </li>
-    </ul>
-  </div> -->
 
 </div>
 

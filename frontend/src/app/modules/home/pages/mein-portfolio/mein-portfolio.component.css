@@ -7,44 +7,20 @@ h1 {
 }
 
 .body {
-  height: 100%;
+  min-height: 100%;
   display:flex;
   flex-direction: column;
   align-items: center;
-}
 
-.liststyle {
-  list-style-type: none;
-  border: 0.11em solid lightgrey;
-  border-radius: 1vh;
-  justify-content: center;
-  background-color: whitesmoke;
-  font-size: 1.2em;  
-  margin-bottom: 2vh;
-  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
-  margin-left: 0.5vw;
-  margin-right: 0.5vw;
-  color: black;
-}
-
-.itemstyle {
-  list-style-type: none;
-  border: 0.11em solid lightgrey;
-  border-radius: 1vh;
-  justify-content: center;
-  background-color: whitesmoke;
-  font-size: 1.2em;  
-  margin-bottom: 2vh;
-  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
-  margin-left: 0.5vw;
-  margin-right: 0.5vw;
-  color: black;
 }
 
 .mat-mdc-row:hover .mat-mdc-cell {
+  overflow-y: scroll;
   border-color: currentColor;
 }
+
 .mat-mdc-row .mat-mdc-cell {
+  overflow-y: scroll;
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
   cursor: pointer;

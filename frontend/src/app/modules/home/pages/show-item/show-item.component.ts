@@ -18,9 +18,6 @@ export class ShowItemComponent {
       switchMap((params:ParamMap)=>this.pItemService.getPItem(params.get("id")!))
     )
   }
- 
-  goToPItem(id:string){
-    this.router.navigate(['show_item',id])
-  }
+
 }
 

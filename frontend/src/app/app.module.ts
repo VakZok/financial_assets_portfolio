@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/header/header.component';
@@ -8,8 +8,6 @@ import { FooterComponent } from './core/footer/footer.component';
 import { AddItemComponent } from './modules/home/pages/add-item/add-item.component';
 import { ItemInputFormComponent } from './modules/home/pages/add-item/components/item-input-form/item-input-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { ShareInputFormComponent } from './modules/home/pages/add-share/components/share-input-form/share-input-form.component';
-import {AddShareComponent} from "./modules/home/pages/add-share/add-share.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
 import { ShowItemComponent } from './modules/home/pages/show-item/show-item.component';
@@ -17,7 +15,10 @@ import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.compo
 import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from "@angular/material/table";
-
+import { registerLocaleData } from '@angular/common';
+import * as de from '@angular/common/locales/de';
+import {MatInputModule} from "@angular/material/input";
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -27,8 +28,6 @@ import {MatTableModule} from "@angular/material/table";
     FooterComponent,
     AddItemComponent,
     ItemInputFormComponent,
-    ShareInputFormComponent,
-    AddShareComponent,
     MeinPortfolioComponent,
     ShowItemComponent,
     ImpressumComponent,
@@ -41,9 +40,18 @@ import {MatTableModule} from "@angular/material/table";
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    MatInputModule,
+    MatCardModule
   ],
-  providers: [],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
+  },],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(de.default);
+  }
+}

@@ -6,9 +6,6 @@ import org.springframework.data.repository.ListCrudRepository;
 
 
 public interface PortfolioItemRepository extends ListCrudRepository<PortfolioItem, Long> {
-
-
-
 }
 
 

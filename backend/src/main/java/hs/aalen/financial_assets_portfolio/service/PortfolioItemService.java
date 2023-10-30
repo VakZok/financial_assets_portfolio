@@ -3,20 +3,14 @@ package hs.aalen.financial_assets_portfolio.service;
 
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
-import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
-import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PortfolioItemService {
@@ -28,13 +22,15 @@ public class PortfolioItemService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
+    private static final int WKN_LENGTH = 6;
+    private static final int STRING_MAX_LENGTH = 255;
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
 
 
     /* PROCESSING METHODS */
-    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, ShareService shareService) {
+    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository) {
         this.portfolioItemRepository = portfolioItemRepository;
     }
 
@@ -60,8 +56,18 @@ public class PortfolioItemService {
     }
 
     /* Method that returns the portfolio item list */
-    public List<PortfolioItem> getPortfolioItemList(){
-        return portfolioItemRepository.findAll();
+    public ArrayList<PItemDTO> getPortfolioItemPreviewList(){
+        ArrayList<PItemDTO> pItemPrevListDTO = new ArrayList<PItemDTO>();
+        for (PortfolioItem pItem : portfolioItemRepository.findAll()) {
+            PItemDTO pItemDTO = new PItemDTO();
+            pItemDTO.setId(pItem.getId());
+            pItemDTO.setWkn(pItem.getWkn());
+            pItemDTO.setName(pItem.getName());
+            pItemDTO.setPurchasePrice(pItem.getPurchasePrice());
+            pItemDTO.setQuantity(pItem.getQuantity());
+            pItemPrevListDTO.add(pItemDTO);
+        }
+        return pItemPrevListDTO;
     }
 
     /* Method that checks the validity of the input */
@@ -82,6 +88,33 @@ public class PortfolioItemService {
         } else if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
             exceptions.add(new ExceptionDTO(
                     "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(formatter) + " liegen"));
+        }
+        if (pItemDTO.getWkn().length() != WKN_LENGTH ){
+            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));
+        }
+        if(pItemDTO.getWkn() == null || pItemDTO.getWkn().isEmpty()){
+            exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));
+        }
+        if(pItemDTO.getName() == null || pItemDTO.getName().isEmpty()){
+            exceptions.add(new ExceptionDTO("name", "Bitte tragen Sie einen Namen ein"));
+        }
+        if(pItemDTO.getCategory() == null || pItemDTO.getCategory().isEmpty()){
+            exceptions.add(new ExceptionDTO("cat", "Bitte wählen Sie eine Kategorie"));
+        }
+        if(pItemDTO.getDescription() == null || pItemDTO.getDescription().isEmpty()){
+            exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));
+        }
+        if(pItemDTO.getDescription().length() >= STRING_MAX_LENGTH){
+            exceptions.add(new ExceptionDTO(
+                    "description", "Die Beschreibung darf nicht länger als 255 Zeichen sein"));
+        }
+        if(pItemDTO.getName().length() >= STRING_MAX_LENGTH){
+            exceptions.add(new ExceptionDTO(
+                    "name", "Der Name darf nicht länger als 255 Zeichen sein"));
+        }
+        if(pItemDTO.getCategory().length() >= STRING_MAX_LENGTH){
+            exceptions.add(new ExceptionDTO(
+                    "cat", "Die Kategorie darf nicht länger als 255 Zeichen sein"));
         }
         return exceptions;
     }

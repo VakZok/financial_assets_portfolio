@@ -21,8 +21,8 @@ export class PortfolioItemService {
     return this.http.post<any>(this.apiUrl + '/add', portfolioItem, { headers: headers })
   }
 
-  getPItemList(): Observable<PortfolioItemModel[]> {
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl);
+  getPItemPrevList(): Observable<PortfolioItemModel[]> {
+    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview');
   }
 
 }

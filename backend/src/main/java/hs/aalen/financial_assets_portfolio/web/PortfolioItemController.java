@@ -1,12 +1,10 @@
 package hs.aalen.financial_assets_portfolio.web;
 
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
-import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,18 +35,14 @@ public class PortfolioItemController {
         }
     }
 
-    @GetMapping(value = "/portfolioItems/")
+    @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPortfolioItemList() {
-        List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
-        ArrayList<PItemDTO> pItemDTOList = new ArrayList<PItemDTO>();
-
-        if(pItemList.isEmpty()) {
-            pItemDTOList.add(new PItemDTO());
-            return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
-        } else {
-            pItemDTOList.addAll(pItemList.stream().map(PItemDTO::new).toList());
-            return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
+        List<PItemDTO> pItemDTOPrevList = portfolioItemService.getPortfolioItemPreviewList();
+        if(pItemDTOPrevList.isEmpty()) {
+            pItemDTOPrevList.add(new PItemDTO());
         }
+        System.out.println(pItemDTOPrevList);
+        return new ResponseEntity<>(pItemDTOPrevList, HttpStatus.OK);
     }
 
     /* POST REQUESTS */

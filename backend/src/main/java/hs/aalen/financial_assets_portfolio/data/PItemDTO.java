@@ -12,27 +12,38 @@ public class PItemDTO {
     private LocalDate purchaseDate;
     private double purchasePrice;
     private int quantity;
-    private ShareDTO shareDTO;
+    private String wkn;
+    private String name;
+    private String category;
+    private String description;
+
 
     /* Constructors inclusive copy constructors */
     public PItemDTO(
-            Long id, LocalDate purchaseDate,
-            double purchasePrice, int quantity, ShareDTO shareDTO
-            ) {
+            String wkn, String name,
+            String category, String description,
+            LocalDate purchaseDate, double purchasePrice,
+            int quantity) {
 
-        this.id = id;
+        this.wkn = wkn;
+        this.name = name;
+        this.category = category;
+        this.description = description;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
-        this.shareDTO = shareDTO;
+
     }
 
     public PItemDTO(PortfolioItem portfolioItem) {
         this.id = portfolioItem.getId();
+        this.wkn = portfolioItem.getWkn();
+        this.name = portfolioItem.getName();
+        this.category = portfolioItem.getCategory();
+        this.description = portfolioItem.getDescription();
         this.purchaseDate = portfolioItem.getPurchaseDate();
         this.purchasePrice = portfolioItem.getPurchasePrice();
         this.quantity = portfolioItem.getQuantity();
-        this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
 
     public PItemDTO(){}
@@ -70,11 +81,37 @@ public class PItemDTO {
         this.quantity = quantity;
     }
 
-    public ShareDTO getShareDTO() {
-        return shareDTO;
+    public String getWkn() {
+        return wkn;
     }
 
-    public void setShareDTO(ShareDTO shareDTO) {
-        this.shareDTO = shareDTO;
+    public void setWkn(String wkn) {
+        this.wkn = wkn;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
+

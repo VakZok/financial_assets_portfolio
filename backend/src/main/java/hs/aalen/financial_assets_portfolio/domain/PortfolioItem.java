@@ -11,35 +11,47 @@ public class PortfolioItem {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
-    @GeneratedValue(generator="increment")
+    @GeneratedValue(generator = "increment")
     private Long id;
-
-    @DateTimeFormat(pattern="dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate purchaseDate;
-
     private double purchasePrice;
     private int quantity;
-
-    /* MAPPED RELATIONSHIPS */
-    @ManyToOne
-    @JoinColumn(name = "wkn")
-    private Share share;
+    private String wkn;
+    private String name;
+    private String category;
+    private String description;
 
     /* Constructors */
-    public PortfolioItem(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
+    public PortfolioItem(
+            String wkn, String name,
+            String category, String description,
+            LocalDate purchaseDate, double purchasePrice,
+            int quantity) {
+
+        this.wkn = wkn;
+        this.name = name;
+        this.category = category;
+        this.description = description;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
-        this.share = share;
+
     }
-    public PortfolioItem(PItemDTO pItemDTO){
+
+    public PortfolioItem(PItemDTO pItemDTO) {
+        this.wkn = pItemDTO.getWkn();
+        this.name = pItemDTO.getName();
+        this.category = pItemDTO.getCategory();
+        this.description = pItemDTO.getDescription();
         this.purchaseDate = pItemDTO.getPurchaseDate();
         this.purchasePrice = pItemDTO.getPurchasePrice();
         this.quantity = pItemDTO.getQuantity();
-        this.share = new Share(pItemDTO.getShareDTO());
+
     }
 
-    public PortfolioItem() {}
+    public PortfolioItem() {
+    }
 
     /* Getters and Setters */
     public Long getId() {
@@ -74,11 +86,40 @@ public class PortfolioItem {
         this.quantity = quantity;
     }
 
-    public Share getShare() {
-        return share;
+    public void setPurchasePrice(double purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
-    public void setShare(Share share) {
-        this.share = share;
+    public String getWkn() {
+        return wkn;
+    }
+
+    public void setWkn(String wkn) {
+        this.wkn = wkn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
+
