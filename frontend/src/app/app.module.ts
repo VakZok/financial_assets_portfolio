@@ -12,6 +12,7 @@ import { ShareInputFormComponent } from './modules/home/pages/add-share/componen
 import {AddShareComponent} from "./modules/home/pages/add-share/add-share.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
+import { ShowItemComponent } from './modules/home/pages/show-item/show-item.component';
 import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.component";
 import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
 
@@ -27,6 +28,7 @@ import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschu
     ShareInputFormComponent,
     AddShareComponent,
     MeinPortfolioComponent,
+    ShowItemComponent,
     ImpressumComponent,
     DatenschutzComponent
   ],

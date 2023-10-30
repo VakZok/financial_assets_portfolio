@@ -1,0 +1,82 @@
+* {
+    font-family: Segoe UI, Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans, Helvetica Neue, Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 50px;
+  }
+  
+  .body {
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .row{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .liststyle {
+    list-style-type: none;
+    border: 0.11em solid lightgrey;
+    border-radius: 1vh;
+    justify-content: center;
+    background-color: rgb(232, 231, 231);
+    font-size: 1.2em;  
+    margin-top: 1vh;
+    margin-bottom: 3vh;
+    padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    color: black;
+  }
+  
+  .itemstyle {
+    list-style-type: none;
+    border: 0.11em solid lightgrey;
+    border-radius: 1vh;
+    justify-content: center;
+    background-color: whitesmoke;
+    font-size: 1em;  
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    color: black;
+  }
+
+  .itemtag {
+    font-weight: bold;
+  }
+  
+
+  button{
+    border: none;
+    outline: none;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    border-radius: 4vh;
+    padding: 1vh 1vw 1vh 1vw;
+    font-size: 1.5vh;
+  }
+  
+  button:hover{
+    box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+  }
+  
+  button:active{
+    background-color: white;
+    transform: translateY(0.2vh);
+  }
+  
+  .button-area{
+    display: flex;
+  }
+
+  
