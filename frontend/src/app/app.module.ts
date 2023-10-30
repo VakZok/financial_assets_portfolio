@@ -15,6 +15,8 @@ import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-p
 import { ShowItemComponent } from './modules/home/pages/show-item/show-item.component';
 import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.component";
 import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschu
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

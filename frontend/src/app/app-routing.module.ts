@@ -10,7 +10,7 @@ import { DatenschutzComponent} from "./modules/home/pages/datenschutz/datenschut
 const routes: Routes = [
   { path: '', redirectTo: '/mein_portfolio', pathMatch: 'full'}, // redirects to home page which is mein_portfolio
   { path: 'mein_portfolio', component: MeinPortfolioComponent},
-  { path: 'show_item', component: ShowItemComponent},
+  { path: 'show_item/:id', component: ShowItemComponent},
   { path: 'asset_hinzufuegen', component: AddItemComponent},
   { path: 'share_hinzufuegen', component: AddShareComponent},
   { path: 'impressum', component: ImpressumComponent},

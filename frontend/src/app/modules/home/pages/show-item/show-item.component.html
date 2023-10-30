@@ -1,21 +1,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="body" >
-  <h1>Detailansicht Portfolioitem 1</h1>
+  <ng-container *ngIf="data$ | async as data">
+    <h1>Detailansicht Portfolioitem {{data.shareDTO?.name}}</h1>
 
-<div>
-  <ul class="liststyle">
-    <li class="itemstyle">ID: 123456</li>    
-    <li class="itemstyle">WKN: 654321</li>
-    <li class="itemstyle">Name: Portfolioitem 1</li>
-    <li class="itemstyle">Kaufpreis: 9999€</li>
-    <li class="itemstyle">Anzahl: 123</li>
-    <li class="itemstyle">
-      <p>Detaillierte Beschreibung:</p>
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,</p>
-    </li>
-    <li class="itemstyle">Kategorie: Kategorie 1</li>            
-  </ul>
-</div>
+  <div>
+    <ul class="liststyle">
+      <li class="itemstyle">ID: {{data.id}}</li>    
+      <li class="itemstyle">WKN: {{data.shareDTO?.wkn}}</li>
+      <li class="itemstyle">Name: {{data.shareDTO?.name}}</li>
+      <li class="itemstyle">Kaufpreis: {{data.purchasePrice}}</li>
+      <li class="itemstyle">Anzahl: {{data.quantity}}</li>
+      <li class="itemstyle">
+        <p>Detaillierte Beschreibung:</p>
+        <p>{{data.shareDTO?.description}}</p>
+      </li>
+      <li class="itemstyle">Kategorie: {{data.shareDTO?.category}}</li>            
+    </ul>
+  </div>
+</ng-container> 
 
 <div class="button-area">
   <a [routerLink]="'/mein_portfolio'"><button>Zurück zu "Mein Portfolio"</button></a>

@@ -12,13 +12,17 @@ export class PortfolioItemService {
 
   constructor(private http: HttpClient) { }
 
-  getPItem(): Observable<PortfolioItemModel> {
-    return this.http.get<PortfolioItemModel>(this.apiUrl);
+  getPItem(id:string): Observable<PortfolioItemModel> {
+    return this.http.get<PortfolioItemModel>(this.apiUrl+"/"+id);
   }
 
   postPItem(portfolioItem: PortfolioItemModel): Observable<PortfolioItemModel>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(this.apiUrl + '/add', portfolioItem, { headers: headers })
+  }
+
+  getPItemList(): Observable<PortfolioItemModel[]> {
+    return this.http.get<PortfolioItemModel[]>(this.apiUrl);
   }
 
 }
