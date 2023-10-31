@@ -31,17 +31,13 @@ public class PortfolioItemController {
             PItemDTO pItemDTO = new PItemDTO(pItem);
             return new ResponseEntity<>(pItemDTO, HttpStatus.OK);
         }catch(NoSuchElementException e){
-            return new ResponseEntity<>(new PItemDTO(), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPortfolioItemList() {
         List<PItemDTO> pItemDTOPrevList = portfolioItemService.getPortfolioItemPreviewList();
-        if(pItemDTOPrevList.isEmpty()) {
-            pItemDTOPrevList.add(new PItemDTO());
-        }
-        System.out.println(pItemDTOPrevList);
         return new ResponseEntity<>(pItemDTOPrevList, HttpStatus.OK);
     }
 
@@ -50,9 +46,9 @@ public class PortfolioItemController {
     public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO){
         try{
             portfolioItemService.addPortfolioItem(pItemDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(pItemDTO, HttpStatus.CREATED);
         }catch(FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }
     }
 }

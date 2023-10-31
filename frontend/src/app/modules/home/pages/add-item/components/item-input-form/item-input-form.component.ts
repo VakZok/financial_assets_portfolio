@@ -1,10 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component,  ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {DateValidator} from "../../../../../../core/validators/date-validator";
-
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
-import {ExceptionsModel} from "../../../../../../core/models/exceptions.model";
 
 const maxDate = new Date("2123-12-31");
 const minDate: Date = new Date("1903-04-22");
@@ -22,7 +19,7 @@ export class ItemInputFormComponent {
     ['wkn', ''],
     ['name', ''],
     ['description', ''],
-    ['cat', ''],
+    ['category', ''],
     ['quantity', ''],
     ['purchaseDate', ''],
     ['purchasePrice', '']
@@ -42,7 +39,7 @@ export class ItemInputFormComponent {
     description: new FormControl('', [
       Validators.required,
       Validators.maxLength(255)]),
-    cat: new FormControl('',
+    category: new FormControl('',
       Validators.required),
     quantity: new FormControl('', [
       Validators.required,
@@ -59,7 +56,7 @@ export class ItemInputFormComponent {
 
   constructor(private pItemService: PortfolioItemService) {
   }
-
+  // do not allow more than 6 characters for wkn input field
   onKeyDownWkn(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.slice(0,5)
@@ -69,10 +66,10 @@ export class ItemInputFormComponent {
     const inputElement = event.target as HTMLInputElement;
     this.leftSigns = String(maxSigns - inputElement.value.length)
   }
-
+  // function to prevent other characters than digits
   onInputQuantity(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    inputElement.value = inputElement.value.replace(/[^0-9.]/g, '');
+    inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
   }
 
   //function to prevent writing more than one comma into purchasePrice
@@ -82,7 +79,7 @@ export class ItemInputFormComponent {
       event.preventDefault();
     }
   }
-
+  //function that formats purchase Price
   onInputPurchasePrice(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(
@@ -134,10 +131,10 @@ export class ItemInputFormComponent {
         this.errorMap.set('description', '');
       }
 
-      if(this.pItemForm.controls.cat.errors?.['required']){
-        this.errorMap.set('cat', 'Bitte wählen Sie eine Kategorie');
+      if(this.pItemForm.controls.category.errors?.['required']){
+        this.errorMap.set('category', 'Bitte wählen Sie eine Kategorie');
       } else {
-        this.errorMap.set('cat', '');
+        this.errorMap.set('category', '');
       }
 
       if(this.pItemForm.controls.quantity.errors?.['required']){
@@ -188,7 +185,7 @@ export class ItemInputFormComponent {
         quantity: parseInt(this.pItemForm.controls.quantity.value || ''),
         wkn: this.pItemForm.controls.wkn.value || '',
         name: this.pItemForm.controls.name.value || '',
-        category: this.pItemForm.controls.cat.value || '',
+        category: this.pItemForm.controls.category.value || '',
         description: this.pItemForm.controls.description.value || ''
       }
       //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share

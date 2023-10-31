@@ -99,7 +99,7 @@ public class PortfolioItemService {
             exceptions.add(new ExceptionDTO("name", "Bitte tragen Sie einen Namen ein"));
         }
         if(pItemDTO.getCategory() == null || pItemDTO.getCategory().isEmpty()){
-            exceptions.add(new ExceptionDTO("cat", "Bitte wählen Sie eine Kategorie"));
+            exceptions.add(new ExceptionDTO("category", "Bitte wählen Sie eine Kategorie"));
         }
         if(pItemDTO.getDescription() == null || pItemDTO.getDescription().isEmpty()){
             exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));

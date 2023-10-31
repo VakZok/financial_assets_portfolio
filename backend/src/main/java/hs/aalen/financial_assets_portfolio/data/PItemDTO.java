@@ -1,22 +1,23 @@
 package hs.aalen.financial_assets_portfolio.data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PItemDTO {
     /* Class to create Data Transfer Objects for portfolio items used for communication with the frontend
      * and not exposing too much information.
      */
 
     private Long id;
-    private LocalDate purchaseDate;
-    private double purchasePrice;
-    private int quantity;
     private String wkn;
     private String name;
     private String category;
     private String description;
-
+    private LocalDate purchaseDate;
+    private double purchasePrice;
+    private int quantity;
 
     /* Constructors inclusive copy constructors */
     public PItemDTO(
