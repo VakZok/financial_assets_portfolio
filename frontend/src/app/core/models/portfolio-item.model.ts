@@ -3,8 +3,8 @@ export class PortfolioItemModel {
   purchasePrice?: number
   purchaseDate?: Date
   quantity?: number
-  wkn: string = '';
-  name: string = '';
-  category: string = '';
-  description: string = '';
+  wkn?: string = '';
+  name?: string = '';
+  category?: string = '';
+  description?: string = '';
 }

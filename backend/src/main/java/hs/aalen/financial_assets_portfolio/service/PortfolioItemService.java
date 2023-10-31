@@ -19,7 +19,7 @@ public class PortfolioItemService {
      */
 
     /* CONSTANTS */
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
     private static final int WKN_LENGTH = 6;
@@ -84,10 +84,10 @@ public class PortfolioItemService {
                     "purchaseDate", "Bitte tragen Sie ein Kaufdatum ein"));
         }else if(pItemDTO.getPurchaseDate().isBefore(MIN_DATE)) {
             exceptions.add(new ExceptionDTO(
-                    "purchaseDate", "Das Kaufdatum muss nach dem " + MIN_DATE.format(formatter) + " liegen"));
+                    "purchaseDate", "Das Kaufdatum muss nach dem " + MIN_DATE.format(FORMATTER) + " liegen"));
         } else if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
             exceptions.add(new ExceptionDTO(
-                    "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(formatter) + " liegen"));
+                    "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(FORMATTER) + " liegen"));
         }
         if (pItemDTO.getWkn().length() != WKN_LENGTH ){
             exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));

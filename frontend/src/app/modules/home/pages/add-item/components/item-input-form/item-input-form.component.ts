@@ -207,6 +207,7 @@ export class ItemInputFormComponent {
 
   // method to clear the input form
   clearForm() {
+    this.itemAdded = false;
     this.form.resetForm();
     this.pItemForm.reset();
     this.leftSigns = '255';
