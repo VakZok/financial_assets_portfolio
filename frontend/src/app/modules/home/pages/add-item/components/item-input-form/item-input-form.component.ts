@@ -57,9 +57,9 @@ export class ItemInputFormComponent {
   constructor(private pItemService: PortfolioItemService) {
   }
   // do not allow more than 6 characters for wkn input field
-  onKeyDownWkn(event: Event) {
+  onInputWkn(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    inputElement.value = inputElement.value.slice(0,5)
+    inputElement.value = inputElement.value.slice(0,6)
   }
   // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {

@@ -17,7 +17,7 @@ public class PItemDTO {
     private String category;
     private String description;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+
     private LocalDate purchaseDate;
     private double purchasePrice;
     private int quantity;

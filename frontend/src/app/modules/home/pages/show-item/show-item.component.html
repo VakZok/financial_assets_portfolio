@@ -5,14 +5,14 @@
 
   <div>
     <ul class="liststyle">
-      <li class="itemstyle">ID: {{data.id}}</li>
-      <li class="itemstyle">WKN: {{data.wkn}}</li>
-      <li class="itemstyle">Name: {{data.name}}</li>
-      <li class="itemstyle">Kaufpreis: {{data.purchasePrice |currency:'EUR':true}}</li>
-      <li class="itemstyle">Anzahl: {{data.quantity}}</li>
-      <li class="itemstyle">Detaillierte Beschreibung:<br />{{data.description}}</li>
-      <li class="itemstyle">Kategorie: {{data.category}}</li>
-      <li class="itemstyle">Kaufdatum: {{data.purchaseDate}}</li>
+      <li class="itemstyle"> <b>ID:</b> {{data.id}}</li>
+      <li class="itemstyle"><b>WKN:</b> {{data.wkn}}</li>
+      <li class="itemstyle"><b>Name:</b> {{data.name}}</li>
+      <li class="itemstyle"><b>Kaufpreis:</b> {{data.purchasePrice |currency:'EUR':true}}</li>
+      <li class="itemstyle"><b>Anzahl:</b> {{data.quantity}}</li>
+      <li class="itemstyle"><b>Detaillierte Beschreibung:</b> <br />{{data.description}}</li>
+      <li class="itemstyle"><b>Kategorie:</b> {{data.category}}</li>
+      <li class="itemstyle"><b>Kaufdatum:</b> {{data.purchaseDate | date}}</li>
     </ul>
   </div>
 </ng-container>
