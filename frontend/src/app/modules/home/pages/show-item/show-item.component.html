@@ -10,11 +10,9 @@
       <li class="itemstyle">Name: {{data.name}}</li>
       <li class="itemstyle">Kaufpreis: {{data.purchasePrice |currency:'EUR':true}}</li>
       <li class="itemstyle">Anzahl: {{data.quantity}}</li>
-      <li class="itemstyle">
-        <p>Detaillierte Beschreibung:</p>
-        <p>{{data.description}}</p>
-      </li>
+      <li class="itemstyle">Detaillierte Beschreibung:<br />{{data.description}}</li>
       <li class="itemstyle">Kategorie: {{data.category}}</li>
+      <li class="itemstyle">Kaufdatum: {{data.purchaseDate}}</li>
     </ul>
   </div>
 </ng-container>
