@@ -1,5 +1,6 @@
 package hs.aalen.financial_assets_portfolio.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ public class PItemDTO {
     private String name;
     private String category;
     private String description;
+
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate purchaseDate;
     private double purchasePrice;
     private int quantity;
