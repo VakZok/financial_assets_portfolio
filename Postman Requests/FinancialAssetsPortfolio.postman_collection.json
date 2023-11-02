@@ -1,54 +1,13 @@
 {
 	"info": {
-		"_postman_id": "01aeaceb-3097-4383-9605-babeb317903c",
+		"_postman_id": "8e9ec404-8ffc-4767-b635-bea5075d1359",
 		"name": "FinancialAssetsPortfolio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30314660"
+		"_exporter_id": "30647028"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/v1/shares/766403",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/v1/shares/766403",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"v1",
-						"shares",
-						"766403"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/v1/shares",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/v1/shares",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"v1",
-						"shares"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/v1/portfolioItems/preview",
+			"name": "get_portfolioitem_list",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -69,34 +28,24 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/v1/portfolioItems/3",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/v1/portfolioItems/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"v1",
-						"portfolioItems",
-						"3"
-					]
+			"name": "add_portfolio_item",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/v1/portfolioItems/add",
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"purchaseDate\": \"2023-11-10\",\r\n    \"purchasePrice\": 124,\r\n    \"quantity\": 5,\r\n    \"shareDTO\": {\r\n        \"wkn\": \"234451\",\r\n        \"name\": \"Siemens AG\",\r\n        \"category\": \"Industrie\",\r\n        \"description\": \"Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"purchaseDate\": \"2023-11-10\",\r\n    \"purchasePrice\": 124,\r\n    \"quantity\": 12312,\r\n    \"wkn\": \"Testwk\",\r\n    \"name\": \"Testtest\",\r\n    \"category\": \"TestIndustrie\",\r\n    \"description\": \"Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,13 +69,34 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/v1/portfolioItems/add",
+			"name": "get_portfolioitem_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/portfolioItems/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"portfolioItems",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_pitem_exception",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"purchaseDate\": \"2023-11-15\",\r\n    \"purchasePrice\": 70,\r\n    \"quantity\": 7,\r\n    \"shareDTO\": {\r\n        \"wkn\": \"234\",\r\n        \"name\": \"Volkswagen AG\",\r\n        \"category\": \"Automobil\",\r\n        \"description\": \"Volkswagen AG ist ein deutscher Automobilhersteller mit Sitz in Wolfsburg, Deutschland.\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"purchaseDate\": \"2023-11-10\",\r\n    \"purchasePrice\": 124,\r\n    \"quantity\": 5,\r\n    \"wkn\": \"234451\",\r\n    \"name\": \"Siemens AG\",\r\n    \"category\": \"Industrie\",\r\n    \"description\": \"Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.Die Siemens AG ist eine deutsche internationale Aktiengesellschaft mit Sitz in München, Deutschland.\"\r\n\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
