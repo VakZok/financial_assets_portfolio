@@ -104,15 +104,15 @@ public class PortfolioItemService {
         if(pItemDTO.getDescription() == null || pItemDTO.getDescription().isEmpty()){
             exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));
         }
-        if(pItemDTO.getDescription().length() >= STRING_MAX_LENGTH){
+        if(pItemDTO.getDescription().length() > STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "description", "Die Beschreibung darf nicht länger als 255 Zeichen sein"));
         }
-        if(pItemDTO.getName().length() >= STRING_MAX_LENGTH){
+        if(pItemDTO.getName().length() > STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "name", "Der Name darf nicht länger als 255 Zeichen sein"));
         }
-        if(pItemDTO.getCategory().length() >= STRING_MAX_LENGTH){
+        if(pItemDTO.getCategory().length() > STRING_MAX_LENGTH){
             exceptions.add(new ExceptionDTO(
                     "cat", "Die Kategorie darf nicht länger als 255 Zeichen sein"));
         }

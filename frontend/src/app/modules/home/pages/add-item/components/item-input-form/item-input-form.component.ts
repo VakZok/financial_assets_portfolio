@@ -192,12 +192,12 @@ export class ItemInputFormComponent {
       //Finally portfolioItemDTO is sent to backend using post request
       this.pItemService.postPItem(pItemDTO).subscribe({
         next: (data) => {
-          console.log(data)
           this.pItemForm.reset();
           this.form.resetForm();
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
         error: (errors) => errors.error.forEach((item:any) => {
+          this.pItemForm.get(item.name)?.setErrors(item.message)
           this.errorMap.set(item.name, item.message);
         }),
         complete: () => this.itemAdded = true
