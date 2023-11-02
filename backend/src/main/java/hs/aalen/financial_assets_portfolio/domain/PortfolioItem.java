@@ -11,7 +11,7 @@ public class PortfolioItem {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(generator = "increment")
     private Long id;
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate purchaseDate;
