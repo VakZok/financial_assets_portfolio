@@ -16,6 +16,7 @@ public class PItemDTO {
 
     private LocalDate purchaseDate;
     private double purchasePrice;
+    private double totalPrice;
     private int quantity;
 
     /* Constructors inclusive copy constructors */
@@ -27,6 +28,7 @@ public class PItemDTO {
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
+        this.totalPrice = purchasePrice * quantity;
         this.quantity = quantity;
         this.shareDTO = shareDTO;
 
@@ -36,6 +38,7 @@ public class PItemDTO {
         this.id = portfolioItem.getId();
         this.purchaseDate = portfolioItem.getPurchaseDate();
         this.purchasePrice = portfolioItem.getPurchasePrice();
+        this.totalPrice = portfolioItem.getTotalPrice();
         this.quantity = portfolioItem.getQuantity();
         this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
@@ -67,6 +70,14 @@ public class PItemDTO {
 
     public void setPurchasePrice(double purchasePrice) {
         this.purchasePrice = purchasePrice;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public int getQuantity() {

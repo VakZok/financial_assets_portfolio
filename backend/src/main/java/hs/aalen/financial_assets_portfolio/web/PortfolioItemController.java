@@ -1,5 +1,6 @@
 package hs.aalen.financial_assets_portfolio.web;
 
+import hs.aalen.financial_assets_portfolio.data.PItemAggDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
@@ -35,6 +36,16 @@ public class PortfolioItemController {
         }
     }
 
+    @GetMapping("portfolioItems/viewBy/wkn/{wkn}")
+    public ResponseEntity<Object> getWKNAggPItem(@PathVariable String wkn) {
+        try {
+            PItemAggDTO pItemAggDTO = portfolioItemService.getWKNAggPItem(wkn);
+            return new ResponseEntity<>(pItemAggDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPortfolioItemList() {
         List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
@@ -46,6 +57,14 @@ public class PortfolioItemController {
             pItemDTOList.addAll(pItemList.stream().map(PItemDTO::new).toList());
             return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
         }
+    }
+    @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
+    public ResponseEntity<Object> getWKNAggPItemsList() {
+        List<PItemAggDTO> pItemAggDTOList = portfolioItemService.getWKNAggPItemsPreview();
+        if (pItemAggDTOList.isEmpty()) {
+            pItemAggDTOList.add(new PItemAggDTO());
+        }
+        return new ResponseEntity<>(pItemAggDTOList, HttpStatus.OK);
     }
 
     /* POST REQUESTS */

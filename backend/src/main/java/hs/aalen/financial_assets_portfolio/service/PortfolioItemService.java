@@ -2,6 +2,7 @@ package hs.aalen.financial_assets_portfolio.service;
 
 
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
+import hs.aalen.financial_assets_portfolio.data.PItemAggDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
@@ -48,6 +49,10 @@ public class PortfolioItemService {
         }
     }
 
+    public PItemAggDTO getWKNAggPItem(String wkn)throws NoSuchElementException {
+        return aggregatePItems(wkn);
+    }
+
     /* Method that adds a new portfolio item when the form is correct */
     public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
         ShareDTO shareDTO = pItemDTO.getShareDTO();
@@ -78,6 +83,11 @@ public class PortfolioItemService {
     public List<PortfolioItem> getPortfolioItemList(){
         return portfolioItemRepository.findAll();
     }
+    public List<PItemAggDTO> getWKNAggPItemsPreview(){
+        ArrayList<Share> shareList = (ArrayList<Share>) shareService.getShareList();
+        return new ArrayList<PItemAggDTO>(
+                shareList.stream().map(pItemAggDTO -> new PItemAggDTO()).toList());
+    }
 
     /* Method that checks the validity of the input */
     public ArrayList<ExceptionDTO> formIsValid(PItemDTO pItemDTO){
@@ -100,5 +110,17 @@ public class PortfolioItemService {
         }
         return exceptions;
     }
+
+    public PItemAggDTO aggregatePItems(String wkn){
+        Share share = shareService.getShare(wkn);
+        ArrayList<PortfolioItem> pItemList = portfolioItemRepository.findAllByShare_Wkn(wkn);
+        ArrayList<PItemDTO> pItemDTOList = new ArrayList<>(pItemList.stream().map(PItemDTO::new).toList());
+        double avgPrice = pItemList.stream()
+                .mapToDouble(PortfolioItem::getTotalPrice)
+                .average().orElseThrow(IllegalStateException::new);
+        int totalQuantity = pItemList.size();
+        return new PItemAggDTO(new ShareDTO(share), avgPrice, totalQuantity, pItemDTOList);
+    }
+
 
 }
