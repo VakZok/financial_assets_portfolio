@@ -25,12 +25,12 @@ public class PortfolioItemController {
 
     /* GET REQUESTS */
     @GetMapping("portfolioItems/{id}")
-    public ResponseEntity<Object> getPortfolioItem(@PathVariable Long id){
-        try{
+    public ResponseEntity<Object> getPortfolioItem(@PathVariable Long id) {
+        try {
             PortfolioItem pItem = portfolioItemService.getPortfolioItem(id);
             PItemDTO pItemDTO = new PItemDTO(pItem);
             return new ResponseEntity<>(pItemDTO, HttpStatus.OK);
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -39,23 +39,24 @@ public class PortfolioItemController {
     public ResponseEntity<Object> getPortfolioItemList() {
         List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
         ArrayList<PItemDTO> pItemDTOList = new ArrayList<PItemDTO>();
-
-        if(pItemList.isEmpty()) {
+        if (pItemList.isEmpty()) {
             pItemDTOList.add(new PItemDTO());
             return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
         } else {
             pItemDTOList.addAll(pItemList.stream().map(PItemDTO::new).toList());
             return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
+        }
     }
 
     /* POST REQUESTS */
     @PostMapping("portfolioItems/add")
-    public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO){
-        try{
+    public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO) {
+        try {
             portfolioItemService.addPortfolioItem(pItemDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch(FormNotValidException e){
+        } catch (FormNotValidException e) {
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }
     }
 }
+

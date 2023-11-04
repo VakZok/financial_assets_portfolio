@@ -5,10 +5,12 @@ import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ShareService {
     /* Share service class to process
      * the requests received in the controller class
@@ -67,10 +69,10 @@ public class ShareService {
 
     /* Method that checks the validity of the input */
     public ArrayList<ExceptionDTO> validateForm(ShareDTO shareDTO){
-        ArrayList<ExceptionDTO> exceptions = new ArrayList<ExceptionDTO>();
-        if (shareDTO.getWkn().length() != WKN_LENGTH ){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));
-        }
+        ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
+        //if (shareDTO.getWkn().length() != WKN_LENGTH ){
+        //    exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));
+        //}
         if(shareDTO.getWkn() == null || shareDTO.getWkn().isEmpty()){
             exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));
         }

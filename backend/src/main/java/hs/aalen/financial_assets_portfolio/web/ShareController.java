@@ -36,15 +36,14 @@ public class ShareController {
     @GetMapping(value = "/shares")
     public ResponseEntity<Object> getShareList() {
         List<Share> shareList = shareService.getShareList();
-        ArrayList<ShareDTO> shareDTOList = new ArrayList<ShareDTO>();
+        ArrayList<ShareDTO> shareDTOList = new ArrayList<>();
 
         if(shareList.isEmpty()) {
             shareDTOList.add(new ShareDTO());
-            return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
         } else {
             shareDTOList.addAll(shareList.stream().map(ShareDTO::new).toList());
-            return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
         }
+        return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
     }
 
     /* POST REQUESTS */

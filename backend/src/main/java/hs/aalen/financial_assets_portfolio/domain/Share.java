@@ -41,6 +41,8 @@ public class Share {
         this.description = shareDTO.getDescription();
     }
 
+    public Share(){}
+
     /* Getters and Setters */
     public String getWkn() {
         return wkn;
