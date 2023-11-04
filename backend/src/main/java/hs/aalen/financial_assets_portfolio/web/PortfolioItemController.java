@@ -31,13 +31,10 @@ public class PortfolioItemController {
     private final PortfolioItemService portfolioItemService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
-    private static final String[] LIST_PREVIEW_FIELDS = {"shareDTO.wkn", "shareDTO.name", "totalQuantity", "avgPrice"};
-
     public PortfolioItemController(PortfolioItemService portfolioItemService, ObjectMapper objectMapper) {
         this.portfolioItemService = portfolioItemService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
-
 
     /* GET REQUESTS */
     @Deprecated
@@ -111,6 +108,7 @@ public class PortfolioItemController {
         }
 
     }
+    
     @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
     public ResponseEntity<Object> getWKNAggPItemsList() {
         List<PItemAggDTO> pItemAggDTOList = portfolioItemService.getWKNAggPItemsPreview();
