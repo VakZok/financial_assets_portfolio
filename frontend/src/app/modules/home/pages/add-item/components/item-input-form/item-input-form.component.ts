@@ -3,6 +3,7 @@ import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/f
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
 import {ShareModel} from "../../../../../../core/models/share.model";
+import {ShareService} from "../../../../../../core/services/share.service";
 
 const maxDate = new Date("2123-12-31");
 const minDate: Date = new Date("1903-04-22");
@@ -26,7 +27,7 @@ export class ItemInputFormComponent {
     ['purchasePrice', '']
   ]);
 
-  leftSigns: string = '255';
+  leftSigns: string = maxSigns.toString();
   itemAdded: boolean = false;
   @ViewChild(FormGroupDirective) form: any;
 
@@ -55,7 +56,7 @@ export class ItemInputFormComponent {
       ])
   })
 
-  constructor(private pItemService: PortfolioItemService) {
+  constructor(private pItemService: PortfolioItemService, private shareService: ShareService) {
   }
 
   // function that counts the amount of left signs
@@ -188,14 +189,14 @@ export class ItemInputFormComponent {
         purchasePrice: parseFloat(this.pItemForm.controls.purchasePrice.value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls.quantity.value || ''),
         shareDTO: shareDTO
-
       }
-      //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share
+
       //Finally portfolioItemDTO is sent to backend using post request
       this.pItemService.postPItem(pItemDTO).subscribe({
         next: (data) => {
           this.pItemForm.reset();
           this.form.resetForm();
+          this.leftSigns = maxSigns.toString();
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
         error: (errors) => errors.error.forEach((item:any) => {

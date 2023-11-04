@@ -13,8 +13,8 @@ export class ShareService {
 
   constructor(private http: HttpClient) { }
 
-  getShare(wkn:string): Observable<PortfolioItemModel> {
-    return this.http.get<PortfolioItemModel>(this.apiUrl+"/"+wkn);
+  getShare(wkn:string): Observable<ShareModel> {
+    return this.http.get<ShareModel>(this.apiUrl+"/"+wkn);
   }
 
   postShare(share:ShareModel): Observable<ShareModel>{
