@@ -12,10 +12,7 @@ public class PItemDTO {
      */
 
     private Long id;
-    private String wkn;
-    private String name;
-    private String category;
-    private String description;
+    private ShareDTO shareDTO;
 
 
     private LocalDate purchaseDate;
@@ -24,31 +21,27 @@ public class PItemDTO {
 
     /* Constructors inclusive copy constructors */
     public PItemDTO(
-            String wkn, String name,
-            String category, String description,
-            LocalDate purchaseDate, double purchasePrice,
-            int quantity) {
+            Long id, LocalDate purchaseDate,
+            double purchasePrice, int quantity, ShareDTO shareDTO
+    ) {
 
-        this.wkn = wkn;
-        this.name = name;
-        this.category = category;
-        this.description = description;
+        this.id = id;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
+        this.shareDTO = shareDTO;
 
     }
 
     public PItemDTO(PortfolioItem portfolioItem) {
         this.id = portfolioItem.getId();
-        this.wkn = portfolioItem.getWkn();
-        this.name = portfolioItem.getName();
-        this.category = portfolioItem.getCategory();
-        this.description = portfolioItem.getDescription();
         this.purchaseDate = portfolioItem.getPurchaseDate();
         this.purchasePrice = portfolioItem.getPurchasePrice();
         this.quantity = portfolioItem.getQuantity();
+        this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
+
+    PItemDTO(PItemDTO pItemDTO){}
 
     public PItemDTO(){}
 
@@ -85,36 +78,12 @@ public class PItemDTO {
         this.quantity = quantity;
     }
 
-    public String getWkn() {
-        return wkn;
+    public ShareDTO getShareDTO() {
+        return shareDTO;
     }
 
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setShareDTO(ShareDTO shareDTO) {
+        this.shareDTO = shareDTO;
     }
 
 }

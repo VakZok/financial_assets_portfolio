@@ -3,7 +3,9 @@ package hs.aalen.financial_assets_portfolio.service;
 
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
+import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
+import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
 import org.springframework.stereotype.Service;
@@ -27,11 +29,13 @@ public class PortfolioItemService {
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
+    private ShareService shareService;
 
 
     /* PROCESSING METHODS */
-    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository) {
+    public PortfolioItemService(PortfolioItemRepository portfolioItemRepository, ShareService shareService) {
         this.portfolioItemRepository = portfolioItemRepository;
+        this.shareService = shareService;
     }
 
     /* Method that returns the portfolio item searched by the id */
@@ -46,28 +50,33 @@ public class PortfolioItemService {
 
     /* Method that adds a new portfolio item when the form is correct */
     public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
-        ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-        if(exceptions.isEmpty()){
-            PortfolioItem pItem = new PortfolioItem(pItemDTO);
-            portfolioItemRepository.save(pItem);
-        }else {
-            throw new FormNotValidException("Formfehler", exceptions);
+        ShareDTO shareDTO = pItemDTO.getShareDTO();
+        Share share = new Share(shareDTO);
+        if(!(shareService.checkShareExists(share))){
+            ArrayList<ExceptionDTO> exceptionsShare = shareService.validateForm(shareDTO);
+            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
+            exceptions.addAll(exceptionsShare);
+            if(exceptions.isEmpty()){
+                shareService.addShare(shareDTO);
+                PortfolioItem pItem = new PortfolioItem(pItemDTO);
+                portfolioItemRepository.save(pItem);
+            } else {
+                throw new FormNotValidException("Formfehler", exceptions);
+            }
+        } else {
+            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
+            if (exceptions.isEmpty()) {
+                PortfolioItem pItem = new PortfolioItem(pItemDTO);
+                portfolioItemRepository.save(pItem);
+            } else {
+                throw new FormNotValidException("Formfehler", exceptions);
+            }
         }
     }
 
     /* Method that returns the portfolio item list */
-    public ArrayList<PItemDTO> getPortfolioItemPreviewList(){
-        ArrayList<PItemDTO> pItemPrevListDTO = new ArrayList<PItemDTO>();
-        for (PortfolioItem pItem : portfolioItemRepository.findAll()) {
-            PItemDTO pItemDTO = new PItemDTO();
-            pItemDTO.setId(pItem.getId());
-            pItemDTO.setWkn(pItem.getWkn());
-            pItemDTO.setName(pItem.getName());
-            pItemDTO.setPurchasePrice(pItem.getPurchasePrice());
-            pItemDTO.setQuantity(pItem.getQuantity());
-            pItemPrevListDTO.add(pItemDTO);
-        }
-        return pItemPrevListDTO;
+    public List<PortfolioItem> getPortfolioItemList(){
+        return portfolioItemRepository.findAll();
     }
 
     /* Method that checks the validity of the input */
@@ -88,33 +97,6 @@ public class PortfolioItemService {
         } else if(pItemDTO.getPurchaseDate().isAfter(MAX_DATE)){
             exceptions.add(new ExceptionDTO(
                     "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(FORMATTER) + " liegen"));
-        }
-        if (pItemDTO.getWkn().length() != WKN_LENGTH ){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN muss aus 6 Zeichen bestehen."));
-        }
-        if(pItemDTO.getWkn() == null || pItemDTO.getWkn().isEmpty()){
-            exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));
-        }
-        if(pItemDTO.getName() == null || pItemDTO.getName().isEmpty()){
-            exceptions.add(new ExceptionDTO("name", "Bitte tragen Sie einen Namen ein"));
-        }
-        if(pItemDTO.getCategory() == null || pItemDTO.getCategory().isEmpty()){
-            exceptions.add(new ExceptionDTO("category", "Bitte wählen Sie eine Kategorie"));
-        }
-        if(pItemDTO.getDescription() == null || pItemDTO.getDescription().isEmpty()){
-            exceptions.add(new ExceptionDTO("description", "Bitte tragen Sie die Beschreibung ein"));
-        }
-        if(pItemDTO.getDescription().length() > STRING_MAX_LENGTH){
-            exceptions.add(new ExceptionDTO(
-                    "description", "Die Beschreibung darf nicht länger als 255 Zeichen sein"));
-        }
-        if(pItemDTO.getName().length() > STRING_MAX_LENGTH){
-            exceptions.add(new ExceptionDTO(
-                    "name", "Der Name darf nicht länger als 255 Zeichen sein"));
-        }
-        if(pItemDTO.getCategory().length() > STRING_MAX_LENGTH){
-            exceptions.add(new ExceptionDTO(
-                    "cat", "Die Kategorie darf nicht länger als 255 Zeichen sein"));
         }
         return exceptions;
     }

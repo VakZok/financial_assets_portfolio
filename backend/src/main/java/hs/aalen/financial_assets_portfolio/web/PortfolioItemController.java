@@ -37,8 +37,15 @@ public class PortfolioItemController {
 
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPortfolioItemList() {
-        List<PItemDTO> pItemDTOPrevList = portfolioItemService.getPortfolioItemPreviewList();
-        return new ResponseEntity<>(pItemDTOPrevList, HttpStatus.OK);
+        List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
+        ArrayList<PItemDTO> pItemDTOList = new ArrayList<PItemDTO>();
+
+        if(pItemList.isEmpty()) {
+            pItemDTOList.add(new PItemDTO());
+            return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
+        } else {
+            pItemDTOList.addAll(pItemList.stream().map(PItemDTO::new).toList());
+            return new ResponseEntity<>(pItemDTOList, HttpStatus.OK);
     }
 
     /* POST REQUESTS */
@@ -46,7 +53,7 @@ public class PortfolioItemController {
     public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO){
         try{
             portfolioItemService.addPortfolioItem(pItemDTO);
-            return new ResponseEntity<>(pItemDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(FormNotValidException e){
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }

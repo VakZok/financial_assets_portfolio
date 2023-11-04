@@ -17,36 +17,26 @@ public class PortfolioItem {
     private LocalDate purchaseDate;
     private double purchasePrice;
     private int quantity;
-    private String wkn;
-    private String name;
-    private String category;
-    private String description;
+
+    /* MAPPED RELATIONSHIPS */
+    @ManyToOne
+    @JoinColumn(name = "wkn")
+    private Share share;
 
     /* Constructors */
-    public PortfolioItem(
-            String wkn, String name,
-            String category, String description,
-            LocalDate purchaseDate, double purchasePrice,
-            int quantity) {
-
-        this.wkn = wkn;
-        this.name = name;
-        this.category = category;
-        this.description = description;
+    public PortfolioItem(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
+        this.share = share;
 
     }
 
     public PortfolioItem(PItemDTO pItemDTO) {
-        this.wkn = pItemDTO.getWkn();
-        this.name = pItemDTO.getName();
-        this.category = pItemDTO.getCategory();
-        this.description = pItemDTO.getDescription();
         this.purchaseDate = pItemDTO.getPurchaseDate();
         this.purchasePrice = pItemDTO.getPurchasePrice();
         this.quantity = pItemDTO.getQuantity();
+        this.share = new Share(pItemDTO.getShareDTO());
 
     }
 
@@ -90,36 +80,12 @@ public class PortfolioItem {
         this.purchasePrice = purchasePrice;
     }
 
-    public String getWkn() {
-        return wkn;
+    public Share getShare() {
+        return share;
     }
 
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setShare(Share share) {
+        this.share = share;
     }
 }
 
