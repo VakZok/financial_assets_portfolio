@@ -25,12 +25,13 @@ public class PortfolioItemService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
+    private static final String[] LIST_PREVIEW_FIELDS = {"shareDTO.wkn", "shareDTO.name", "totalQuantity", "avgPrice"};
     private static final int WKN_LENGTH = 6;
     private static final int STRING_MAX_LENGTH = 255;
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
-    private ShareService shareService;
+    private final ShareService shareService;
 
 
     /* PROCESSING METHODS */
@@ -85,8 +86,8 @@ public class PortfolioItemService {
     }
     public List<PItemAggDTO> getWKNAggPItemsPreview(){
         ArrayList<Share> shareList = (ArrayList<Share>) shareService.getShareList();
-        return new ArrayList<PItemAggDTO>(
-                shareList.stream().map(pItemAggDTO -> new PItemAggDTO()).toList());
+        return new ArrayList<>(
+                shareList.stream().map(share -> aggregatePItems(share.getWkn())).toList());
     }
 
     /* Method that checks the validity of the input */
@@ -116,11 +117,11 @@ public class PortfolioItemService {
         ArrayList<PortfolioItem> pItemList = portfolioItemRepository.findAllByShare_Wkn(wkn);
         ArrayList<PItemDTO> pItemDTOList = new ArrayList<>(pItemList.stream().map(PItemDTO::new).toList());
         double avgPrice = pItemList.stream()
-                .mapToDouble(PortfolioItem::getTotalPrice)
+                .mapToDouble(PortfolioItem::getPurchasePrice)
                 .average().orElseThrow(IllegalStateException::new);
-        int totalQuantity = pItemList.size();
+        int totalQuantity = pItemList.stream()
+                .mapToInt(PortfolioItem::getQuantity).sum();
         return new PItemAggDTO(new ShareDTO(share), avgPrice, totalQuantity, pItemDTOList);
     }
-
 
 }

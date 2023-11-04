@@ -1,7 +1,8 @@
 package hs.aalen.financial_assets_portfolio.data;
-
+import com.fasterxml.jackson.annotation.JsonFilter;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 
+@JsonFilter("shareFilter")
 public class ShareDTO {
     /* Class to create Data Transfer Objects for shares used for communication with the frontend
      * and not exposing too much information.

@@ -1,11 +1,13 @@
 package hs.aalen.financial_assets_portfolio.data;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonFilter("pItemFilter")
 public class PItemDTO {
     /* Class to create Data Transfer Objects for portfolio items used for communication with the frontend
      * and not exposing too much information.
@@ -13,7 +15,7 @@ public class PItemDTO {
 
     private Long id;
     private ShareDTO shareDTO;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate purchaseDate;
     private double purchasePrice;
     private double totalPrice;
@@ -42,8 +44,6 @@ public class PItemDTO {
         this.quantity = portfolioItem.getQuantity();
         this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
-
-    PItemDTO(PItemDTO pItemDTO){}
 
     public PItemDTO(){}
 

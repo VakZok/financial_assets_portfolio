@@ -1,11 +1,14 @@
 package hs.aalen.financial_assets_portfolio.data;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonFilter("pItemAggFilter")
 public class PItemAggDTO {
+    @JsonFilter("shareFilter")
     private ShareDTO shareDTO;
     private double avgPrice;
     private int totalQuantity;
