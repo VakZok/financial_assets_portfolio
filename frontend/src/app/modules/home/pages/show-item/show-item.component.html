@@ -1,17 +1,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="body" >
   <ng-container *ngIf="data$ | async as data">
-    <h1>Detailansicht Portfolioitem {{data.name}}</h1>
+    <h1>Detailansicht Portfolioitem {{data.shareDTO?.name}}</h1>
 
   <div>
     <ul class="liststyle">
       <li class="itemstyle"> <b>ID:</b> {{data.id}}</li>
-      <li class="itemstyle"><b>WKN:</b> {{data.wkn}}</li>
-      <li class="itemstyle"><b>Name:</b> {{data.name}}</li>
+      <li class="itemstyle"><b>WKN:</b> {{data.shareDTO?.wkn}}</li>
+      <li class="itemstyle"><b>Name:</b> {{data.shareDTO?.name}}</li>
+      <li class="itemstyle"><b>Detaillierte Beschreibung:</b> <br />{{data.shareDTO?.description}}</li>
       <li class="itemstyle"><b>Kaufpreis:</b> {{data.purchasePrice |currency:'EUR':true}}</li>
       <li class="itemstyle"><b>Anzahl:</b> {{data.quantity}}</li>
-      <li class="itemstyle"><b>Detaillierte Beschreibung:</b> <br />{{data.description}}</li>
-      <li class="itemstyle"><b>Kategorie:</b> {{data.category}}</li>
+      <li class="itemstyle"><b>Kategorie:</b> {{data.shareDTO?.category}}</li>
       <li class="itemstyle"><b>Kaufdatum:</b> {{data.purchaseDate | date}}</li>
     </ul>
   </div>

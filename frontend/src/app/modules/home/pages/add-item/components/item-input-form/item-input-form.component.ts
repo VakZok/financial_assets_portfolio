@@ -2,6 +2,7 @@ import {Component,  ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
+import {ShareModel} from "../../../../../../core/models/share.model";
 
 const maxDate = new Date("2123-12-31");
 const minDate: Date = new Date("1903-04-22");
@@ -56,11 +57,7 @@ export class ItemInputFormComponent {
 
   constructor(private pItemService: PortfolioItemService) {
   }
-  // do not allow more than 6 characters for wkn input field
-  onInputWkn(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    inputElement.value = inputElement.value.slice(0,6)
-  }
+
   // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -178,15 +175,20 @@ export class ItemInputFormComponent {
         this.errorMap.set(key, '');
       }
 
+      const shareDTO: ShareModel = {
+        wkn: this.pItemForm.controls.wkn.value || '',
+        name: this.pItemForm.controls.name.value || '',
+        category: this.pItemForm.controls.category.value || '',
+        description: this.pItemForm.controls.description.value || ''
+      }
+
       //create portfolioItemDTO
       const pItemDTO: PortfolioItemModel = {
         purchaseDate: new Date(this.pItemForm.controls.purchaseDate.value || ''),
         purchasePrice: parseFloat(this.pItemForm.controls.purchasePrice.value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls.quantity.value || ''),
-        wkn: this.pItemForm.controls.wkn.value || '',
-        name: this.pItemForm.controls.name.value || '',
-        category: this.pItemForm.controls.category.value || '',
-        description: this.pItemForm.controls.description.value || ''
+        shareDTO: shareDTO
+
       }
       //check if share exists, if exists, sends a put request, if not, sends a post request to add/modify share
       //Finally portfolioItemDTO is sent to backend using post request

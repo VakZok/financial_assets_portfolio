@@ -14,7 +14,6 @@ public class PItemDTO {
     private Long id;
     private ShareDTO shareDTO;
 
-
     private LocalDate purchaseDate;
     private double purchasePrice;
     private int quantity;
