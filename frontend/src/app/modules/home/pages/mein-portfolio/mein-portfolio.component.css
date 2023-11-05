@@ -25,3 +25,12 @@ h1 {
   border-top: 1px solid transparent;
   cursor: pointer;
 }
+
+.routing-button{
+  width: 30px; /* Set your desired button size */
+  height: 30px;
+  border: 3px solid black; /* Black border */
+  background-color: white; /* White background */
+  border-radius: 50%; /* Makes the button round */
+  position: relative;
+}

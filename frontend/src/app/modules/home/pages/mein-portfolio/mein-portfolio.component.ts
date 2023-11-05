@@ -28,7 +28,7 @@ export class MeinPortfolioComponent implements OnInit {
     })
   }
 
-  displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice'];
+  displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
   goToPItem(wkn:string){
     this.router.navigate(['meinPortfolio',wkn])

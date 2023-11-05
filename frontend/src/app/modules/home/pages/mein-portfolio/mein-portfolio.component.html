@@ -27,6 +27,14 @@
       <td mat-cell *matCellDef="let element"> {{element.totalQuantity}} </td>
     </ng-container>
 
+    <!-- Add Shares -->
+    <ng-container matColumnDef="buy">
+      <th mat-header-cell *matHeaderCellDef> <b>Nachkaufen</b> </th>
+      <td mat-cell *matCellDef="let element">
+        <button routerLink="/meinPortfolio" class="routing-button">✚</button>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row (click)="goToPItem(row.shareDTO.wkn)" *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
