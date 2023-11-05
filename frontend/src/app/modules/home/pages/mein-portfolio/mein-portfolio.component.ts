@@ -30,8 +30,8 @@ export class MeinPortfolioComponent implements OnInit {
 
   displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice'];
   dataSource = new MatTableDataSource<any>(this.pItems);
-  goToPItem(id:string){
-    this.router.navigate(['meinPortfolio',id])
+  goToPItem(wkn:string){
+    this.router.navigate(['meinPortfolio',wkn])
   }
 
   // unaggregated

@@ -5,5 +5,5 @@ export class AggPortfolioItemModel {
   shareDTO?: ShareModel
   avgPrice?: number
   totalQuantity?: number
-  pItemsList?: PortfolioItemModel
+  pItemsList?: PortfolioItemModel[]
 }

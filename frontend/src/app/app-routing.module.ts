@@ -8,7 +8,7 @@ import { DatenschutzComponent} from "./modules/home/pages/datenschutz/datenschut
 
 const routes: Routes = [
   { path: 'meinPortfolio', component: MeinPortfolioComponent},
-  { path: 'meinPortfolio/:id', component: ShowItemComponent},
+  { path: 'meinPortfolio/:wkn', component: ShowItemComponent},
   { path: 'pItemHinzufuegen', component: AddItemComponent},
   { path: 'impressum', component: ImpressumComponent},
   { path: 'datenschutz', component: DatenschutzComponent},
