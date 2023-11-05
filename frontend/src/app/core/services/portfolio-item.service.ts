@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PortfolioItemModel} from "../models/portfolio-item.model";
+import {AggPortfolioItemModel} from "../models/agg-portfolio-item.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class PortfolioItemService {
 
   getPItemPrevList(): Observable<PortfolioItemModel[]> {
     return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview');
+  }
+
+  getWKNAggPItemList(): Observable<AggPortfolioItemModel[]> {
+    return this.http.get<AggPortfolioItemModel[]>(this.apiUrl + '/viewBy/wkn/preview')
   }
 
 }
