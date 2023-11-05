@@ -49,21 +49,13 @@
     </mat-form-field>
   </div>
 
-  <div class="row">
+  <div class="row bottom">
 
     <div class="container">
       <mat-form-field>
         <mat-label>Anzahl</mat-label>
         <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)" />
         <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="container">
-      <mat-form-field >
-        <mat-label>Kaufdatum</mat-label>
-        <input matInput id="purchase-date" type="date" formControlName="purchaseDate"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('purchaseDate')?.length || 0) >=1">{{errorMap.get('purchaseDate')}}</mat-error>
       </mat-form-field>
     </div>
 
@@ -79,8 +71,8 @@
   </div>
 
   <div class="button-area">
-    <button mat-raised-button color="primary" [type]="'submit'">Hinzufügen</button>
-    <button mat-raised-button color="accent" [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
+    <button  color="primary" [type]="'submit'">Hinzufügen</button>
+    <button color="accent" [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
   </div>
 
 </form>

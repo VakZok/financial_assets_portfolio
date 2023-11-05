@@ -1,13 +1,16 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
 import {ShareModel} from "../../../../../../core/models/share.model";
 import {ShareService} from "../../../../../../core/services/share.service";
 import {WKNValidator} from "../../../../../../core/validators/wkn-validator";
-import {debounceTime, first} from "rxjs";
+import {first} from "rxjs";
 import {format} from 'date-fns';
 import {CurrencyPipe} from "@angular/common";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {SnackBarComponent} from "../snack-bar/snack-bar.component";
+import {Router} from "@angular/router";
 
 const maxDate = new Date("2123-12-31");
 const minDate: Date = new Date("1903-04-22");
@@ -55,7 +58,12 @@ export class ItemInputFormComponent {
 
 
 
-  constructor(private pItemService: PortfolioItemService, private shareService: ShareService, private currencyPipe: CurrencyPipe, private cdr:ChangeDetectorRef) {
+  constructor(private pItemService: PortfolioItemService,
+              private shareService: ShareService,
+              private currencyPipe: CurrencyPipe,
+              private _snackBar: MatSnackBar,
+              private router: Router) {
+
     /* Form Validation, check for completeness and sanity */
     this.pItemForm = new FormGroup({
       wkn: new FormControl('', {
@@ -74,10 +82,6 @@ export class ItemInputFormComponent {
       quantity: new FormControl('', [
         Validators.required,
         Validators.min(1)]),
-      purchaseDate: new FormControl('', [
-        Validators.required,
-        //DateValidator()
-      ]),
       purchasePrice: new FormControl('', [
         Validators.required,
         Validators.min(1e-7)
@@ -195,21 +199,6 @@ export class ItemInputFormComponent {
       this.errorMap.set('quantity', '');
     }
 
-    if (this.pItemForm.controls['purchaseDate'].errors?.['required']) {
-      this.errorMap.set('purchaseDate', 'Bitte tragen Sie ein Kaufdatum ein');
-    } else if (this.pItemForm.controls['purchaseDate'].errors?.['dateFutureErr']) {
-      this.errorMap.set('purchaseDate',
-        'Das Kaufdatum muss vor dem ' + maxDate.toLocaleDateString('de-DE',
-          {day: 'numeric', month: 'numeric', year: 'numeric'}) + ' liegen');
-
-    } else if (this.pItemForm.controls['purchaseDate'].errors?.['datePastErr']) {
-      this.errorMap.set('purchaseDate',
-        'Das Kaufdatum muss nach dem ' + minDate.toLocaleDateString(
-          'de-DE', {day: 'numeric', month: 'numeric', year: 'numeric'}) + ' liegen');
-    } else {
-      this.errorMap.set('purchaseDate', '');
-    }
-
     if (this.pItemForm.controls['purchasePrice'].errors?.['required']) {
       this.errorMap.set('purchasePrice', 'Bitte tragen Sie einen Kaufpreis ein');
     } else if (this.pItemForm.controls['purchasePrice'].errors?.['min']) {
@@ -247,7 +236,7 @@ export class ItemInputFormComponent {
 
       //create portfolioItemDTO
       const pItemDTO: PortfolioItemModel = {
-        purchaseDate: format(new Date(this.pItemForm.controls['purchaseDate'].value || ''), 'yyyy-MM-dd'),
+        purchaseDate: format(new Date(), 'yyyy-MM-dd'),
         purchasePrice: parseFloat(this.pItemForm.controls['purchasePrice'].value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls['quantity'].value || ''),
         shareDTO: shareDTO
@@ -264,7 +253,7 @@ export class ItemInputFormComponent {
           this.pItemForm.get(item.name)?.setErrors(item.message)
           this.errorMap.set(item.name, item.message);
         }),
-        complete: () => this.itemAdded = true
+        complete: () => this.onSuccess()
       })
     }
 
@@ -275,11 +264,18 @@ export class ItemInputFormComponent {
     this.itemAdded = false;
     this.form.resetForm();
     this.pItemForm.reset();
-    this.pItemForm.controls['name'].markAsDirty()
     this.leftSigns = '255';
     for (let [key, error] of this.errorMap){
       this.errorMap.set(key, '');
     }
+  }
+
+  onSuccess(){
+    this._snackBar.openFromComponent(SnackBarComponent, {
+      duration: 2000,
+    });
+    this.router.navigate(['meinPortfolio'])
+
   }
 
 }

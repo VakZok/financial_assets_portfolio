@@ -19,6 +19,9 @@ import {CurrencyPipe, registerLocaleData} from '@angular/common';
 import * as de from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { SnackBarComponent } from './modules/home/pages/add-item/components/snack-bar/snack-bar.component';
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import {MatCardModule} from "@angular/material/card";
     MeinPortfolioComponent,
     ShowItemComponent,
     ImpressumComponent,
-    DatenschutzComponent
+    DatenschutzComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,9 @@ import {MatCardModule} from "@angular/material/card";
     BrowserAnimationsModule,
     MatTableModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
+    MatButtonModule
   ],
   providers: [{
     provide: LOCALE_ID,
