@@ -1,9 +1,15 @@
 package hs.aalen.financial_assets_portfolio.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,34 +22,49 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ShareController {
     private final ShareService shareService;
+    private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
     public ShareController(ShareService shareService) {
         this.shareService = shareService;
+        JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
     /* GET REQUESTS */
     @GetMapping("/shares/{wkn}")
     public ResponseEntity<Object> getShare(@PathVariable String wkn){
-        Share share = shareService.getShare(wkn);
-        if(share == null) {
-            return new ResponseEntity<>(new ShareDTO(), HttpStatus.OK);
-        } else {
+        try {
+            System.out.println("test");
+            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+
+            Share share = shareService.getShare(wkn);
             ShareDTO shareDTO = new ShareDTO(share);
-            return new ResponseEntity<>(shareDTO, HttpStatus.OK);
+            ObjectMapper om = new ObjectMapper();
+            om.registerModule(new JavaTimeModule());
+
+            String mappedObject = om.writer(filterProvider).writeValueAsString(shareDTO);
+            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @GetMapping(value = "/shares")
     public ResponseEntity<Object> getShareList() {
-        List<Share> shareList = shareService.getShareList();
-        ArrayList<ShareDTO> shareDTOList = new ArrayList<>();
-
-        if(shareList.isEmpty()) {
-            shareDTOList.add(new ShareDTO());
-        } else {
-            shareDTOList.addAll(shareList.stream().map(ShareDTO::new).toList());
+        try {
+            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+            List<Share> shareList = shareService.getShareList();
+            ArrayList<ShareDTO> shareDTOList = new ArrayList<>(shareList.stream().map(ShareDTO::new).toList());
+            ObjectMapper om = new ObjectMapper();
+            om.registerModule(new JavaTimeModule());
+            String mappedObject = om.writer(filterProvider).writeValueAsString(shareDTOList);
+            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(shareDTOList, HttpStatus.OK);
+
     }
 
     /* POST REQUESTS */

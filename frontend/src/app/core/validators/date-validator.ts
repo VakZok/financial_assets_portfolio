@@ -9,7 +9,7 @@ export function DateValidator(): ValidatorFn {
         if (!(inputDate < maxDate)) {
           return {'dateFutureErr': true};
         } else if (!(inputDate > minDate)){
-          return{'datePastErr':true}
+          return{'datePastErr':true};
         }
         return null;
     };

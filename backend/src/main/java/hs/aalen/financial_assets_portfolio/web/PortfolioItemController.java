@@ -31,7 +31,7 @@ public class PortfolioItemController {
     private final PortfolioItemService portfolioItemService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
-    public PortfolioItemController(PortfolioItemService portfolioItemService, ObjectMapper objectMapper) {
+    public PortfolioItemController(PortfolioItemService portfolioItemService) {
         this.portfolioItemService = portfolioItemService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
@@ -108,7 +108,7 @@ public class PortfolioItemController {
         }
 
     }
-    
+
     @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
     public ResponseEntity<Object> getWKNAggPItemsList() {
         List<PItemAggDTO> pItemAggDTOList = portfolioItemService.getWKNAggPItemsPreview();

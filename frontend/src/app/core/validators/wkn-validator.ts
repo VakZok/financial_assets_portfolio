@@ -1,16 +1,14 @@
-import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import {AbstractControl, ValidatorFn, ValidationErrors, AsyncValidator, AsyncValidatorFn} from '@angular/forms';
 import {ShareService} from "../services/share.service";
 
-
-export function validateWKN(shareService : ShareService): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const wkn = control.value
-    shareService.getShare(wkn).subscribe({
-      // if backend validation produces exceptions on postPItem, set them on the errorMap
-      error: (errors) => {
-        return {'wknExists': true};
-      }
-    })
-    return null
-  }
+export function WKNValidator(shareService: ShareService): AsyncValidatorFn {
+  return async (control: AbstractControl): Promise<ValidationErrors | null> => {
+    console.log('WKNValidator called with value:', control.value);
+    try {
+      const data = await shareService.getShare(control.value).toPromise();
+      return { 'shareExist': true };
+    } catch (error) {
+      return null;
+    }
+  };
 }
