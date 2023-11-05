@@ -15,7 +15,7 @@ import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.compo
 import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from "@angular/material/table";
-import { registerLocaleData } from '@angular/common';
+import {CurrencyPipe, registerLocaleData} from '@angular/common';
 import * as de from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
@@ -47,7 +47,9 @@ import {MatCardModule} from "@angular/material/card";
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
-  },],
+
+  },
+  CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

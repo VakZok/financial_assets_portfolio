@@ -1,16 +1,14 @@
 package hs.aalen.financial_assets_portfolio.service;
 
-
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemAggDTO;
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
-import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PortfolioItemRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -25,9 +23,7 @@ public class PortfolioItemService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final LocalDate MIN_DATE = LocalDate.of(1903,4,22);
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
-    private static final String[] LIST_PREVIEW_FIELDS = {"shareDTO.wkn", "shareDTO.name", "totalQuantity", "avgPrice"};
-    private static final int WKN_LENGTH = 6;
-    private static final int STRING_MAX_LENGTH = 255;
+
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PortfolioItemRepository portfolioItemRepository;
@@ -41,10 +37,10 @@ public class PortfolioItemService {
     }
 
     /* Method that returns the portfolio item searched by the id */
-    public PortfolioItem getPortfolioItem(Long id)throws NoSuchElementException {
+    public PItemDTO getPortfolioItem(Long id)throws NoSuchElementException {
         Optional<PortfolioItem> item = portfolioItemRepository.findById(id);
         if (item.isPresent()){
-            return item.get();
+            return new PItemDTO(item.get());
         }else {
             throw new NoSuchElementException("Portfolioitem wurde nicht gefunden");
         }
@@ -55,43 +51,50 @@ public class PortfolioItemService {
     }
 
     /* Method that adds a new portfolio item when the form is correct */
-    public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException {
+    public void addPortfolioItem(PItemDTO pItemDTO) throws FormNotValidException, DataIntegrityViolationException {
         ShareDTO shareDTO = pItemDTO.getShareDTO();
-        Share share = new Share(shareDTO);
-        if(!(shareService.checkShareExists(share))){
-            ArrayList<ExceptionDTO> exceptionsShare = shareService.validateForm(shareDTO);
-            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            exceptions.addAll(exceptionsShare);
-            if(exceptions.isEmpty()){
-                shareService.addShare(shareDTO);
+        try{
+            try{
+                ArrayList<ExceptionDTO> pItemExceptionList = validateForm(pItemDTO);
+                if (!pItemExceptionList.isEmpty()){
+                    throw new FormNotValidException("Formfehler", pItemExceptionList);
+                }
+            } catch(FormNotValidException e){
+                ArrayList<ExceptionDTO> pItemExceptionList = e.getExceptions();
+                pItemExceptionList.addAll(this.shareService.validateForm(shareDTO));
+                throw new FormNotValidException("Formfehler", pItemExceptionList);
+            }
+            try {
+                shareService.addShare(pItemDTO.getShareDTO());
                 PortfolioItem pItem = new PortfolioItem(pItemDTO);
                 portfolioItemRepository.save(pItem);
-            } else {
-                throw new FormNotValidException("Formfehler", exceptions);
+            } catch (FormNotValidException e) {
+                ArrayList<ExceptionDTO> shareExceptionList = e.getExceptions();
+                throw new FormNotValidException("Formfehler", shareExceptionList);
             }
-        } else {
-            ArrayList<ExceptionDTO> exceptions = formIsValid(pItemDTO);
-            if (exceptions.isEmpty()) {
-                PortfolioItem pItem = new PortfolioItem(pItemDTO);
-                portfolioItemRepository.save(pItem);
-            } else {
-                throw new FormNotValidException("Formfehler", exceptions);
-            }
+        } catch(DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
         }
     }
 
+
     /* Method that returns the portfolio item list */
-    public List<PortfolioItem> getPortfolioItemList(){
-        return portfolioItemRepository.findAll();
+    public ArrayList<PItemDTO> getPortfolioItemList() throws NoSuchElementException{
+        List<PortfolioItem> pItemList = portfolioItemRepository.findAll();
+        if (pItemList.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return new ArrayList<PItemDTO>(pItemList.stream().map(PItemDTO::new).toList());
     }
+
     public List<PItemAggDTO> getWKNAggPItemsPreview(){
-        ArrayList<Share> shareList = (ArrayList<Share>) shareService.getShareList();
+        ArrayList<ShareDTO> shareDTOList = shareService.getShareList();
         return new ArrayList<>(
-                shareList.stream().map(share -> aggregatePItems(share.getWkn())).toList());
+                shareDTOList.stream().map(share -> aggregatePItems(share.getWkn())).toList());
     }
 
     /* Method that checks the validity of the input */
-    public ArrayList<ExceptionDTO> formIsValid(PItemDTO pItemDTO){
+    public ArrayList<ExceptionDTO> validateForm(PItemDTO pItemDTO){
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
         if(pItemDTO.getPurchasePrice() == 0){
             exceptions.add(new ExceptionDTO("purchasePrice", "Bitte tragen Sie einen Kaufpreis ein"));
@@ -113,15 +116,14 @@ public class PortfolioItemService {
     }
 
     public PItemAggDTO aggregatePItems(String wkn){
-        Share share = shareService.getShare(wkn);
+        ShareDTO shareDTO = shareService.getShare(wkn);
         ArrayList<PortfolioItem> pItemList = portfolioItemRepository.findAllByShare_Wkn(wkn);
         ArrayList<PItemDTO> pItemDTOList = new ArrayList<>(pItemList.stream().map(PItemDTO::new).toList());
-        double avgPrice = pItemList.stream()
-                .mapToDouble(PortfolioItem::getPurchasePrice)
-                .average().orElseThrow(IllegalStateException::new);
+        double totalSum = pItemList.stream()
+                .mapToDouble(pItem -> pItem.getQuantity() * pItem.getPurchasePrice()).sum();
         int totalQuantity = pItemList.stream()
                 .mapToInt(PortfolioItem::getQuantity).sum();
-        return new PItemAggDTO(new ShareDTO(share), avgPrice, totalQuantity, pItemDTOList);
+        return new PItemAggDTO(shareDTO, totalSum/totalQuantity, totalQuantity, pItemDTOList);
     }
 
 }

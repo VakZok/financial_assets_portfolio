@@ -11,7 +11,9 @@ import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
+import hs.aalen.financial_assets_portfolio.service.ShareService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,12 +48,10 @@ public class PortfolioItemController {
             filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
             filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.serializeAllExcept());
 
-            PortfolioItem pItem = portfolioItemService.getPortfolioItem(id);
-            PItemDTO pItemDTO = new PItemDTO(pItem);
+            PItemDTO pItemDTO = portfolioItemService.getPortfolioItem(id);
 
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-
             String mappedObject = om.writer(filterProvider).writeValueAsString(pItemDTO);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
         } catch (NoSuchElementException e) {
@@ -91,30 +91,22 @@ public class PortfolioItemController {
             filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
             filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.serializeAllExcept());
 
-            List<PortfolioItem> pItemList = portfolioItemService.getPortfolioItemList();
-            ArrayList<PItemDTO> pItemDTOList = new ArrayList<PItemDTO>();
-            if (pItemList.isEmpty()) {
-                pItemDTOList.add(new PItemDTO());
-            } else {
-                pItemDTOList.addAll(pItemList.stream().map(PItemDTO::new).toList());
-            }
+            ArrayList<PItemDTO> pItemDTOList = portfolioItemService.getPortfolioItemList();
+
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-
             String mappedObject = om.writer(filterProvider).writeValueAsString(pItemDTOList);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>( JSON_HEADER, HttpStatus.NOT_FOUND);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
     public ResponseEntity<Object> getWKNAggPItemsList() {
         List<PItemAggDTO> pItemAggDTOList = portfolioItemService.getWKNAggPItemsPreview();
-        if (pItemAggDTOList.isEmpty()) {
-            pItemAggDTOList.add(new PItemAggDTO());
-        }
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity"));
@@ -135,6 +127,8 @@ public class PortfolioItemController {
         try {
             portfolioItemService.addPortfolioItem(pItemDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), HttpStatus.CONFLICT);
         } catch (FormNotValidException e) {
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }

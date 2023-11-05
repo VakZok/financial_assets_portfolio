@@ -16,10 +16,9 @@
     <div class="container">
       <mat-form-field>
         <mat-label>WKN</mat-label>
-        <input matInput id="wkn" maxlength="6" value="wkn" type="text"  formControlName="wkn"/>
+        <input matInput id="wkn" (blur)="onBlurWKN()" maxlength="6" value="wkn" type="text"  formControlName="wkn"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('wkn')?.length || 0) >=1">{{errorMap.get('wkn')}}</mat-error>
       </mat-form-field>
-
     </div>
 
     <div class="container">
@@ -28,7 +27,6 @@
         <input matInput id="name" maxlength="255" type="text" formControlName="name" />
         <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
       </mat-form-field>
-
     </div>
 
     <div class="container">
@@ -37,7 +35,6 @@
         <input matInput id="category" maxlength="255" type="text" formControlName="category" />
         <mat-error class="error" *ngIf="(this.errorMap.get('category')?.length || 0) >=1">{{errorMap.get('category')}}</mat-error>
       </mat-form-field>
-
     </div>
 
   </div>
@@ -50,7 +47,6 @@
       <mat-error class="error" *ngIf="(this.errorMap.get('description')?.length || 0) >=1">{{errorMap.get('description')}}</mat-error>
       <mat-hint class="hint" align="end">{{this.leftSigns}} / 255 Zeichen</mat-hint>
     </mat-form-field>
-
   </div>
 
   <div class="row">
@@ -61,7 +57,6 @@
         <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)" />
         <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
       </mat-form-field>
-
     </div>
 
     <div class="container">
@@ -70,17 +65,15 @@
         <input matInput id="purchase-date" type="date" formControlName="purchaseDate"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('purchaseDate')?.length || 0) >=1">{{errorMap.get('purchaseDate')}}</mat-error>
       </mat-form-field>
-
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Kaufpreis in Euro</mat-label>
         <input matInput id="purchase-price" type="text" maxlength="255" formControlName="purchasePrice"
-               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" />
+               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" (blur)="transformPrice($event)"  />
         <mat-error class="error" *ngIf="(this.errorMap.get('purchasePrice')?.length || 0) >=1">{{errorMap.get('purchasePrice')}}</mat-error>
       </mat-form-field>
-
     </div>
 
   </div>

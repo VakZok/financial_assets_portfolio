@@ -16,7 +16,6 @@ public class PortfolioItem {
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate purchaseDate;
     private double purchasePrice;
-    private double totalPrice;
     private int quantity;
 
     /* MAPPED RELATIONSHIPS */
@@ -28,7 +27,6 @@ public class PortfolioItem {
     public PortfolioItem(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
-        this.totalPrice = purchasePrice * quantity;
         this.quantity = quantity;
         this.share = share;
 
@@ -37,7 +35,6 @@ public class PortfolioItem {
     public PortfolioItem(PItemDTO pItemDTO) {
         this.purchaseDate = pItemDTO.getPurchaseDate();
         this.purchasePrice = pItemDTO.getPurchasePrice();
-        this.totalPrice = pItemDTO.getTotalPrice();
         this.quantity = pItemDTO.getQuantity();
         this.share = new Share(pItemDTO.getShareDTO());
 
@@ -71,10 +68,6 @@ public class PortfolioItem {
         this.purchasePrice = purchasePrice;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -90,5 +83,6 @@ public class PortfolioItem {
     public void setShare(Share share) {
         this.share = share;
     }
+
 }
 

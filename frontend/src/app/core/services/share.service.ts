@@ -17,6 +17,10 @@ export class ShareService {
     return this.http.get<ShareModel>(this.apiUrl+"/"+wkn);
   }
 
+  checkShareExists(wkn:string): Observable<ShareModel> {
+    return this.http.head<ShareModel>(this.apiUrl+"/"+wkn);
+  }
+
   postShare(share:ShareModel): Observable<ShareModel>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(this.apiUrl + '/add', share, { headers: headers })

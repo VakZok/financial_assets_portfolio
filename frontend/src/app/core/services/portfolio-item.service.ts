@@ -19,7 +19,7 @@ export class PortfolioItemService {
 
   postPItem(portfolioItem: PortfolioItemModel): Observable<PortfolioItemModel>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + '/add', portfolioItem, { headers: headers })
+    return this.http.post<any>(this.apiUrl + '/add', portfolioItem)
   }
 
   getPItemPrevList(): Observable<PortfolioItemModel[]> {

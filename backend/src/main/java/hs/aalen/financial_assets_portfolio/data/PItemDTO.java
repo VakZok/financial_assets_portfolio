@@ -40,7 +40,7 @@ public class PItemDTO {
         this.id = portfolioItem.getId();
         this.purchaseDate = portfolioItem.getPurchaseDate();
         this.purchasePrice = portfolioItem.getPurchasePrice();
-        this.totalPrice = portfolioItem.getTotalPrice();
+        this.totalPrice = portfolioItem.getPurchasePrice()* portfolioItem.getQuantity();
         this.quantity = portfolioItem.getQuantity();
         this.shareDTO = new ShareDTO(portfolioItem.getShare());
     }
