@@ -67,7 +67,7 @@ public class PortfolioItemController {
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity", "pItemDTOList"));
-            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn"));
+            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn", "description", "category"));
             filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("purchasePrice", "totalPrice", "quantity", "purchaseDate"));
 
             ObjectMapper om = new ObjectMapper();

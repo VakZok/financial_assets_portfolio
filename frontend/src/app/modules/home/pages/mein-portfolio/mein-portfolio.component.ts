@@ -17,7 +17,7 @@ export class MeinPortfolioComponent implements OnInit {
   }
   // aggregated by wkn
   ngOnInit(): void {
-    this.pItemService.getWKNAggPItemList().subscribe({
+    this.pItemService.getAggPItemPreview().subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item))
         this.dataSource.data = this.pItems

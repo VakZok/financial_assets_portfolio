@@ -26,8 +26,12 @@ export class PortfolioItemService {
     return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview');
   }
 
-  getWKNAggPItemList(): Observable<AggPortfolioItemModel[]> {
+  getAggPItemPreview(): Observable<AggPortfolioItemModel[]> {
     return this.http.get<AggPortfolioItemModel[]>(this.apiUrl + '/viewBy/wkn/preview')
+  }
+
+  getWKNAggPItem(wkn:string): Observable<AggPortfolioItemModel> {
+    return this.http.get<AggPortfolioItemModel>(this.apiUrl + '/viewBy/wkn/' + wkn)
   }
 
 }
