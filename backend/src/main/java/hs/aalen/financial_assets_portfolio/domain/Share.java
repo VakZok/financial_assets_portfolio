@@ -3,6 +3,7 @@ package hs.aalen.financial_assets_portfolio.domain;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -11,12 +12,16 @@ public class Share {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
+    @Size(max = 6, message = "Die WKN darf nicht aus mehr als 6 Zeichen bestehen")
     @NotBlank(message = "WKN ist ein Pflichtfeld")
     private String wkn;
+    @Size(max = 256, message = "Der Name darf nicht mehr als 256 Zeichen besitzen")
     @NotBlank(message = "Name ist ein Pflichtfeld")
     private String name;
+    @Size(max = 256, message = "Die Kategorie darf nicht mehr als 256 Zeichen besitzen")
     @NotBlank(message = "Kategorie ist ein Pflichtfeld")
     private String category;
+    @Size(max = 256, message = "Die Beschreibung darf nicht mehr als 256 Zeichen besitzen")
     @NotBlank(message = "Beschreibung ist ein Pflichtfeld")
     private String description;
 
