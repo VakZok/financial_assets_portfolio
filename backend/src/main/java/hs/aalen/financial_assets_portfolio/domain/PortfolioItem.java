@@ -2,6 +2,8 @@ package hs.aalen.financial_assets_portfolio.domain;
 
 import hs.aalen.financial_assets_portfolio.data.PItemDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -14,8 +16,11 @@ public class PortfolioItem {
     @GeneratedValue(generator = "increment")
     private Long id;
     @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @NotNull(message = "Kaufdatum ist ein Pflichtfeld")
     private LocalDate purchaseDate;
+    @NotNull(message = "Kaufpreis ist ein Pflichtfeld")
     private double purchasePrice;
+    @NotNull(message = "Anzahl ist ein Pflichtfeld")
     private int quantity;
 
     /* MAPPED RELATIONSHIPS */

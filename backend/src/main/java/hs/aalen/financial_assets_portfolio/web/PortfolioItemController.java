@@ -12,6 +12,7 @@ import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
+import jakarta.validation.Valid;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -123,7 +124,7 @@ public class PortfolioItemController {
 
     /* POST REQUESTS */
     @PostMapping("portfolioItems/add")
-    public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO) {
+    public ResponseEntity<Object> addPortfolioItem(@Valid @RequestBody PItemDTO pItemDTO) {
         try {
             portfolioItemService.addPortfolioItem(pItemDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);

@@ -2,6 +2,7 @@ package hs.aalen.financial_assets_portfolio.domain;
 
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
@@ -10,9 +11,13 @@ public class Share {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
+    @NotBlank(message = "WKN ist ein Pflichtfeld")
     private String wkn;
+    @NotBlank(message = "Name ist ein Pflichtfeld")
     private String name;
+    @NotBlank(message = "Kategorie ist ein Pflichtfeld")
     private String category;
+    @NotBlank(message = "Beschreibung ist ein Pflichtfeld")
     private String description;
 
     /* MAPPED RELATIONSHIPS */

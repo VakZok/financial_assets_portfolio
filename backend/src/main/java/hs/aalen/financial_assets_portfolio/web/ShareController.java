@@ -10,6 +10,7 @@ import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
+import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,7 +74,7 @@ public class ShareController {
 
     /* POST REQUESTS */
     @PostMapping("/shares/add")
-    public ResponseEntity<Object> addShare(@RequestBody ShareDTO shareDTO){
+    public ResponseEntity<Object> addShare(@Valid @RequestBody ShareDTO shareDTO){
         try{
             shareService.addShare(shareDTO);
             return new ResponseEntity<>(HttpStatus.OK);
