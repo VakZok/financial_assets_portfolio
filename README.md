@@ -3,6 +3,9 @@
 Backend Port: 8080 
 Frontend Port: 4200
 
+Used packages: 
+date-fns | npm install date-fns
+
 Teammitglieder:
 
 Alexander Schilling, 
