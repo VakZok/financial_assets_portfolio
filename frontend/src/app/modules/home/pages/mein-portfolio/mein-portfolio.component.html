@@ -1,6 +1,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="body">
-  <h1>Meine Portfolioitems</h1>
+  <h1>Mein Portfolio</h1>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- WKN Column -->
@@ -18,7 +18,7 @@
     <!-- Purchase Price Column -->
     <ng-container matColumnDef="avgPrice">
       <th mat-header-cell *matHeaderCellDef> <b>Kaufpreis</b> </th>
-      <td mat-cell *matCellDef="let element"> {{element.avgPrice |currency:'EUR':true}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.avgPrice |currency:'EUR':'symbol'}} </td>
     </ng-container>
 
     <!-- Quantity Column -->
