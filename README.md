@@ -1,15 +1,23 @@
 # Financial Assets Portfolio Manager TEAM 1
 
-Backend Port: 8080 
-Frontend Port: 4200
+## Port Usage:
 
-Used packages: 
-date-fns | npm install date-fns
+**Backend Port**: 8080 
 
-Teammitglieder:
+**Frontend Port**: 4200
+
+## Used packages | how to install: 
+
+**date-fns** | npm install date-fns
+
+## Teammembers:
 
 Alexander Schilling, 
+
 Daniel Dittrich, 
+
 Tobias Krebs, 
+
 Nico Knödler,
+
 Manuel Wengert, 
