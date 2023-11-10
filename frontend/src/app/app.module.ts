@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/header/header.component';
 import { NavigationComponent } from './core/header/navigation/navigation.component';
 import { FooterComponent } from './core/footer/footer.component';
-import { AddItemComponent } from './modules/home/pages/add-item/add-item.component';
-import { ItemInputFormComponent } from './modules/home/pages/add-item/components/item-input-form/item-input-form.component';
+
+
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "./app-routing.module";
 import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
@@ -22,6 +22,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { SnackBarComponent } from './modules/home/pages/add-item/components/snack-bar/snack-bar.component';
 import {MatButtonModule} from "@angular/material/button";
+import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,6 @@ import {MatButtonModule} from "@angular/material/button";
     NavigationComponent,
     FooterComponent,
     AddItemComponent,
-    ItemInputFormComponent,
     MeinPortfolioComponent,
     ShowItemComponent,
     ImpressumComponent,
