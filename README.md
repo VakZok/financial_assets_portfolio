@@ -1,5 +1,11 @@
 # Financial Assets Portfolio Manager TEAM 1
 
+## Current Data Model:
+
+<img src="ER Diagram Sprint2 Team1.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
+
 ## Port Usage:
 
 **Backend Port**: 8080 
