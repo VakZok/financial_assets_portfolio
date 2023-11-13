@@ -7,11 +7,11 @@ import {AggPortfolioItemModel} from "../../../../core/models/agg-portfolio-item.
 
 @Component({
   selector: 'app-mein-portfolio',
-  templateUrl: './mein-portfolio.component.html',
-  styleUrls: ['./mein-portfolio.component.css']
+  templateUrl: './my-portfolio.component.html',
+  styleUrls: ['./my-portfolio.component.css']
 })
 
-export class MeinPortfolioComponent implements OnInit {
+export class MyPortfolioComponent implements OnInit {
   pItems:AggPortfolioItemModel[]=[];
   constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router,) {
   }

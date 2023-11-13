@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImpressumComponent } from './impressum.component';
+import { LegalNoticeComponent } from './legal-notice.component';
 
 describe('ImpressumComponent', () => {
-  let component: ImpressumComponent;
-  let fixture: ComponentFixture<ImpressumComponent>;
+  let component: LegalNoticeComponent;
+  let fixture: ComponentFixture<LegalNoticeComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ImpressumComponent]
+      declarations: [LegalNoticeComponent]
     });
-    fixture = TestBed.createComponent(ImpressumComponent);
+    fixture = TestBed.createComponent(LegalNoticeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

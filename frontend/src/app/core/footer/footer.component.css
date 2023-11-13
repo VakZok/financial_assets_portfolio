@@ -7,7 +7,7 @@ footer {
 
 .footer-left {
   color: white; /* text color to white */
-  height: 50px; /* customize logo size */
+  min-height: 50px;
   margin-left: 10px; /* so that the container is not directly on the side end of the window */
 }
 

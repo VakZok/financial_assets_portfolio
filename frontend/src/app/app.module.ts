@@ -9,10 +9,10 @@ import { FooterComponent } from './core/footer/footer.component';
 
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "./app-routing.module";
-import {MeinPortfolioComponent} from "./modules/home/pages/mein-portfolio/mein-portfolio.component";
+import {MyPortfolioComponent} from "./modules/home/pages/my-portfolio/my-portfolio.component";
 import { ShowItemComponent } from './modules/home/pages/show-item/show-item.component';
-import {ImpressumComponent} from "./modules/home/pages/impressum/impressum.component";
-import { DatenschutzComponent } from './modules/home/pages/datenschutz/datenschutz.component';
+import {LegalNoticeComponent} from "./modules/home/pages/legal-notice/legal-notice.component";
+import { PrivacyPolicyComponent } from './modules/home/pages/privacy-policy/privacy-policy.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from "@angular/material/table";
 import {CurrencyPipe, registerLocaleData} from '@angular/common';
@@ -31,10 +31,10 @@ import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component
     NavigationComponent,
     FooterComponent,
     AddItemComponent,
-    MeinPortfolioComponent,
+    MyPortfolioComponent,
     ShowItemComponent,
-    ImpressumComponent,
-    DatenschutzComponent,
+    LegalNoticeComponent,
+    PrivacyPolicyComponent,
     SnackBarComponent
   ],
   imports: [
