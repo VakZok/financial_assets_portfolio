@@ -6,15 +6,11 @@ import {CurrencyPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {PortfolioItemService} from "../../../../core/services/portfolio-item.service";
-import {ShareService} from "../../../../core/services/share.service";
 import {WKNValidator} from "../../../../core/validators/wkn-validator";
-import {ShareModel} from "../../../../core/models/share.model";
 import {PurchaseModel} from "../../../../core/models/purchase.model";
 import {SnackBarComponent} from "./components/snack-bar/snack-bar.component";
-import {PurchaseService} from "../../../../purchase.service";
-
-const maxDate = new Date("2123-12-31");
-const minDate: Date = new Date("1903-04-22");
+import {ShareModel} from "../../../../core/models/share.model";
+import {PurchaseService} from "../../../../core/services/purchase.service";
 const maxSigns : number = 255;
 
 async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
@@ -29,7 +25,6 @@ async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   });
 }
 
-
 @Component({
   selector: 'add-item',
   templateUrl: './add-item.component.html',
@@ -40,7 +35,6 @@ export class AddItemComponent {
 
   pItemForm: FormGroup;
   formattedPrice: string | null = '';
-
 
   errorMap = new Map<string, string>([
     ['wkn', ''],
@@ -56,12 +50,8 @@ export class AddItemComponent {
   itemAdded: boolean = false;
   @ViewChild(FormGroupDirective) form: any;
 
-
-
-
   constructor(private pItemService: PortfolioItemService,
               private purchaseService: PurchaseService,
-              private shareService: ShareService,
               private currencyPipe: CurrencyPipe,
               private _snackBar: MatSnackBar,
               private router: Router) {
@@ -69,7 +59,7 @@ export class AddItemComponent {
     /* Form Validation, check for completeness and sanity */
     this.pItemForm = new FormGroup({
       wkn: new FormControl('', {
-        asyncValidators:[WKNValidator(shareService)],
+        asyncValidators:[WKNValidator(this.pItemService)],
         validators:[
           Validators.required,
           Validators.maxLength(6)],
@@ -94,7 +84,7 @@ export class AddItemComponent {
   async onBlurWKN() {
     this.pItemForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(status => {
-      if (this.pItemForm.controls['wkn'].errors?.['shareExist']){
+      if (this.pItemForm.controls['wkn'].errors?.['pItemExists']){
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
       }
     })
@@ -215,7 +205,8 @@ export class AddItemComponent {
 
     await waitForFormNotPending(this.pItemForm)
     if ( this.pItemForm.invalid) {
-      if (this.pItemForm.controls['wkn'].errors?.['shareExist']) {
+      if (this.pItemForm.controls['wkn'].errors?.['pitemExists']) {
+        console.log('check')
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
       }
     }
@@ -233,7 +224,7 @@ export class AddItemComponent {
         wkn: this.pItemForm.controls['wkn'].value || '',
         name: this.pItemForm.controls['name'].value || '',
         category: this.pItemForm.controls['category'].value || '',
-        description: this.pItemForm.controls['description'].value || ''
+        description: this.pItemForm.controls['description'].value || '',
       }
 
       //create portfolioItemDTO
@@ -244,9 +235,7 @@ export class AddItemComponent {
         shareDTO: shareDTO
       }
 
-
-
-      this.purchaseService.postPurchase(purchaseDTO).subscribe({
+      this.purchaseService.postNewPItem(purchaseDTO).subscribe({
         next: (data) => {
           this.pItemForm.reset();
           this.form.resetForm();

@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -34,7 +33,6 @@ public class PurchaseController {
     }
 
     /* GET REQUESTS */
-    @Deprecated
     @GetMapping("purchases/{id}")
     public ResponseEntity<Object> getPurchase(@PathVariable Long id) {
         try {
@@ -56,28 +54,6 @@ public class PurchaseController {
         }
     }
 
-    @GetMapping("portfolioItems/viewBy/wkn/{wkn}")
-    public ResponseEntity<Object> getPItemByWKN(@PathVariable String wkn) {
-        PortfolioItemDTO portfolioItemDTO = purchaseService.getPItemByWKN(wkn);
-        try {
-            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList"));
-            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn", "description", "category"));
-            filterProvider.addFilter("purchaseFilter", SimpleBeanPropertyFilter.filterOutAllExcept("purchasePrice", "totalPrice", "quantity", "purchaseDate"));
-
-            ObjectMapper om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTO);
-            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
-
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Deprecated
     @GetMapping(value = "/purchases/preview")
     public ResponseEntity<Object> getPurchaseList() {
         try {
@@ -99,28 +75,11 @@ public class PurchaseController {
         }
     }
 
-    @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
-    public ResponseEntity<Object> getPItemsPreview() {
-        List<PortfolioItemDTO> portfolioItemDTOList = purchaseService.getPItemsPreview();
-        try {
-            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity"));
-            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn"));
-
-            ObjectMapper om = new ObjectMapper();
-            String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
-            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /* POST REQUESTS */
-    @PostMapping("purchases/add")
-    public ResponseEntity<Object> addPurchase(@RequestBody PurchaseDTO purchaseDTO) {
+    @PostMapping("portfolioItems/{wkn}/purchases/add")
+    public ResponseEntity<Object> addNewPurchase(@PathVariable String wkn, @RequestBody PurchaseDTO purchaseDTO) {
         try {
-            purchaseService.addPurchase(purchaseDTO);
+            purchaseService.addNewPurchase(purchaseDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), HttpStatus.CONFLICT);

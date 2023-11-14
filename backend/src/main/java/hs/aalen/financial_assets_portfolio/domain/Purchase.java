@@ -37,7 +37,6 @@ public class Purchase {
         this.purchasePrice = purchaseDTO.getPurchasePrice();
         this.quantity = purchaseDTO.getQuantity();
         this.share = new Share(purchaseDTO.getShareDTO());
-
     }
 
     public Purchase() {
@@ -83,6 +82,5 @@ public class Purchase {
     public void setShare(Share share) {
         this.share = share;
     }
-
 }
 

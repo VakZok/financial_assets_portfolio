@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.Purchase;
+import hs.aalen.financial_assets_portfolio.domain.Share;
+
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,17 +16,17 @@ public class PurchaseDTO {
      */
 
     private Long id;
-    private ShareDTO shareDTO;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate purchaseDate;
     private double purchasePrice;
     private double totalPrice;
     private int quantity;
+    private ShareDTO shareDTO;
 
     /* Constructors inclusive copy constructors */
     public PurchaseDTO(
             Long id, LocalDate purchaseDate,
-            double purchasePrice, int quantity, ShareDTO shareDTO
+            double purchasePrice, int quantity
     ) {
 
         this.id = id;
@@ -32,7 +34,6 @@ public class PurchaseDTO {
         this.purchasePrice = purchasePrice;
         this.totalPrice = purchasePrice * quantity;
         this.quantity = quantity;
-        this.shareDTO = shareDTO;
 
     }
 
@@ -95,6 +96,5 @@ public class PurchaseDTO {
     public void setShareDTO(ShareDTO shareDTO) {
         this.shareDTO = shareDTO;
     }
-
 }
 

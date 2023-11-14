@@ -55,7 +55,3 @@ public class PortfolioItemDTO {
         this.totalQuantity = totalQuantity;
     }
 }
-
-
-
-

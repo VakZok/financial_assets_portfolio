@@ -5,19 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
-import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.ShareService;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -71,28 +65,4 @@ public class ShareController {
         }
     }
 
-    /* POST REQUESTS */
-    @PostMapping("/shares/add")
-    public ResponseEntity<Object> addShare(@RequestBody ShareDTO shareDTO){
-        try{
-            shareService.addShare(shareDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), JSON_HEADER, HttpStatus.CONFLICT);
-        } catch (FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-    }
-
-    /* PUT REQUESTS */
-    @PutMapping("/shares/update/{wkn}")
-    public ResponseEntity<Object> updateShare(@PathVariable String wkn,
-                                              @RequestBody ShareDTO shareDTO){
-        try{
-            shareService.updateShare(wkn, shareDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (FormNotValidException e){
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-    }
 }

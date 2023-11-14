@@ -5,8 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/header/header.component';
 import { NavigationComponent } from './core/header/navigation/navigation.component';
 import { FooterComponent } from './core/footer/footer.component';
-
-
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "./app-routing.module";
 import {MyPortfolioComponent} from "./modules/home/pages/my-portfolio/my-portfolio.component";

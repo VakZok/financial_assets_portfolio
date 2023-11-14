@@ -3,9 +3,7 @@ package hs.aalen.financial_assets_portfolio.service;
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Share;
-import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.ShareRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,21 +12,21 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ShareService {
-    /* Share service class to process
-     * the requests received in the controller class
-     */
+
 
     /* CONSTANTS */
     public static final int WKN_LENGTH = 6;
     public static final int STRING_MAX_LENGTH = 255;
 
-    /* CONNECTED REPOSITORIES */
     private final ShareRepository shareRepository;
 
-    /* PROCESSING METHODS */
+
+
+
     public ShareService(ShareRepository shareRepository) {
         this.shareRepository = shareRepository;
     }
+
 
     /* Method that returns the share list */
     public ArrayList<ShareDTO> getShareList()throws NoSuchElementException{
@@ -48,47 +46,26 @@ public class ShareService {
         return new ShareDTO(share);
     }
 
-    /* Method that adds a new share when the form is correct */
-    public void addShare(ShareDTO shareDTO) throws FormNotValidException, DataIntegrityViolationException {
-        // check if share exists. If not, validate the form. Raise Exception if share already exists
-        // or if form is invalid
-        if(!this.checkShareExists(shareDTO.getWkn())){
-            ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
-            if(exceptions.isEmpty()){
-                Share share = new Share(shareDTO);
-                shareRepository.save(share);
-            } else {
-                throw new FormNotValidException("Formfehler", exceptions);
-            }
-        } else {
-            throw new DataIntegrityViolationException("Portfolio-Item mit dieser WKN bereits vorhanden");
-        }
+
+    public void saveShare(ShareDTO shareDTO){
+        Share share = new Share(shareDTO);
+        this.shareRepository.save(share);
     }
 
-    /* Method that changes a share when the form is correct */
-    public void updateShare(String wkn, ShareDTO shareDTO) throws FormNotValidException{
-        ArrayList<ExceptionDTO> exceptions = validateForm(shareDTO);
-        if(exceptions.isEmpty()){
-            Share share = shareRepository.findByWkn(wkn);
-            Share shareNew = new Share(shareDTO, share);
-            shareRepository.save(shareNew);
-        } else {
-            throw new FormNotValidException("Formfehler", exceptions);
-        }
-    }
-
-    /* Method that checks if the share already exists */
+    /* Method that checks if the Portfolio Item already exists */
     public boolean checkShareExists(String wkn){
-        return shareRepository.existsByWkn(wkn.toUpperCase());
+        return this.shareRepository.existsByWkn(wkn.toUpperCase());
     }
 
     /* Method that checks the validity of the input */
     public ArrayList<ExceptionDTO> validateForm(ShareDTO shareDTO){
-
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
 
+        if (checkShareExists(shareDTO.getWkn())){
+            exceptions.add(new ExceptionDTO("wkn", "Portfolio-Item mit dieser WKN bereits vorhanden"));
+        }
         if (shareDTO.getWkn().length() > WKN_LENGTH ){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN darf maximal aus 6 Zeichen bestehen."));
+            exceptions.add(new ExceptionDTO("wkn", "Die WKN darf maximal aus 6 Zeichen bestehen"));
         }
         if(shareDTO.getWkn() == null || shareDTO.getWkn().isEmpty()){
             exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));

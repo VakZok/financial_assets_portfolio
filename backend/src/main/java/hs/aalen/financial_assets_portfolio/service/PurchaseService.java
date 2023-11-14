@@ -1,13 +1,10 @@
 package hs.aalen.financial_assets_portfolio.service;
 
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
-import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
-import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Purchase;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PurchaseRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,56 +24,26 @@ public class PurchaseService {
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PurchaseRepository purchaseRepository;
-    private final ShareService shareService;
 
 
     /* PROCESSING METHODS */
-    public PurchaseService(PurchaseRepository purchaseRepository, ShareService shareService) {
+    public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
-        this.shareService = shareService;
     }
 
-    /* Method that returns the portfolio item searched by the id */
+    /* Method that returns the purchase searched by the id */
     public PurchaseDTO getPurchase(Long id)throws NoSuchElementException {
-        Optional<Purchase> item = purchaseRepository.findById(id);
+        Optional<Purchase> item = this.purchaseRepository.findById(id);
         if (item.isPresent()){
             return new PurchaseDTO(item.get());
         }else {
-            throw new NoSuchElementException("Portfolioitem wurde nicht gefunden");
+            throw new NoSuchElementException("Kauf wurde nicht gefunden");
         }
     }
 
-    public PortfolioItemDTO getPItemByWKN(String wkn)throws NoSuchElementException {
-        return aggregatePItem(wkn);
+    public ArrayList<PurchaseDTO> getPurchases(String wkn){
+        return  new ArrayList<>(purchaseRepository.findAllByShare_Wkn(wkn).stream().map(PurchaseDTO::new).toList());
     }
-
-    /* Method that adds a new portfolio item when the form is correct */
-    public void addPurchase(PurchaseDTO purchaseDTO) throws FormNotValidException, DataIntegrityViolationException {
-        ShareDTO shareDTO = purchaseDTO.getShareDTO();
-        try{
-            try{
-                ArrayList<ExceptionDTO> purchaseExceptionList = validateForm(purchaseDTO);
-                if (!purchaseExceptionList.isEmpty()){
-                    throw new FormNotValidException("Formfehler", purchaseExceptionList);
-                }
-            } catch(FormNotValidException e){
-                ArrayList<ExceptionDTO> purchaseExceptionList = e.getExceptions();
-                purchaseExceptionList.addAll(this.shareService.validateForm(shareDTO));
-                throw new FormNotValidException("Formfehler", purchaseExceptionList);
-            }
-            try {
-                shareService.addShare(purchaseDTO.getShareDTO());
-                Purchase pItem = new Purchase(purchaseDTO);
-                purchaseRepository.save(pItem);
-            } catch (FormNotValidException e) {
-                ArrayList<ExceptionDTO> shareExceptionList = e.getExceptions();
-                throw new FormNotValidException("Formfehler", shareExceptionList);
-            }
-        } catch(DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException(e.getMessage());
-        }
-    }
-
 
     /* Method that returns the portfolio item list */
     public ArrayList<PurchaseDTO> getPurchaseList() throws NoSuchElementException{
@@ -84,13 +51,22 @@ public class PurchaseService {
         if (purchaseList.isEmpty()) {
             throw new NoSuchElementException();
         }
-        return new ArrayList<PurchaseDTO>(purchaseList.stream().map(PurchaseDTO::new).toList());
+        return new ArrayList<>(purchaseList.stream().map(PurchaseDTO::new).toList());
     }
 
-    public List<PortfolioItemDTO> getPItemsPreview(){
-        ArrayList<ShareDTO> shareDTOList = shareService.getShareList();
-        return new ArrayList<>(
-                shareDTOList.stream().map(share -> aggregatePItem(share.getWkn())).toList());
+    public void savePurchase(PurchaseDTO purchaseDTO){
+        Purchase purchase = new Purchase(purchaseDTO);
+        this.purchaseRepository.save(purchase);
+    }
+
+    public void addNewPurchase(PurchaseDTO purchaseDTO) throws FormNotValidException{
+        ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(purchaseDTO);
+        exceptionDTOList.addAll(this.validateForm(purchaseDTO));
+        if(exceptionDTOList.isEmpty()){
+            savePurchase(purchaseDTO);
+        } else {
+            throw new FormNotValidException("Formfehler", exceptionDTOList);
+        }
     }
 
     /* Method that checks the validity of the input */
@@ -113,17 +89,6 @@ public class PurchaseService {
                     "purchaseDate", "Das Kaufdatum muss vor dem " + MAX_DATE.format(FORMATTER) + " liegen"));
         }
         return exceptions;
-    }
-
-    public PortfolioItemDTO aggregatePItem(String wkn){
-        ShareDTO shareDTO = shareService.getShare(wkn);
-        ArrayList<Purchase> purchaseList = purchaseRepository.findAllByShare_Wkn(wkn);
-        ArrayList<PurchaseDTO> purchaseDTOList = new ArrayList<>(purchaseList.stream().map(PurchaseDTO::new).toList());
-        double totalSum = purchaseList.stream()
-                .mapToDouble(pItem -> pItem.getQuantity() * pItem.getPurchasePrice()).sum();
-        int totalQuantity = purchaseList.stream()
-                .mapToInt(Purchase::getQuantity).sum();
-        return new PortfolioItemDTO(shareDTO, totalSum/totalQuantity, totalQuantity, purchaseDTOList);
     }
 
 }
