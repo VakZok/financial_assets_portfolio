@@ -3,12 +3,12 @@ package hs.aalen.financial_assets_portfolio.data;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
+import hs.aalen.financial_assets_portfolio.domain.Purchase;
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonFilter("pItemFilter")
-public class PItemDTO {
+@JsonFilter("purchaseFilter")
+public class PurchaseDTO {
     /* Class to create Data Transfer Objects for portfolio items used for communication with the frontend
      * and not exposing too much information.
      */
@@ -22,7 +22,7 @@ public class PItemDTO {
     private int quantity;
 
     /* Constructors inclusive copy constructors */
-    public PItemDTO(
+    public PurchaseDTO(
             Long id, LocalDate purchaseDate,
             double purchasePrice, int quantity, ShareDTO shareDTO
     ) {
@@ -36,16 +36,16 @@ public class PItemDTO {
 
     }
 
-    public PItemDTO(PortfolioItem portfolioItem) {
-        this.id = portfolioItem.getId();
-        this.purchaseDate = portfolioItem.getPurchaseDate();
-        this.purchasePrice = portfolioItem.getPurchasePrice();
-        this.totalPrice = portfolioItem.getPurchasePrice()* portfolioItem.getQuantity();
-        this.quantity = portfolioItem.getQuantity();
-        this.shareDTO = new ShareDTO(portfolioItem.getShare());
+    public PurchaseDTO(Purchase purchase) {
+        this.id = purchase.getId();
+        this.purchaseDate = purchase.getPurchaseDate();
+        this.purchasePrice = purchase.getPurchasePrice();
+        this.totalPrice = purchase.getPurchasePrice()* purchase.getQuantity();
+        this.quantity = purchase.getQuantity();
+        this.shareDTO = new ShareDTO(purchase.getShare());
     }
 
-    public PItemDTO(){}
+    public PurchaseDTO(){}
 
     /* Getters and Setters */
     public Long getId() {

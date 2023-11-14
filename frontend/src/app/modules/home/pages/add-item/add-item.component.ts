@@ -9,8 +9,9 @@ import {PortfolioItemService} from "../../../../core/services/portfolio-item.ser
 import {ShareService} from "../../../../core/services/share.service";
 import {WKNValidator} from "../../../../core/validators/wkn-validator";
 import {ShareModel} from "../../../../core/models/share.model";
-import {PortfolioItemModel} from "../../../../core/models/portfolio-item.model";
+import {PurchaseModel} from "../../../../core/models/purchase.model";
 import {SnackBarComponent} from "./components/snack-bar/snack-bar.component";
+import {PurchaseService} from "../../../../purchase.service";
 
 const maxDate = new Date("2123-12-31");
 const minDate: Date = new Date("1903-04-22");
@@ -59,6 +60,7 @@ export class AddItemComponent {
 
 
   constructor(private pItemService: PortfolioItemService,
+              private purchaseService: PurchaseService,
               private shareService: ShareService,
               private currencyPipe: CurrencyPipe,
               private _snackBar: MatSnackBar,
@@ -235,14 +237,16 @@ export class AddItemComponent {
       }
 
       //create portfolioItemDTO
-      const pItemDTO: PortfolioItemModel = {
+      const purchaseDTO: PurchaseModel = {
         purchaseDate: format(new Date(), 'yyyy-MM-dd'),
         purchasePrice: parseFloat(this.pItemForm.controls['purchasePrice'].value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls['quantity'].value || ''),
         shareDTO: shareDTO
       }
 
-      this.pItemService.postPItem(pItemDTO).subscribe({
+
+
+      this.purchaseService.postPurchase(purchaseDTO).subscribe({
         next: (data) => {
           this.pItemForm.reset();
           this.form.resetForm();

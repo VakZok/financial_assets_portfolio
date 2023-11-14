@@ -17,7 +17,7 @@ public class Share {
 
     /* MAPPED RELATIONSHIPS */
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
-    Set<PortfolioItem> portfolioItems;
+    Set<Purchase> purchases;
 
     /* Constructors */
     public Share(String wkn, String name, String category, String description) {

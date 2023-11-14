@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {PortfolioItemModel} from "../models/portfolio-item.model";
+import {PurchaseModel} from "../models/purchase.model";
 import {ShareModel} from "../models/share.model";
 
 @Injectable({

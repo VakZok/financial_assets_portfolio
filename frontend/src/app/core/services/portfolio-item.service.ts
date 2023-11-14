@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {PurchaseModel} from "../models/purchase.model";
 import {PortfolioItemModel} from "../models/portfolio-item.model";
-import {AggPortfolioItemModel} from "../models/agg-portfolio-item.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +13,13 @@ export class PortfolioItemService {
 
   constructor(private http: HttpClient) { }
 
-  getPItem(id:string): Observable<PortfolioItemModel> {
-    return this.http.get<PortfolioItemModel>(this.apiUrl+"/"+id);
+
+  getAggPItemPreview(): Observable<PortfolioItemModel[]> {
+    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/viewBy/wkn/preview')
   }
 
-  postPItem(portfolioItem: PortfolioItemModel): Observable<PortfolioItemModel>{
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + '/add', portfolioItem)
-  }
-
-  getPItemPrevList(): Observable<PortfolioItemModel[]> {
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview');
-  }
-
-  getAggPItemPreview(): Observable<AggPortfolioItemModel[]> {
-    return this.http.get<AggPortfolioItemModel[]>(this.apiUrl + '/viewBy/wkn/preview')
-  }
-
-  getWKNAggPItem(wkn:string): Observable<AggPortfolioItemModel> {
-    return this.http.get<AggPortfolioItemModel>(this.apiUrl + '/viewBy/wkn/' + wkn)
+  getWKNAggPItem(wkn:string): Observable<PortfolioItemModel> {
+    return this.http.get<PortfolioItemModel>(this.apiUrl + '/viewBy/wkn/' + wkn)
   }
 
 }

@@ -6,19 +6,14 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
-import hs.aalen.financial_assets_portfolio.data.PItemAggDTO;
-import hs.aalen.financial_assets_portfolio.data.PItemDTO;
-import hs.aalen.financial_assets_portfolio.domain.PortfolioItem;
+import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
+import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
-import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
-import hs.aalen.financial_assets_portfolio.service.ShareService;
-import org.springframework.context.annotation.Bean;
+import hs.aalen.financial_assets_portfolio.service.PurchaseService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,31 +23,31 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
-public class PortfolioItemController {
+public class PurchaseController {
 
-    private final PortfolioItemService portfolioItemService;
+    private final PurchaseService purchaseService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
-    public PortfolioItemController(PortfolioItemService portfolioItemService) {
-        this.portfolioItemService = portfolioItemService;
+    public PurchaseController(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
     /* GET REQUESTS */
     @Deprecated
-    @GetMapping("portfolioItems/{id}")
-    public ResponseEntity<Object> getPortfolioItem(@PathVariable Long id) {
+    @GetMapping("purchases/{id}")
+    public ResponseEntity<Object> getPurchase(@PathVariable Long id) {
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.serializeAllExcept());
-            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
             filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+            filterProvider.addFilter("purchaseFilter", SimpleBeanPropertyFilter.serializeAllExcept());
 
-            PItemDTO pItemDTO = portfolioItemService.getPortfolioItem(id);
+            PurchaseDTO purchaseDTO = purchaseService.getPurchase(id);
 
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-            String mappedObject = om.writer(filterProvider).writeValueAsString(pItemDTO);
+            String mappedObject = om.writer(filterProvider).writeValueAsString(purchaseDTO);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,17 +57,17 @@ public class PortfolioItemController {
     }
 
     @GetMapping("portfolioItems/viewBy/wkn/{wkn}")
-    public ResponseEntity<Object> getWKNAggPItem(@PathVariable String wkn) {
-        PItemAggDTO pItemAggDTO = portfolioItemService.getWKNAggPItem(wkn);
+    public ResponseEntity<Object> getPItemByWKN(@PathVariable String wkn) {
+        PortfolioItemDTO portfolioItemDTO = purchaseService.getPItemByWKN(wkn);
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity", "pItemDTOList"));
+            filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList"));
             filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn", "description", "category"));
-            filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("purchasePrice", "totalPrice", "quantity", "purchaseDate"));
+            filterProvider.addFilter("purchaseFilter", SimpleBeanPropertyFilter.filterOutAllExcept("purchasePrice", "totalPrice", "quantity", "purchaseDate"));
 
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-            String mappedObject = om.writer(filterProvider).writeValueAsString(pItemAggDTO);
+            String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTO);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
 
         } catch (NoSuchElementException e) {
@@ -83,19 +78,19 @@ public class PortfolioItemController {
     }
 
     @Deprecated
-    @GetMapping(value = "/portfolioItems/preview")
-    public ResponseEntity<Object> getPortfolioItemList() {
+    @GetMapping(value = "/purchases/preview")
+    public ResponseEntity<Object> getPurchaseList() {
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.serializeAllExcept());
-            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
             filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+            filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
+            filterProvider.addFilter("purchaseFilter", SimpleBeanPropertyFilter.serializeAllExcept());
 
-            ArrayList<PItemDTO> pItemDTOList = portfolioItemService.getPortfolioItemList();
+            ArrayList<PurchaseDTO> purchaseDTOList = purchaseService.getPurchaseList();
 
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-            String mappedObject = om.writer(filterProvider).writeValueAsString(pItemDTOList);
+            String mappedObject = om.writer(filterProvider).writeValueAsString(purchaseDTOList);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>( JSON_HEADER, HttpStatus.NOT_FOUND);
@@ -105,15 +100,15 @@ public class PortfolioItemController {
     }
 
     @GetMapping(value = "/portfolioItems/viewBy/wkn/preview")
-    public ResponseEntity<Object> getWKNAggPItemsList() {
-        List<PItemAggDTO> pItemAggDTOList = portfolioItemService.getWKNAggPItemsPreview();
+    public ResponseEntity<Object> getPItemsPreview() {
+        List<PortfolioItemDTO> portfolioItemDTOList = purchaseService.getPItemsPreview();
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-            filterProvider.addFilter("pItemAggFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity"));
+            filterProvider.addFilter("pItemFilter", SimpleBeanPropertyFilter.filterOutAllExcept("shareDTO", "avgPrice", "totalQuantity"));
             filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name", "wkn"));
 
             ObjectMapper om = new ObjectMapper();
-            String mappedObject = om.writer(filterProvider).writeValueAsString(pItemAggDTOList);
+            String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
 
         } catch (JsonProcessingException e) {
@@ -122,10 +117,10 @@ public class PortfolioItemController {
     }
 
     /* POST REQUESTS */
-    @PostMapping("portfolioItems/add")
-    public ResponseEntity<Object> addPortfolioItem(@RequestBody PItemDTO pItemDTO) {
+    @PostMapping("purchases/add")
+    public ResponseEntity<Object> addPurchase(@RequestBody PurchaseDTO purchaseDTO) {
         try {
-            portfolioItemService.addPortfolioItem(pItemDTO);
+            purchaseService.addPurchase(purchaseDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), HttpStatus.CONFLICT);

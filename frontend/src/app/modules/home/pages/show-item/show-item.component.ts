@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { AggPortfolioItemModel } from 'app/core/models/agg-portfolio-item.model';
 import { PortfolioItemModel } from 'app/core/models/portfolio-item.model';
+import { PurchaseModel } from 'app/core/models/purchase.model';
 import { PortfolioItemService } from 'app/core/services/portfolio-item.service';
 import { Observable, switchMap } from 'rxjs';
 
@@ -12,9 +12,9 @@ import { Observable, switchMap } from 'rxjs';
   styleUrls: ['./show-item.component.css']
 })
 export class ShowItemComponent {
-  data$: Observable<AggPortfolioItemModel>| null = null;
+  data$: Observable<PortfolioItemModel>| null = null;
   displayedColumns: string[] = ['purchaseDate', 'quantity', 'purchasePrice', 'totalPrice'];
-  dataSource = new MatTableDataSource<PortfolioItemModel>();
+  dataSource = new MatTableDataSource<PurchaseModel>();
   constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router,) {
   }
   ngOnInit(): void {
@@ -22,12 +22,12 @@ export class ShowItemComponent {
       switchMap((params:ParamMap)=>this.pItemService.getWKNAggPItem(params.get("wkn")!))
     )
     this.data$.subscribe(data=>{
-      if(data.pItemDTOList){
-        this.dataSource.data=data.pItemDTOList;
-      }      
+      if(data.purchaseDTOList){
+        this.dataSource.data=data.purchaseDTOList;
+      }
     })
   }
-  
+
 
 }
 

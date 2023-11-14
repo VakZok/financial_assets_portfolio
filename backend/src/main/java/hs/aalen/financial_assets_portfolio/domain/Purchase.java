@@ -1,13 +1,13 @@
 package hs.aalen.financial_assets_portfolio.domain;
 
-import hs.aalen.financial_assets_portfolio.data.PItemDTO;
+import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 @Entity
-public class PortfolioItem {
+public class Purchase {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
@@ -24,7 +24,7 @@ public class PortfolioItem {
     private Share share;
 
     /* Constructors */
-    public PortfolioItem(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
+    public Purchase(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
@@ -32,15 +32,15 @@ public class PortfolioItem {
 
     }
 
-    public PortfolioItem(PItemDTO pItemDTO) {
-        this.purchaseDate = pItemDTO.getPurchaseDate();
-        this.purchasePrice = pItemDTO.getPurchasePrice();
-        this.quantity = pItemDTO.getQuantity();
-        this.share = new Share(pItemDTO.getShareDTO());
+    public Purchase(PurchaseDTO purchaseDTO) {
+        this.purchaseDate = purchaseDTO.getPurchaseDate();
+        this.purchasePrice = purchaseDTO.getPurchasePrice();
+        this.quantity = purchaseDTO.getQuantity();
+        this.share = new Share(purchaseDTO.getShareDTO());
 
     }
 
-    public PortfolioItem() {
+    public Purchase() {
     }
 
     /* Getters and Setters */

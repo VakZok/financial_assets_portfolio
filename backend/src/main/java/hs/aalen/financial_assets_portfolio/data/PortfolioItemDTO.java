@@ -6,22 +6,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonFilter("pItemAggFilter")
-public class PItemAggDTO {
+@JsonFilter("pItemFilter")
+public class PortfolioItemDTO {
     @JsonFilter("shareFilter")
     private ShareDTO shareDTO;
     private double avgPrice;
     private int totalQuantity;
-    private ArrayList<PItemDTO> pItemDTOList;
+    private ArrayList<PurchaseDTO> purchaseDTOList;
 
-    public PItemAggDTO(ShareDTO shareDTO, double avgPrice, int totalQuantity, ArrayList<PItemDTO> pItemDTOList) {
+    public PortfolioItemDTO(ShareDTO shareDTO, double avgPrice, int totalQuantity, ArrayList<PurchaseDTO> purchaseDTOList) {
         this.shareDTO = shareDTO;
         this.avgPrice = avgPrice;
         this.totalQuantity = totalQuantity;
-        this.pItemDTOList = pItemDTOList;
+        this.purchaseDTOList = purchaseDTOList;
     }
 
-    public PItemAggDTO(){};
+    public PortfolioItemDTO(){};
 
     public ShareDTO getShareDTO() {
         return shareDTO;
@@ -39,12 +39,12 @@ public class PItemAggDTO {
         this.avgPrice = avgPrice;
     }
 
-    public ArrayList<PItemDTO> getpItemDTOList() {
-        return pItemDTOList;
+    public ArrayList<PurchaseDTO> getPurchaseDTOList() {
+        return purchaseDTOList;
     }
 
-    public void setpItemDTOList(ArrayList<PItemDTO> pItemDTOList) {
-        this.pItemDTOList = pItemDTOList;
+    public void setPurchaseList(ArrayList<PurchaseDTO> purchaseDTOList) {
+        this.purchaseDTOList = purchaseDTOList;
     }
 
     public int getTotalQuantity() {
