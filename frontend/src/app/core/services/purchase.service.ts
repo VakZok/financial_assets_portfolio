@@ -15,7 +15,7 @@ export class PurchaseService {
 
   postPurchase(wkn:string, purchase: PurchaseModel): Observable<PurchaseModel>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + wkn + 'purchases/add', purchase)
+    return this.http.post<any>(this.apiUrl + wkn + '/purchases/add', purchase)
   }
 
   postNewPItem(purchase: PurchaseModel): Observable<PurchaseModel>{

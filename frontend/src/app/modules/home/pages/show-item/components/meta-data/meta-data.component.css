@@ -1,0 +1,33 @@
+.list {
+  column-count: 2;
+  list-style-type: none;
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  justify-content: center;
+  background-color: rgb(232, 231, 231);
+  font-size: 1.2em;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  color: black;
+}
+
+.item {
+  max-width: 20vw;
+  list-style-type: none;
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  justify-content: center;
+  background-color: whitesmoke;
+  font-size: 1em;
+
+  margin-bottom: 1vh;
+  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  color: black;
+
+  overflow:auto;
+}

@@ -68,7 +68,7 @@ public class PortfolioItemController {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalQuantity"));
+                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity"));
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "name", "wkn"));

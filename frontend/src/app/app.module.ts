@@ -21,6 +21,12 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { SnackBarComponent } from './modules/home/pages/add-item/components/snack-bar/snack-bar.component';
 import {MatButtonModule} from "@angular/material/button";
 import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component";
+import { InputFormComponent } from './modules/home/pages/add-item/components/input-form/input-form.component';
+import { PortfolioListComponent } from './modules/home/pages/my-portfolio/components/portfolio-list/portfolio-list.component';
+import { PurchaseListComponent } from './modules/home/pages/show-item/components/purchase-list/purchase-list.component';
+import { MetaDataComponent } from './modules/home/pages/show-item/components/meta-data/meta-data.component';
+import { PurchaseDialogComponent } from './modules/home/pages/my-portfolio/components/purchase-dialog/purchase-dialog/purchase-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -33,7 +39,12 @@ import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component
     ShowItemComponent,
     LegalNoticeComponent,
     PrivacyPolicyComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    InputFormComponent,
+    PortfolioListComponent,
+    PurchaseListComponent,
+    MetaDataComponent,
+    PurchaseDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +57,8 @@ import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component
     MatInputModule,
     MatCardModule,
     MatSnackBarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [{
     provide: LOCALE_ID,

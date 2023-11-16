@@ -11,24 +11,7 @@ import {PortfolioItemModel} from "../../../../core/models/portfolio-item.model";
   styleUrls: ['./my-portfolio.component.css']
 })
 
-export class MyPortfolioComponent implements OnInit {
-  pItems:PortfolioItemModel[]=[];
-  constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router,) {
-  }
-  // aggregated by wkn
-  ngOnInit(): void {
-    this.pItemService.getPItemPreview().subscribe({
-      next: (data) => {
-        data.forEach( item => this.pItems.push(item))
-        this.dataSource.data = this.pItems
-      },
-    })
-  }
+export class MyPortfolioComponent {
 
-  displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice', 'buy'];
-  dataSource = new MatTableDataSource<any>(this.pItems);
-  goToPItem(wkn:string){
-    this.router.navigate(['meinPortfolio',wkn])
-  }
 }
 

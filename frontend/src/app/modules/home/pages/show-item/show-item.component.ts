@@ -13,10 +13,12 @@ import { Observable, switchMap } from 'rxjs';
 })
 export class ShowItemComponent {
   data$: Observable<PortfolioItemModel>| null = null;
-  displayedColumns: string[] = ['purchaseDate', 'quantity', 'purchasePrice', 'totalPrice'];
+
   dataSource = new MatTableDataSource<PurchaseModel>();
   constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router,) {
   }
+
+  // get Data of PItem
   ngOnInit(): void {
     this.data$=this.route.paramMap.pipe(
       switchMap((params:ParamMap)=>this.pItemService.getPItemByWKN(params.get("wkn")!))

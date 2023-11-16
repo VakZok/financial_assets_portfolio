@@ -11,12 +11,14 @@ public class PortfolioItemDTO {
     @JsonFilter("shareFilter")
     private ShareDTO shareDTO;
     private double avgPrice;
+    private double totalPrice;
     private int totalQuantity;
     private ArrayList<PurchaseDTO> purchaseDTOList;
 
-    public PortfolioItemDTO(ShareDTO shareDTO, double avgPrice, int totalQuantity, ArrayList<PurchaseDTO> purchaseDTOList) {
+    public PortfolioItemDTO(ShareDTO shareDTO, double avgPrice, double totalPrice, int totalQuantity, ArrayList<PurchaseDTO> purchaseDTOList) {
         this.shareDTO = shareDTO;
         this.avgPrice = avgPrice;
+        this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.purchaseDTOList = purchaseDTOList;
     }
@@ -53,5 +55,13 @@ public class PortfolioItemDTO {
 
     public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

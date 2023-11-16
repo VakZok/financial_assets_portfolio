@@ -51,13 +51,17 @@ public class PortfolioItemService {
     public PortfolioItemDTO aggregatePItem(ShareDTO shareDTO){
         ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getWkn());
 
-        double totalSum = purchaseDTOList.stream()
+        // create a double stream of price*quantity and sum it up to get total price
+        double totalPrice = purchaseDTOList.stream()
                 .mapToDouble(pItem -> pItem.getQuantity() * pItem.getPurchasePrice()).sum();
+
+        // create an int stream of quantities and sum them up to get total quantity
         int totalQuantity = purchaseDTOList.stream()
                 .mapToInt(PurchaseDTO::getQuantity).sum();
-        double avgPrice = totalSum / totalQuantity;
 
-        return new PortfolioItemDTO(shareDTO, avgPrice, totalQuantity, purchaseDTOList);
+        double avgPrice = totalPrice / totalQuantity;
+
+        return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity, purchaseDTOList);
     }
 
 

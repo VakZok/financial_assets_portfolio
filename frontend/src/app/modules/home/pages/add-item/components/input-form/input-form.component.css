@@ -1,0 +1,98 @@
+h1 {
+  font-size: 50px;
+  margin-left: 20px;
+  margin-bottom: 3vh;
+}
+
+div {
+  justify-content: space-around;
+}
+
+button{
+  border: none;
+  outline: none;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  border-radius: 4vh;
+  padding: 1vh 1vw 1vh 1vw;
+  font-size: 1.5vh;
+}
+
+button:hover{
+  box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
+  transition: 0.2s;
+}
+
+button:active{
+  background-color: white;
+  transform: translateY(0.2vh);
+}
+
+.button-area{
+  display: flex;
+}
+
+.alert-text{
+  font-size: 1em;
+}
+
+
+
+::ng-deep .mat-mdc-snack-bar-handset {
+  background-color: palegreen;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.2em;
+  background-color: whitesmoke;
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  margin-bottom: 2vh;
+  padding: 1.2vh 1.2vw 1.8vh 0.7vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  color: black;
+}
+
+.row{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+
+#description{
+  resize: none;
+  width: 95%;
+  height: 15vh;
+  border: white;
+  font-size: 1em;
+  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  border-radius: 1vh;
+}
+
+#description:focus{
+  outline: none;
+}
+
+#description-footer{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+input {
+  font-size: 1em;
+}
+
+.error{
+  font-size: 0.7em;
+}
+
+.hint{
+  font-size: 0.7em;
+}

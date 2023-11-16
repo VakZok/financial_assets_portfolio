@@ -1,44 +1,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <div class="body">
   <h1>Mein Portfolio</h1>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <!-- WKN Column -->
-    <ng-container matColumnDef="wkn">
-      <th mat-header-cell *matHeaderCellDef> <b>WKN</b> </th>
-      <td mat-cell *matCellDef="let element"> {{element.shareDTO.wkn}} </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> <b>Name</b> </th>
-      <td mat-cell *matCellDef="let element"> {{element.shareDTO.name}} </td>
-    </ng-container>
-
-    <!-- Purchase Price Column -->
-    <ng-container matColumnDef="avgPrice">
-      <th mat-header-cell *matHeaderCellDef> <b>Kaufpreis</b> </th>
-      <td mat-cell *matCellDef="let element"> {{element.avgPrice |currency:'EUR':'symbol'}} </td>
-    </ng-container>
-
-    <!-- Quantity Column -->
-    <ng-container matColumnDef="totalQuantity">
-      <th mat-header-cell *matHeaderCellDef> <b>Anzahl</b> </th>
-      <td mat-cell *matCellDef="let element"> {{element.totalQuantity}} </td>
-    </ng-container>
-
-    <!-- Add Shares -->
-    <ng-container matColumnDef="buy">
-      <th mat-header-cell *matHeaderCellDef> <b>Nachkaufen</b> </th>
-      <td mat-cell *matCellDef="let element">
-        <button routerLink="/meinPortfolio" class="routing-button">✚</button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row (click)="goToPItem(row.shareDTO.wkn)" *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
+  <app-portfolio-list></app-portfolio-list>
 </div>
 
 <app-footer></app-footer>

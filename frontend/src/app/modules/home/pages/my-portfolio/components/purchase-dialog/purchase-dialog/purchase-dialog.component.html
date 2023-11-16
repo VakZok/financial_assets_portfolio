@@ -1,0 +1,35 @@
+
+
+<mat-dialog-content class="dialog">
+  <h1>Neue Items nachkaufen </h1>
+  <li class="item"><b>WKN:</b> {{data.shareDTO.wkn}}</li>
+  <li class="item"><b>Name:</b> {{data.shareDTO.name}}</li>
+  <form class="form" [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+
+    <div class="container">
+      <mat-form-field class="form-field">
+        <mat-label>Kaufpreis pro Stück</mat-label>
+        <input matInput id="purchase-price" type="text" maxlength="255" formControlName="purchasePrice"
+               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" (blur)="transformPrice($event)"
+               autocomplete="off"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('purchasePrice')?.length || 0) >=1">{{errorMap.get('purchasePrice')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field class="form-field">
+        <mat-label>Anzahl</mat-label>
+        <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)"
+               autocomplete="off"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="button-area">
+      <button [type]="'submit'">Kaufen</button>
+      <button mat-dialog-close>Abbrechen</button>
+    </div>
+
+  </form>
+</mat-dialog-content>
+

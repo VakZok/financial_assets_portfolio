@@ -1,0 +1,14 @@
+<ng-container *ngIf="data$ | async as data">
+  <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.wkn}}</h1>
+
+  <div>
+    <ul class="list">
+      <li class="item"><b>WKN:</b> {{data.shareDTO?.wkn}}</li>
+      <li class="item"><b>Name:</b> {{data.shareDTO?.name}}</li>
+      <li lang="de" class="item"><b>Detaillierte Beschreibung:</b> <br> {{data.shareDTO?.description}} </li>
+      <li class="item"><b>Kategorie:</b> {{data.shareDTO?.category}}</li>
+      <li class="item"><b>Gesamtanzahl:</b> {{data.totalQuantity}}</li>
+      <li class="item"><b>Durchschnittspreis:</b> {{data.avgPrice |currency:'EUR':'symbol'}}</li>
+    </ul>
+  </div>
+</ng-container>

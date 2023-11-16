@@ -1,0 +1,78 @@
+<h1> Neues Portfolio-Item hinzufügen</h1>
+
+<form class="form" [formGroup]="pItemForm" (ngSubmit)="onSubmit()">
+
+  <mat-card class="success" *ngIf="itemAdded">
+    <mat-card-header class="success">
+      <h2>
+        Portfolio-Item wurde erfolgreich hinzugefügt!
+      </h2>
+    </mat-card-header>
+  </mat-card>
+
+
+  <div class="row">
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>WKN</mat-label>
+        <input matInput id="wkn" (blur)="onBlurWKN()" maxlength="6" value="wkn" type="text"  formControlName="wkn"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('wkn')?.length || 0) >=1">{{errorMap.get('wkn')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput id="name" maxlength="255" type="text" formControlName="name" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Kategorie</mat-label>
+        <input matInput id="category" maxlength="255" type="text" formControlName="category" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('category')?.length || 0) >=1">{{errorMap.get('category')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div class="container">
+    <mat-form-field>
+      <mat-label>Beschreibung</mat-label>
+      <textarea matInput id="description" maxlength="255" type="text" formControlName="description"
+                (keyup)="onKeyUpDescription($event)"></textarea>
+      <mat-error class="error" *ngIf="(this.errorMap.get('description')?.length || 0) >=1">{{errorMap.get('description')}}</mat-error>
+      <mat-hint class="hint" align="end">{{this.leftSigns}} / 255 Zeichen</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div class="row bottom">
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Anzahl</mat-label>
+        <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Kaufpreis pro Stück</mat-label>
+        <input matInput id="purchase-price" type="text" maxlength="255" formControlName="purchasePrice"
+               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" (blur)="transformPrice($event)"  />
+        <mat-error class="error" *ngIf="(this.errorMap.get('purchasePrice')?.length || 0) >=1">{{errorMap.get('purchasePrice')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div class="button-area">
+    <button [type]="'submit'">Hinzufügen</button>
+    <button [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
+  </div>
+
+</form>
