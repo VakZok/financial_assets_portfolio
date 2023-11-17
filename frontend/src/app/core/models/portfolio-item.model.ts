@@ -5,5 +5,6 @@ export class PortfolioItemModel {
   shareDTO?:ShareModel
   avgPrice?: number
   totalQuantity?: number
+  totalPrice?: number
   purchaseDTOList?: PurchaseModel[]
 }

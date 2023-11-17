@@ -63,9 +63,4 @@ public class PortfolioItemService {
 
         return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity, purchaseDTOList);
     }
-
-
-
-
-
 }
