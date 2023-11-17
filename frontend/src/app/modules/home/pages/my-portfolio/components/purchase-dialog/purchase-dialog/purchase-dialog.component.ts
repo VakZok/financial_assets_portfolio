@@ -36,13 +36,16 @@ export class PurchaseDialogComponent {
 
     this.shareDTO = data.shareDTO;
     this.purchaseForm = new FormGroup({
-      quantity: new FormControl('', [
-        Validators.required,
-        Validators.min(1)]),
-      purchasePrice: new FormControl('', [
-        Validators.required,
-        Validators.min(1e-7)
-      ])
+      quantity: new FormControl('', {
+        validators:[
+          Validators.required,
+          Validators.min(1)],
+        updateOn: 'submit'}),
+      purchasePrice: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.min(1e-7)],
+        updateOn:'submit'})
     })
   }
 

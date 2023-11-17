@@ -132,10 +132,13 @@ export class InputFormComponent {
     //initialize
     this.itemAdded = false;
 
-    //replace ',' with '.' of purchasePrice for further processing
+    //trigger currency pipe for price after submit
     const price = this.pItemForm.get('purchasePrice')?.value;
     if (price !== null && price !== undefined) {
-      this.pItemForm.get('purchasePrice')?.setValue(price.replace(',', '.'));
+      this.pItemForm.get('purchasePrice')?.setValue(
+        this.currencyPipe.transform(
+          price, 'EUR', 'symbol', '.2-5') || '')
+
     }
 
     // loop over input form and remove leading/trailing whitespaces
@@ -194,9 +197,7 @@ export class InputFormComponent {
       this.errorMap.set('purchasePrice', '');
     }
 
-    if (price !== null && price !== undefined) {
-      this.pItemForm.get('purchasePrice')?.setValue(price.replace('.', ','));
-    }
+
     // wait until Form Validation has finished
     await waitForFormNotPending(this.pItemForm)
 

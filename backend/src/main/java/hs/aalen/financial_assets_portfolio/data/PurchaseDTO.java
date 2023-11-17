@@ -41,7 +41,7 @@ public class PurchaseDTO {
         this.id = purchase.getId();
         this.purchaseDate = purchase.getPurchaseDate();
         this.purchasePrice = purchase.getPurchasePrice();
-        this.totalPrice = purchase.getPurchasePrice()* purchase.getQuantity();
+        this.totalPrice = purchase.getPurchasePrice() * purchase.getQuantity();
         this.quantity = purchase.getQuantity();
         this.shareDTO = new ShareDTO(purchase.getShare());
     }

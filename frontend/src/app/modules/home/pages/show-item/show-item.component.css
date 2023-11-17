@@ -22,6 +22,7 @@
     border-radius: 4vh;
     padding: 1vh 1vw 1vh 1vw;
     font-size: 1.5vh;
+    user-select: none;
   }
 
   button:hover{
@@ -32,6 +33,7 @@
 
   button:active{
     background-color: white;
+    color: black;
     transform: translateY(0.2vh);
   }
 
