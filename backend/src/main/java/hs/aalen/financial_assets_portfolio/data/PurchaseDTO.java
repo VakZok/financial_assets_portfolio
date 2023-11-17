@@ -28,13 +28,11 @@ public class PurchaseDTO {
             Long id, LocalDate purchaseDate,
             double purchasePrice, int quantity
     ) {
-
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
         this.totalPrice = purchasePrice * quantity;
         this.quantity = quantity;
-
     }
 
     public PurchaseDTO(Purchase purchase) {

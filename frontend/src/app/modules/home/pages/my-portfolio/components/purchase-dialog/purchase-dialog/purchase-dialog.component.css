@@ -12,10 +12,8 @@ h1 {
   justify-content: center;
   background-color: whitesmoke;
   font-size: 1em;
-
   margin-bottom: 2.5vh;
   padding: 1.2vh 1.2vw 1.2vh 0.7vw;
-
   color: black;
   overflow:auto;
 }

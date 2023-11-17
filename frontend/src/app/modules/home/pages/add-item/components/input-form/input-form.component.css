@@ -40,10 +40,6 @@ button:active{
   font-size: 1em;
 }
 
-::ng-deep .mat-mdc-snack-bar-handset {
-  background-color: palegreen;
-}
-
 .container {
   display: flex;
   justify-content: center;
@@ -64,7 +60,6 @@ button:active{
   justify-content: space-evenly;
   width: 100%;
 }
-
 
 #description{
   resize: none;

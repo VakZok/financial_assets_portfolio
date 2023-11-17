@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ShareModel} from "../../../../../../../core/models/share.model";
 import {CurrencyPipe} from "@angular/common";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {WKNValidator} from "../../../../../../../core/validators/wkn-validator";
 import {PurchaseModel} from "../../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
 import {PurchaseService} from "../../../../../../../core/services/purchase.service";
@@ -15,19 +14,14 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './purchase-dialog.component.html',
   styleUrls: ['./purchase-dialog.component.css']
 })
+
 export class PurchaseDialogComponent {
   public purchaseForm: FormGroup<{ quantity: FormControl<string | null>; purchasePrice: FormControl<string | null> }>;
-
+  shareDTO: ShareModel = {}
   errorMap = new Map<string, string>([
-    ['wkn', ''],
-    ['name', ''],
-    ['description', ''],
-    ['category', ''],
     ['quantity', ''],
     ['purchaseDate', ''],
-    ['purchasePrice', '']
   ]);
-  shareDTO: ShareModel = {}
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<PurchaseDialogComponent>,
@@ -48,7 +42,6 @@ export class PurchaseDialogComponent {
         updateOn:'submit'})
     })
   }
-
   // function to prevent other characters than digits
   onInputQuantity(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -77,10 +70,12 @@ export class PurchaseDialogComponent {
 
   onSubmit() {
 
-    //replace ',' with '.' of purchasePrice for further processing
+    //trigger currency pipe for price after submit
     const price = this.purchaseForm.get('purchasePrice')?.value;
     if (price !== null && price !== undefined) {
-      this.purchaseForm.get('purchasePrice')?.setValue(price.replace(',', '.'));
+      this.purchaseForm.get('purchasePrice')?.setValue(
+        this.currencyPipe.transform(
+          price, 'EUR', 'symbol', '.2-5') || '')
     }
 
     // loop over input form and remove leading/trailing whitespaces
@@ -92,7 +87,7 @@ export class PurchaseDialogComponent {
         }
       }
     }
-
+    // map  validation errors
     if (this.purchaseForm.controls['quantity'].errors?.['required']) {
       this.errorMap.set('quantity', 'Bitte tragen Sie eine Anzahl ein');
     } else if (this.purchaseForm.controls['quantity'].errors?.['min']) {
@@ -114,19 +109,17 @@ export class PurchaseDialogComponent {
     }
 
     if (this.purchaseForm.valid) {
-
       // initialize errors if form is valid
       for (let [key, error] of this.errorMap) {
         this.errorMap.set(key, '');
       }
-
-      //create portfolioItemDTO
+      //create purchaseDTO
       const purchaseDTO: PurchaseModel = {
         purchaseDate: format(new Date(), 'yyyy-MM-dd'),
         purchasePrice: parseFloat(this.purchaseForm.controls['purchasePrice'].value?.replace(',', '.') || ''),
         quantity: parseInt(this.purchaseForm.controls['quantity'].value || ''),
       }
-
+      // post purchaseDTO
       this.purchaseService.postPurchase(this.shareDTO.wkn || '', purchaseDTO).subscribe({
         next: (data) => {
           this.dialogRef.close()
@@ -139,6 +132,7 @@ export class PurchaseDialogComponent {
     }
   }
 
+  // snackbar for success
   openSnackBar(wkn:string) {
     this.snackBar.open('Order für "' + wkn + '" wurde erfolgreich ausgeführt ✔️', '', {
       duration: 3000

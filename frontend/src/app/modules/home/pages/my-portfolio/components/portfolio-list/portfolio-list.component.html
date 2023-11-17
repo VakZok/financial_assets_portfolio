@@ -40,4 +40,5 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row (click)="goToPItem(row.shareDTO.wkn)" *matRowDef="let row; columns: displayedColumns;"></tr>
+
 </table>

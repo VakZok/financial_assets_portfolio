@@ -34,7 +34,6 @@ const maxSigns : number = 255;
 export class InputFormComponent {
   pItemForm: FormGroup;
 
-
   errorMap = new Map<string, string>([
     ['wkn', ''],
     ['name', ''],
@@ -46,7 +45,6 @@ export class InputFormComponent {
   ]);
 
   leftSigns: string = maxSigns.toString();
-  itemAdded: boolean = false;
   @ViewChild(FormGroupDirective) form: any;
 
   constructor(private pItemService: PortfolioItemService,
@@ -90,7 +88,6 @@ export class InputFormComponent {
     })
   }
 
-
   // function that counts the amount of left signs
   onKeyUpDescription(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -101,7 +98,6 @@ export class InputFormComponent {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
   }
-
   //function to prevent writing more than one comma into purchasePrice
   onKeyDownPrice(event: KeyboardEvent) {
     const inputElement = event.target as HTMLInputElement;
@@ -109,7 +105,6 @@ export class InputFormComponent {
       event.preventDefault();
     }
   }
-
   //function that formats purchase Price
   onInputPurchasePrice(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -122,15 +117,11 @@ export class InputFormComponent {
   transformPrice(event:Event){
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = this.currencyPipe.transform(
-      inputElement.value.replace(',', '.'), 'EUR', 'symbol', '.2-5') || '';
+      inputElement.value.replace(
+        ',', '.'), 'EUR', 'symbol', '.2-5') || '';
   }
 
-
-
   async onSubmit() {
-
-    //initialize
-    this.itemAdded = false;
 
     //trigger currency pipe for price after submit
     const price = this.pItemForm.get('purchasePrice')?.value;
@@ -138,7 +129,6 @@ export class InputFormComponent {
       this.pItemForm.get('purchasePrice')?.setValue(
         this.currencyPipe.transform(
           price, 'EUR', 'symbol', '.2-5') || '')
-
     }
 
     // loop over input form and remove leading/trailing whitespaces
@@ -151,9 +141,8 @@ export class InputFormComponent {
       }
     }
 
-    // Errormapping
+    // map errors that are not async
     if (this.pItemForm.controls['wkn'].errors?.['maxlength']) {
-
       this.errorMap.set('wkn', 'Die WKN darf maximal aus 6 Stellen bestehen');
     } else if (this.pItemForm.controls['wkn'].errors?.['required']) {
       this.errorMap.set('wkn', 'Bitte füllen sie die WKN aus');
@@ -197,10 +186,10 @@ export class InputFormComponent {
       this.errorMap.set('purchasePrice', '');
     }
 
-
     // wait until Form Validation has finished
     await waitForFormNotPending(this.pItemForm)
 
+    // map async wkn error
     if ( this.pItemForm.invalid) {
       if (this.pItemForm.controls['wkn'].errors?.['pItemExists']) {
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
@@ -208,13 +197,12 @@ export class InputFormComponent {
     }
 
     if (this.pItemForm.valid) {
-
       // initialize errors if form is valid
       for (let [key, error] of this.errorMap) {
         this.errorMap.set(key, '');
       }
 
-      // create shareDTO
+      // create shareDTO from pItemForm
       const shareDTO: ShareModel = {
         wkn: this.pItemForm.controls['wkn'].value || '',
         name: this.pItemForm.controls['name'].value || '',
@@ -222,13 +210,14 @@ export class InputFormComponent {
         description: this.pItemForm.controls['description'].value || '',
       }
 
-      //create purchaseDTO
+      //create purchaseDTO from pItemForm
       const purchaseDTO: PurchaseModel = {
         purchaseDate: format(new Date(), 'yyyy-MM-dd'),
         purchasePrice: parseFloat(this.pItemForm.controls['purchasePrice'].value?.replace(',', '.') || ''),
         quantity: parseInt(this.pItemForm.controls['quantity'].value || ''),
         shareDTO: shareDTO
       }
+
       // on success reset form
       this.purchaseService.postNewPItem(purchaseDTO).subscribe({
         next: (data) => {
@@ -236,7 +225,7 @@ export class InputFormComponent {
           this.form.resetForm();
           this.leftSigns = maxSigns.toString();
         },
-        // if backend validation produces exceptions on postNewPItem, set them on the errorMap
+        // if backend-validation produces exceptions on postNewPItem, set them on the errorMap
         error: (errors) => errors.error.forEach((item: any) => {
           this.pItemForm.get(item.name)?.setErrors(item.message)
           this.errorMap.set(item.name, item.message);
@@ -246,9 +235,8 @@ export class InputFormComponent {
     }
   }
 
-  // method to clear the input form
+  // method to deeply clear the input form
   clearForm() {
-    this.itemAdded = false;
     this.form.resetForm();
     this.pItemForm.reset();
     this.leftSigns = '255';
@@ -257,11 +245,11 @@ export class InputFormComponent {
     }
   }
 
+  // method to navigate back, and open snackbar for success
   onSuccess(wkn:string){
       this.snackBar.open('Neues Portfolio-Item "' + wkn + '" erfolgreich hinzugefügt ✔️', '', {
         duration: 3000
       });
-
     this.router.navigate(['meinPortfolio'])
 
   }

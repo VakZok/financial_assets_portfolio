@@ -13,9 +13,11 @@ import {ShareModel} from "../../../../../../core/models/share.model";
   styleUrls: ['./portfolio-list.component.css']
 })
 export class PortfolioListComponent implements OnInit{
+
   pItems:PortfolioItemModel[]=[];
   displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
+
   constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router, private dialog:MatDialog) {
   }
   // aggregated by wkn
@@ -40,14 +42,13 @@ export class PortfolioListComponent implements OnInit{
 
   openDialog(event:Event, shareDTO: ShareModel){
     event.stopPropagation();
-    console.log(shareDTO)
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
       data: {
         shareDTO: shareDTO
         }
-      }
-    )
-    // refresh data of Portfoliolist  after Purchase Dialog is closed
+      })
+
+    // refresh data of PItems List after Purchase Dialog is closed
     dialogRef.afterClosed().subscribe(() => {
       this.getData()
     })
