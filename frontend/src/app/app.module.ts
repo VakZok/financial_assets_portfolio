@@ -3,7 +3,6 @@ import {LOCALE_ID, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/header/header.component';
-import { NavigationComponent } from './core/header/navigation/navigation.component';
 import { FooterComponent } from './core/footer/footer.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "./app-routing.module";
@@ -18,7 +17,6 @@ import * as de from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { SnackBarComponent } from './modules/home/pages/add-item/components/snack-bar/snack-bar.component';
 import {MatButtonModule} from "@angular/material/button";
 import {AddItemComponent} from "./modules/home/pages/add-item/add-item.component";
 import { InputFormComponent } from './modules/home/pages/add-item/components/input-form/input-form.component';
@@ -27,24 +25,24 @@ import { PurchaseListComponent } from './modules/home/pages/show-item/components
 import { MetaDataComponent } from './modules/home/pages/show-item/components/meta-data/meta-data.component';
 import { PurchaseDialogComponent } from './modules/home/pages/my-portfolio/components/purchase-dialog/purchase-dialog/purchase-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { NavigationBarComponent } from './core/header/components/navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    NavigationComponent,
     FooterComponent,
     AddItemComponent,
     MyPortfolioComponent,
     ShowItemComponent,
     LegalNoticeComponent,
     PrivacyPolicyComponent,
-    SnackBarComponent,
     InputFormComponent,
     PortfolioListComponent,
     PurchaseListComponent,
     MetaDataComponent,
     PurchaseDialogComponent,
+    NavigationBarComponent,
   ],
   imports: [
     BrowserModule,

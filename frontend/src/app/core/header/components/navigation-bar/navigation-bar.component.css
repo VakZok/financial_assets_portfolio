@@ -1,0 +1,41 @@
+
+.header-right {
+  margin-left: auto; /* aligns right header part on the right side */
+  margin-right: 20px; /* so that the container is not directly on the side end of the window */
+}
+
+.header-right a {
+  color: white; /* Change the color to your desired color */
+  text-decoration: none; /* Remove underline if needed */
+  font-size: xx-large; /* set font size*/
+  margin-left: 40px; /* put space between the two router links */
+}
+
+.header-right a:hover {
+  text-decoration: underline;
+}
+
+.routing-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black; /* Add a border for rounded edges */
+  border-radius: 8px; /* Rounded edges */
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s; /* Smooth transition on hover */
+  font-size: 22px;
+  margin-left: 20px;
+}
+
+.routing-button:hover {
+  background-color: black;
+  color: white;
+}
+
+.routing-button:disabled{
+  background-color: black;
+  color: white;
+  border-color: darkgrey;
+  border-radius: 8px; /* Rounded edges */
+  cursor: default;
+}

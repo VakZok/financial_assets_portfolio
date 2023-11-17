@@ -1,0 +1,25 @@
+import { Component } from '@angular/core';
+import {Router, Event, RouterEvent} from "@angular/router";
+import {debounceTime, filter, take} from "rxjs";
+
+@Component({
+  selector: 'app-navigation-bar',
+  templateUrl: './navigation-bar.component.html',
+  styleUrls: ['./navigation-bar.component.css']
+})
+export class NavigationBarComponent {
+
+  currentPage:string = "";
+  navMapDisplay = new Map<string, boolean>([
+    ['/meinPortfolio', false],
+    ['/pItemHinzufuegen', false],
+  ]);
+  constructor(private router: Router) {
+    router.events.pipe(
+      filter((e: Event | RouterEvent): e is RouterEvent => e instanceof RouterEvent),
+      debounceTime(5)
+    ).subscribe((e: RouterEvent) => {
+      this.currentPage = e.url
+    });
+  }
+}

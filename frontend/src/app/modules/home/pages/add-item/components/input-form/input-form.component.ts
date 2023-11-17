@@ -10,7 +10,6 @@ import {first} from "rxjs";
 import {ShareModel} from "../../../../../../core/models/share.model";
 import {PurchaseModel} from "../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
-import {SnackBarComponent} from "../snack-bar/snack-bar.component";
 
 async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -53,7 +52,7 @@ export class InputFormComponent {
   constructor(private pItemService: PortfolioItemService,
               private purchaseService: PurchaseService,
               private currencyPipe: CurrencyPipe,
-              private _snackBar: MatSnackBar,
+              private snackBar: MatSnackBar,
               private router: Router) {
 
     /* Form Validation, check for completeness and sanity */
@@ -117,6 +116,7 @@ export class InputFormComponent {
     inputElement.value = inputElement.value.replace(
       /[^\d,]/g,'').replace(
       /(,.*)\,/g,'$1').replace(/^(\d+\,?\d*).*/g,'$1');
+
   }
 
   transformPrice(event:Event){
@@ -149,13 +149,6 @@ export class InputFormComponent {
     }
 
     // Errormapping
-    const errors = this.pItemForm.get('wkn')?.errors; // Get all active errors
-    if (errors) {
-      Object.keys(errors).forEach(errorKey => {
-        console.log(`Error key: ${errorKey}, Error value: ${errors[errorKey]}`);
-      });
-    }
-
     if (this.pItemForm.controls['wkn'].errors?.['maxlength']) {
 
       this.errorMap.set('wkn', 'Die WKN darf maximal aus 6 Stellen bestehen');
@@ -166,7 +159,6 @@ export class InputFormComponent {
     }
 
     if (this.pItemForm.controls['name'].errors?.['required']) {
-      console.log('try')
       this.errorMap.set('name', 'Bitte tragen Sie einen Namen ein');
     } else {
       this.errorMap.set('name', '');
@@ -205,12 +197,11 @@ export class InputFormComponent {
     if (price !== null && price !== undefined) {
       this.pItemForm.get('purchasePrice')?.setValue(price.replace('.', ','));
     }
-    // wait until Form Validation has finiashed
+    // wait until Form Validation has finished
     await waitForFormNotPending(this.pItemForm)
 
     if ( this.pItemForm.invalid) {
-      if (this.pItemForm.controls['wkn'].errors?.['pitemExists']) {
-        console.log('check')
+      if (this.pItemForm.controls['wkn'].errors?.['pItemExists']) {
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
       }
     }
@@ -249,7 +240,7 @@ export class InputFormComponent {
           this.pItemForm.get(item.name)?.setErrors(item.message)
           this.errorMap.set(item.name, item.message);
         }),
-        complete: () => this.onSuccess()
+        complete: () => this.onSuccess(shareDTO.wkn!)
       })
     }
   }
@@ -265,10 +256,11 @@ export class InputFormComponent {
     }
   }
 
-  onSuccess(){
-    this._snackBar.openFromComponent(SnackBarComponent, {
-      duration: 2000,
-    });
+  onSuccess(wkn:string){
+      this.snackBar.open('Neues Portfolio-Item "' + wkn + '" erfolgreich hinzugefügt ✔️', '', {
+        duration: 3000
+      });
+
     this.router.navigate(['meinPortfolio'])
 
   }

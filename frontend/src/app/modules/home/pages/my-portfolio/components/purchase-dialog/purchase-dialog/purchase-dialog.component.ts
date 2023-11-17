@@ -8,6 +8,7 @@ import {PurchaseModel} from "../../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
 import {PurchaseService} from "../../../../../../../core/services/purchase.service";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-purchase-dialog',
@@ -28,7 +29,11 @@ export class PurchaseDialogComponent {
   ]);
   shareDTO: ShareModel = {}
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<PurchaseDialogComponent>, private currencyPipe: CurrencyPipe, public purchaseService: PurchaseService, private router: Router,){
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<PurchaseDialogComponent>,
+    private currencyPipe: CurrencyPipe, public purchaseService: PurchaseService, private router: Router,
+    private snackBar: MatSnackBar){
+
     this.shareDTO = data.shareDTO;
     this.purchaseForm = new FormGroup({
       quantity: new FormControl('', [
@@ -117,21 +122,24 @@ export class PurchaseDialogComponent {
         purchaseDate: format(new Date(), 'yyyy-MM-dd'),
         purchasePrice: parseFloat(this.purchaseForm.controls['purchasePrice'].value?.replace(',', '.') || ''),
         quantity: parseInt(this.purchaseForm.controls['quantity'].value || ''),
-        shareDTO: this.shareDTO
       }
 
       this.purchaseService.postPurchase(this.shareDTO.wkn || '', purchaseDTO).subscribe({
         next: (data) => {
           this.dialogRef.close()
+          this.openSnackBar(this.shareDTO.wkn!)
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
         error: (errors) => errors.error.forEach((item: any) => {
-
         }),
-
       })
     }
+  }
 
+  openSnackBar(wkn:string) {
+    this.snackBar.open('Order für "' + wkn + '" wurde erfolgreich ausgeführt ✔️', '', {
+      duration: 3000
+    });
   }
 
 

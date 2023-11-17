@@ -79,7 +79,7 @@ public class PurchaseController {
     @PostMapping("portfolioItems/{wkn}/purchases/add")
     public ResponseEntity<Object> addNewPurchase(@PathVariable String wkn, @RequestBody PurchaseDTO purchaseDTO) {
         try {
-            purchaseService.addNewPurchase(purchaseDTO);
+            purchaseService.addNewPurchase(wkn, purchaseDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), HttpStatus.CONFLICT);

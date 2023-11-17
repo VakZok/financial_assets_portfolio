@@ -2,6 +2,7 @@ package hs.aalen.financial_assets_portfolio.service;
 
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
+import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import hs.aalen.financial_assets_portfolio.domain.Purchase;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.PurchaseRepository;
@@ -24,11 +25,13 @@ public class PurchaseService {
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PurchaseRepository purchaseRepository;
+    private final ShareService shareService;
 
 
     /* PROCESSING METHODS */
-    public PurchaseService(PurchaseRepository purchaseRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository, ShareService shareService) {
         this.purchaseRepository = purchaseRepository;
+        this.shareService = shareService;
     }
 
     /* Method that returns the purchase searched by the id */
@@ -59,10 +62,12 @@ public class PurchaseService {
         this.purchaseRepository.save(purchase);
     }
 
-    public void addNewPurchase(PurchaseDTO purchaseDTO) throws FormNotValidException{
+    public void addNewPurchase(String wkn, PurchaseDTO purchaseDTO) throws FormNotValidException{
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(purchaseDTO);
         exceptionDTOList.addAll(this.validateForm(purchaseDTO));
         if(exceptionDTOList.isEmpty()){
+            ShareDTO shareDTO = this.shareService.getShare(wkn);
+            purchaseDTO.setShareDTO(shareDTO);
             savePurchase(purchaseDTO);
         } else {
             throw new FormNotValidException("Formfehler", exceptionDTOList);

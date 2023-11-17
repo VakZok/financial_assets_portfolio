@@ -22,6 +22,7 @@ button{
 button:hover{
   box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
   transition: 0.2s;
+  cursor: pointer;
 }
 
 button:active{
@@ -36,8 +37,6 @@ button:active{
 .alert-text{
   font-size: 1em;
 }
-
-
 
 ::ng-deep .mat-mdc-snack-bar-handset {
   background-color: palegreen;
