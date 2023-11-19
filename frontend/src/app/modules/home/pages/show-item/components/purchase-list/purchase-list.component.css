@@ -1,12 +1,25 @@
-.tablestyle {
-  margin-top: 1vh;
-  margin-bottom: 3vh;
-  margin-left: 5vw;
-  margin-right: 5vw;
+.mat-column-purchaseDate {
+  font-size: 1.2em;
+}
+
+.mat-column-quantity {
+  font-size: 1.2em;
+}
+
+.mat-column-purchasePrice {
+  font-size: 1.2em;
+}
+
+.mat-column-totalPrice {
+  font-size: 1.2em;
 }
 
 .row{
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.purchasebody {
+  margin-bottom:1vh;
 }

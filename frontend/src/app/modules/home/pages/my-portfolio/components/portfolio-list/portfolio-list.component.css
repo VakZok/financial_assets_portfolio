@@ -1,3 +1,27 @@
+.mat-column-wkn {
+  font-size: 1.2em;
+}
+
+.mat-column-name {
+  font-size: 1.2em;
+}
+
+.mat-column-avgPrice {
+  font-size: 1.2em;
+}
+
+.mat-column-totalPrice {
+  font-size: 1.2em;
+}
+
+.mat-column-totalQuantity {
+  font-size: 1.2em;
+}
+
+.mat-column-buy {
+  font-size: 1.2em;
+}
+
 .mat-mdc-row:hover .mat-mdc-cell {
   border-color: currentColor;
 }

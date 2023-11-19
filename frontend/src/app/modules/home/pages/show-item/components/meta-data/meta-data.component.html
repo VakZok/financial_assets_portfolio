@@ -1,7 +1,6 @@
 <ng-container *ngIf="data$ | async as data">
-  <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.wkn}}</h1>
-
-  <div>
+   <div class="metabody">
+    <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.wkn}}</h1>
     <ul class="list">
       <li class="item"><b>WKN:</b> {{data.shareDTO?.wkn}}</li>
       <li class="item"><b>Name:</b> {{data.shareDTO?.name}}</li>
