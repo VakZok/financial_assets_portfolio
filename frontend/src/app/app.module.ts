@@ -29,6 +29,7 @@ import { NavigationBarComponent } from './core/header/components/navigation-bar/
 import { LoginComponent } from './modules/home/pages/login/login.component';
 import { MissingPermissionsComponent } from './modules/home/pages/missing-permissions/missing-permissions.component';
 import { AddAccountComponent } from './modules/home/pages/add-account/add-account.component';
+import { LoginFormComponent } from './modules/home/pages/login/login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { AddAccountComponent } from './modules/home/pages/add-account/add-accoun
     LoginComponent,
     MissingPermissionsComponent,
     AddAccountComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,

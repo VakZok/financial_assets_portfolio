@@ -1,4 +1,4 @@
-import {AbstractControl, ValidatorFn, ValidationErrors, AsyncValidator, AsyncValidatorFn} from '@angular/forms';
+import {AbstractControl, ValidationErrors, AsyncValidatorFn} from '@angular/forms';
 import {catchError, debounceTime, map, Observable, of, switchMap, take} from "rxjs";
 import { AuthenticationService} from "../services/authentication.service";
 
