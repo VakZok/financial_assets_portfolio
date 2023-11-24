@@ -1,1 +1,29 @@
-<p>login-form works!</p>
+<h1> Anmelden </h1>
+
+<form class="form" [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+
+  <div class="row">
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Benutzername</mat-label>
+        <input matInput id="userName" (blur)="onBlurUsername()" maxlength="30" value="Benutzername" type="text"  formControlName="userName"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('userName')?.length || 0) >=1">{{errorMap.get('userName')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Passwort</mat-label>
+        <input matInput id="password" maxlength="30" type="text" formControlName="password" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="button-area">
+    <button [type]="'login'">Login</button>
+    <button [type]="'reset'" (click)="clearForm()">Zurücksetzen</button>
+  </div>
+
+</form>

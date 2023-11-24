@@ -7,7 +7,7 @@ export function UsernameValidator(authicationService: AuthenticationService): As
     return control.valueChanges.pipe(
       debounceTime(100), // Delay the validation for 100 milliseconds to avoid spamming the server
       switchMap(value => {
-        return authicationService.checkPItemExists(value).pipe(
+        return authicationService.checkUsernameExists(value).pipe(
           map(data => ({ 'usernameExists': true })),
           catchError(() => of(null))
         );

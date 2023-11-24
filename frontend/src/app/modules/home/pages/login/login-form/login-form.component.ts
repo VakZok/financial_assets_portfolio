@@ -4,6 +4,7 @@ import {AccountModel} from "../../../../../core/models/account.model";
 import {AuthenticationService} from "../../../../../core/services/authentication.service";
 import {Router} from "@angular/router";
 import {UsernameValidator} from "../../../../../core/validators/username-validator";
+import {first} from "rxjs";
 
 @Component({
   selector: 'app-login-form',
@@ -41,9 +42,27 @@ export class LoginFormComponent {
     });
   }
 
+  // send get request after blurring username input field
+  async onBlurUsername() {
+    this.LoginForm.statusChanges.pipe(
+      first(status => status !== 'PENDING')).subscribe(status => {
+      if (this.LoginForm.controls['userName'].errors?.['UsernameExists']){
+        this.errorMap.set('userName', 'Dieser benutzername ist bereits vergeben');
+      }
+    })
+  }
+
+  // method to deeply clear the input form
+  clearForm() {
+    this.LoginForm.reset();
+    for (let [key, error] of this.errorMap){
+      this.errorMap.set(key, '');
+    }
+  }
+
   onSubmit() {
     if (this.LoginForm.valid) {
-      console.log('Willkommen ' + String(userName) + '!', this.LoginForm.value);
+      console.log('Willkommen!', this.LoginForm.value);
     } else {
       // Form is invalid, display error messages or take appropriate action
       console.log('Form is invalid. Please check the fields.');
