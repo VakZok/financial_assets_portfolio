@@ -13,8 +13,8 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {
   }
 
-  checkUsernameExists(userName: string): Observable<AccountModel> {
-    return this.http.head<AccountModel>(this.apiUrl + '/' + userName)
+  checkUsernameExists(username: string): Observable<AccountModel> {
+    return this.http.head<AccountModel>(this.apiUrl + '/' + username)
   }
 
   postCredentials(user: AccountModel): Observable<AccountModel> {

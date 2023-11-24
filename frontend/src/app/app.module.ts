@@ -30,7 +30,7 @@ import { LoginComponent } from './modules/home/pages/login/login.component';
 import { MissingPermissionsComponent } from './modules/home/pages/missing-permissions/missing-permissions.component';
 import { AddAccountComponent } from './modules/home/pages/add-account/add-account.component';
 import { LoginFormComponent } from './modules/home/pages/login/login-form/login-form.component';
-import { AccountFormComponent } from './account-form/account-form.component';
+import { AccountFormComponent } from './modules/home/pages/add-account/account-form/account-form.component';
 
 @NgModule({
   declarations: [

@@ -7,16 +7,18 @@ import {UsernameValidator} from "../../../../../core/validators/username-validat
 import {first} from "rxjs";
 
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css']
+  selector: 'app-account-form',
+  templateUrl: './account-form.component.html',
+  styleUrls: ['./account-form.component.css']
 })
-export class LoginFormComponent {
-  LoginForm: FormGroup;
+export class AccountFormComponent {
+  AccountForm: FormGroup;
 
   errorMap = new Map<string, string>([
     ['username', ''],
-    ['password', '']
+    ['name', ''],
+    ['password', ''],
+    ['name', '']
   ]);
 
   // Form Group Validator to ensure that password and username are not longer than 30 characters
@@ -24,7 +26,7 @@ export class LoginFormComponent {
               private router: Router) {
 
     /* Form Validation, check for completeness and sanity */
-    this.LoginForm = new FormGroup({
+    this.AccountForm = new FormGroup({
       username: new FormControl('', {
         asyncValidators: [UsernameValidator(this.authenticationService)],
         validators: [
@@ -33,7 +35,19 @@ export class LoginFormComponent {
         ],
         updateOn: 'blur'
       }),
+      name: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.maxLength(30)
+        ]
+      }),
       password: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.maxLength(30)
+        ]
+      }),
+      validatePassword: new FormControl('', {
         validators: [
           Validators.required,
           Validators.maxLength(30)
@@ -42,11 +56,11 @@ export class LoginFormComponent {
     });
   }
 
-  // send get request after blurring username input field
+  // send get request after blurring password input field
   async onBlurUsername() {
-    this.LoginForm.statusChanges.pipe(
+    this.AccountForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(status => {
-      if (this.LoginForm.controls['username'].errors?.['UsernameExists']){
+      if (this.AccountForm.controls['username'].errors?.['UsernameExists']){
         this.errorMap.set('username', 'Dieser benutzername ist bereits vergeben');
       }
     })
@@ -54,15 +68,15 @@ export class LoginFormComponent {
 
   // method to deeply clear the input form
   clearForm() {
-    this.LoginForm.reset();
+    this.AccountForm.reset();
     for (let [key, error] of this.errorMap){
       this.errorMap.set(key, '');
     }
   }
 
   onSubmit() {
-    if (this.LoginForm.valid) {
-      console.log('Willkommen!', this.LoginForm.value);
+    if (this.AccountForm.valid) {
+      console.log('Willkommen!', this.AccountForm.value);
     } else {
       // Form is invalid, display error messages or take appropriate action
       console.log('Form is invalid. Please check the fields.');
