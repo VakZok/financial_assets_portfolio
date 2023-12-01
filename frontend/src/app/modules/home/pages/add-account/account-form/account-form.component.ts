@@ -24,6 +24,7 @@ export class AccountFormComponent {
 
   @ViewChild(FormGroupDirective) form: any;
 
+  /*
     passwordMatchValidator(passwordKey: string, passwordConfirmationKey: string) {
         return (group: FormGroup) => {
             let passwordInput = group.controls[passwordKey],
@@ -36,6 +37,9 @@ export class AccountFormComponent {
             }
         }
     }
+   */
+
+
 
   // Form Group Validator to ensure that password and username are not longer than 30 characters
   constructor(private formBuilder: FormBuilder,
@@ -48,6 +52,7 @@ export class AccountFormComponent {
             asyncValidators:[UsernameValidator(this.authenticationService)],
             validators:[
                 Validators.required,
+                Validators.minLength(6),
                 Validators.maxLength(30)],
             updateOn:'blur'}),
         name: new FormControl('', [
@@ -55,13 +60,13 @@ export class AccountFormComponent {
             Validators.maxLength(30)]),
         password: new FormControl('', [
             Validators.required,
+            Validators.minLength(12),
             Validators.maxLength(30)]),
-        validatePassword: new FormControl('', [
+        confirmPassword: new FormControl('', [
             Validators.required,
             Validators.maxLength(30),
-            passwordMatchValidator('password')
         ])
-    })
+    }, {validators: passwordMatchValidator(this.AccountForm)})
   }
 
   // send get request after blurring password input field
@@ -69,7 +74,7 @@ export class AccountFormComponent {
     this.AccountForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(status => {
       if (this.AccountForm.controls['username'].errors?.['UsernameExists']){
-        this.errorMap.set('username', 'Dieser benutzername ist bereits vergeben');
+        this.errorMap.set('username', 'Dieser benutzername ist bereits vergeben.');
       }
     })
   }
