@@ -5,6 +5,7 @@ import {AuthenticationService} from "../../../../../core/services/authentication
 import {Router} from "@angular/router";
 import {first} from "rxjs";
 import {UsernameValidator} from "../../../../../core/validators/username-validator";
+import {passwordMatchValidator} from "../../../../../core/validators/passwordMatch-validator";
 
 @Component({
   selector: 'app-account-form',
@@ -22,6 +23,19 @@ export class AccountFormComponent {
   ]);
 
   @ViewChild(FormGroupDirective) form: any;
+
+    passwordMatchValidator(passwordKey: string, passwordConfirmationKey: string) {
+        return (group: FormGroup) => {
+            let passwordInput = group.controls[passwordKey],
+                passwordConfirmationInput = group.controls[passwordConfirmationKey];
+            if (passwordInput.value !== passwordConfirmationInput.value) {
+                return passwordConfirmationInput.setErrors({notEquivalent: true})
+            }
+            else {
+                return passwordConfirmationInput.setErrors(null);
+            }
+        }
+    }
 
   // Form Group Validator to ensure that password and username are not longer than 30 characters
   constructor(private formBuilder: FormBuilder,
@@ -44,7 +58,8 @@ export class AccountFormComponent {
             Validators.maxLength(30)]),
         validatePassword: new FormControl('', [
             Validators.required,
-            Validators.maxLength(30)
+            Validators.maxLength(30),
+            passwordMatchValidator('password')
         ])
     })
   }

@@ -15,7 +15,7 @@
     <div class="container">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput id="name" (blur)="onBlurName()" maxlength="30" value="Name" type="text"  formControlName="name"/>
+        <input matInput id="name" (blur)="onBlurUsername()" maxlength="30" value="Name" type="text"  formControlName="name"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
       </mat-form-field>
     </div>
@@ -39,7 +39,7 @@
 
   <div class="button-area">
     <button [type]="'addAccount'">Benutzer anlegen</button>
-    <button [type]="'reset'" (click)="clearForm()">Zurücksetzen</button>
+    <button [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
   </div>
 
 </form>
