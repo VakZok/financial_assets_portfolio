@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {AccountModel} from "../../../../../core/models/account.model";
 import {AuthenticationService} from "../../../../../core/services/authentication.service";
 import {Router} from "@angular/router";
-import {UsernameValidator} from "../../../../../core/validators/username-validator";
 import {first} from "rxjs";
+import {UsernameValidator} from "../../../../../core/validators/username-validator";
 
 @Component({
   selector: 'app-account-form',
@@ -12,48 +12,41 @@ import {first} from "rxjs";
   styleUrls: ['./account-form.component.css']
 })
 export class AccountFormComponent {
-  AccountForm: FormGroup;
+  AccountForm: FormGroup = new FormGroup({});
 
   errorMap = new Map<string, string>([
     ['username', ''],
     ['name', ''],
     ['password', ''],
-    ['name', '']
+    ['validatePassword', '']
   ]);
 
+  @ViewChild(FormGroupDirective) form: any;
+
   // Form Group Validator to ensure that password and username are not longer than 30 characters
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private formBuilder: FormBuilder,
+              private authenticationService: AuthenticationService,
               private router: Router) {
 
     /* Form Validation, check for completeness and sanity */
     this.AccountForm = new FormGroup({
-      username: new FormControl('', {
-        asyncValidators: [UsernameValidator(this.authenticationService)],
-        validators: [
-          Validators.required,
-          Validators.maxLength(30)
-        ],
-        updateOn: 'blur'
-      }),
-      name: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.maxLength(30)
-        ]
-      }),
-      password: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.maxLength(30)
-        ]
-      }),
-      validatePassword: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.maxLength(30)
-        ]
-      })
-    });
+        username: new FormControl('', {
+            asyncValidators:[UsernameValidator(this.authenticationService)],
+            validators:[
+                Validators.required,
+                Validators.maxLength(30)],
+            updateOn:'blur'}),
+        name: new FormControl('', [
+            Validators.required,
+            Validators.maxLength(30)]),
+        password: new FormControl('', [
+            Validators.required,
+            Validators.maxLength(30)]),
+        validatePassword: new FormControl('', [
+            Validators.required,
+            Validators.maxLength(30)
+        ])
+    })
   }
 
   // send get request after blurring password input field
@@ -68,6 +61,7 @@ export class AccountFormComponent {
 
   // method to deeply clear the input form
   clearForm() {
+    this.form.resetForm();
     this.AccountForm.reset();
     for (let [key, error] of this.errorMap){
       this.errorMap.set(key, '');
