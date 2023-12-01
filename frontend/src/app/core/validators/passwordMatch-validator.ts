@@ -7,6 +7,6 @@ export function passwordMatchValidator(accountForm: FormGroup): ValidatorFn {
         const confirmPassword = accountForm.controls['confirmPassword'];
         const passwordsMatch = password === confirmPassword;
 
-        return password ? null : {'mismatch': true}
+        return passwordsMatch ? null : {'passwordMismatch': true}
     }
 }
