@@ -26,6 +26,11 @@ import { MetaDataComponent } from './modules/home/pages/show-item/components/met
 import { PurchaseDialogComponent } from './modules/home/pages/my-portfolio/components/purchase-dialog/purchase-dialog/purchase-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { NavigationBarComponent } from './core/header/components/navigation-bar/navigation-bar.component';
+import { LoginComponent } from './modules/home/pages/login/login.component';
+import { MissingPermissionsComponent } from './modules/home/pages/missing-permissions/missing-permissions.component';
+import { AddAccountComponent } from './modules/home/pages/add-account/add-account.component';
+import { LoginFormComponent } from './modules/home/pages/login/login-form/login-form.component';
+import { AccountFormComponent } from './modules/home/pages/add-account/account-form/account-form.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +48,11 @@ import { NavigationBarComponent } from './core/header/components/navigation-bar/
     MetaDataComponent,
     PurchaseDialogComponent,
     NavigationBarComponent,
+    LoginComponent,
+    MissingPermissionsComponent,
+    AddAccountComponent,
+    LoginFormComponent,
+    AccountFormComponent,
   ],
   imports: [
     BrowserModule,

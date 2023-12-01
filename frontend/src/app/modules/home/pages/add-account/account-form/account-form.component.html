@@ -1,0 +1,45 @@
+<h1> Benutzer hinzufügen </h1>
+
+<form class="form" [formGroup]="AccountForm" (ngSubmit)="onSubmit()">
+
+  <div class="row">
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Benutzername</mat-label>
+        <input matInput id="username" (blur)="onBlurUsername()" maxlength="30" value="Benutzername" type="text"  formControlName="username"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('username')?.length || 0) >=1">{{errorMap.get('username')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput id="name" (blur)="onBlurUsername()" maxlength="30" value="Name" type="text"  formControlName="name"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Passwort</mat-label>
+        <input matInput id="password" maxlength="30" type="text" formControlName="password" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Passwort bestätigen</mat-label>
+        <input matInput id="validatePassword" maxlength="30" type="text" formControlName="validatePassword" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('validatePassword')?.length || 0) >=1">{{errorMap.get('validatePassword')}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="button-area">
+    <button [type]="'addAccount'">Benutzer anlegen</button>
+    <button [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
+  </div>
+
+</form>

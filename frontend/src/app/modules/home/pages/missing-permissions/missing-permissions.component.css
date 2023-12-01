@@ -1,0 +1,10 @@
+* {
+  font-family: Segoe UI, Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans, Helvetica Neue, Arial, sans-serif;
+}
+
+.body {
+  min-height: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
