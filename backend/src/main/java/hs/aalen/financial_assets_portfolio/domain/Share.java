@@ -19,6 +19,9 @@ public class Share {
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
     Set<Purchase> purchases;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
     /* Constructors */
     public Share(String wkn, String name, String category, String description) {
         this.wkn = wkn;
