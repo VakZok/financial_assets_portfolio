@@ -18,7 +18,6 @@ import java.util.Map;
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     /*
      * Authentication Failure handler is required for logins, overridden and fitted
-     * for ajax communication
      */
 
     private ObjectMapper objectMapper = new ObjectMapper();

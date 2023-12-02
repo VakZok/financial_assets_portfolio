@@ -13,7 +13,6 @@ import java.io.IOException;
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     /*
      * Authentication Failure handler is required for logins, overridden and fitted
-     * for ajax communication
      */
     //@Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
