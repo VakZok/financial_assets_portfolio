@@ -16,7 +16,7 @@ public class Account {
 
     /* MAPPED RELATIONSHIPS */
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    Set<Share> shares;
+    Set<Purchase> purchase;
 
     /* Constructors */
     public Account(String username, String password, String name, String role) {
@@ -55,7 +55,7 @@ public class Account {
 
     public void setRole(String role) {this.role = role;}
 
-    public Set<Share> getShares() {return shares;}
+    public Set<Purchase> getPurchase() {return purchase;}
 
-    public void setShares(Set<Share> shares) {this.shares = shares;}
+    public void setPurchase(Set<Purchase> purchase) {this.purchase = purchase;}
 }

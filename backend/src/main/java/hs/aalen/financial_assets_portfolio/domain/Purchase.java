@@ -23,6 +23,10 @@ public class Purchase {
     @JoinColumn(name = "wkn")
     private Share share;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     /* Constructors */
     public Purchase(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
