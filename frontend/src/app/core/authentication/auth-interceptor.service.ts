@@ -17,7 +17,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let auth = false;
+    let auth = '';
     this.auth
       .isAuthenticated$()
       .pipe(take(1))

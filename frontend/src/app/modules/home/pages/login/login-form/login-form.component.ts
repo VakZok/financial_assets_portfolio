@@ -29,7 +29,8 @@ export class LoginFormComponent {
 
   errorMap = new Map<string, string>([
     ['username', ''],
-    ['password', '']
+    ['password', ''],
+    ['backendError', '']
   ]);
 
   @ViewChild(FormGroupDirective) form: any;
@@ -87,15 +88,7 @@ export class LoginFormComponent {
       this.errorMap.set('password', '');
     }
 
-    // wait until Form Validation has finished
-    await waitForFormNotPending(this.LoginForm)
 
-    // map async username error
-    if (this.LoginForm.invalid) {
-      if (this.LoginForm.controls['username'].errors?.['pItemExists'] == false) {
-        this.errorMap.set('username', 'Benutzer mit diesem Benutzernamen existiert nicht.');
-      }
-    }
 
     if (this.LoginForm.valid) {
       // initialize errors if form is valid
@@ -103,42 +96,24 @@ export class LoginFormComponent {
         this.errorMap.set(key, '');
       }
 
-      // create loginDTO from LoginForm
-      const loginDTO: LoginModel = {
-        username: this.LoginForm.controls['username'].value || '',
-        password: this.LoginForm.controls['password'].value || '',
-      }
 
-      this.authCoreService.login(loginDTO.username, loginDTO.password).subscribe(
-        (response) => {
+
+      this.authCoreService.login(
+        this.LoginForm.controls['username'].value || '',
+          this.LoginForm.controls['password'].value || '').subscribe(
+        (response: any) => {
           // Handle successful login response here
           console.log('Login successful', response);
           this.router.navigate(['meinPortfolio']);
+          //console.log(this.authCoreService.getRole());
         },
         (error) => {
-          // Handle login error here
-          console.error('Login error', error);
+          this.errorMap.set('backendError', 'Eingegebener Benutzername oder Passwort nicht korrekt.')
           this.router.navigate(['login']);
         }
       );
       console.log("Finished")
 
-      /*
-      // on success reset form
-      this.authenticationService.postCredentials(loginDTO).subscribe({
-        next: (data) => {
-          this.LoginForm.reset();
-          this.form.resetForm();
-        },
-
-        // if backend-validation produces exceptions on postCredentials, set them on the errorMap
-        error: (errors) => errors.error.forEach((item: any) => {
-          this.LoginForm.get(item.name)?.setErrors(item.message)
-          this.errorMap.set(item.name, item.message);
-        }),
-        complete: () => this.router.navigate(['meinPortfolio'])
-      }
-      )*/
     }
   }
 }

@@ -1,6 +1,11 @@
 package hs.aalen.financial_assets_portfolio.web;
+import hs.aalen.financial_assets_portfolio.data.AccountDTO;
+import hs.aalen.financial_assets_portfolio.domain.Account;
+import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,10 +14,18 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
-    @GetMapping("/logins")
-    public ResponseEntity<String> login() {
+    private final AccountRepository accountRepo;
+    public LoginController(AccountRepository accountRepo){
+        this.accountRepo = accountRepo;
+    }
 
-        return ResponseEntity.ok("");
+    @GetMapping("/logins")
+    public ResponseEntity<AccountDTO> login(Authentication authentication ) {
+        Account account = accountRepo.findByUsername(authentication.getName());
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setName(account.getName());
+        accountDTO.setRole(account.getRole());
+        return new ResponseEntity<>(accountDTO, JSON_HEADER, HttpStatus.OK);
     }
 }
 

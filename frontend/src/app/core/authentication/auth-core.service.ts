@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import {LoginModel} from "../models/login.model";
 
 const LOGIN_URL = 'http://localhost:8080/v1/logins';
 const AUTH_TOKEN_NAME = 'authToken';
@@ -12,6 +13,9 @@ const AUTH_TOKEN_NAME = 'authToken';
 export class AuthCoreService {
   private isAuthenticatedSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+
+  private role : string = '';
+  private name : string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -36,9 +40,13 @@ export class AuthCoreService {
       })
       .pipe(
         map((res) => {
-          console.log("check")
+          console.log("check",res);
+
+          let lm : LoginModel = <LoginModel>res;
+
           this.registerSuccessfulLogin(
-            `${window.btoa(username + ':' + password)}`
+            `${window.btoa(username + ':' + password)}`,
+            lm.name, lm.role
           );
           this.setAuthState(true);
         })
@@ -47,6 +55,8 @@ export class AuthCoreService {
 
   public logout() {
     sessionStorage.removeItem(AUTH_TOKEN_NAME);
+    this.role = '';
+    this.name = '';
     this.setAuthState(false);
     this.router.navigate(['/login']);
   }
@@ -55,8 +65,10 @@ export class AuthCoreService {
     return sessionStorage.getItem(AUTH_TOKEN_NAME);
   }
 
-  private registerSuccessfulLogin(token: string) {
+  private registerSuccessfulLogin(token: string, name : string, role : string) {
     sessionStorage.setItem(AUTH_TOKEN_NAME, token);
+    this.role = role;
+    this.name = name;
     this.setAuthState(true);
   }
 
@@ -66,6 +78,14 @@ export class AuthCoreService {
 
   public getAuthState(){
     return this.isAuthenticatedSubject.value
+  }
+
+  public getRole(){
+    return this.role;
+  }
+
+  public getName() {
+    return this.name;
   }
 
 

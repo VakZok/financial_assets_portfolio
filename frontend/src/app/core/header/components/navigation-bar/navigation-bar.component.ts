@@ -25,6 +25,7 @@ export class NavigationBarComponent {
       debounceTime(5)
     ).subscribe((e: RouterEvent) => {
       this.currentPage = e.url
+      console.log(this.currentPage)
     });
   }
 

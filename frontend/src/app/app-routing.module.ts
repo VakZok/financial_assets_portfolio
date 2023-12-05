@@ -23,7 +23,7 @@ const routes: Routes = [
 
   { path: 'meinPortfolio/:wkn',
     component: ShowItemComponent,
-    canActivate:[AuthGuardService]
+    canActivate:[AuthGuardService],
   },
 
   { path: 'pItemHinzufuegen',
@@ -47,7 +47,7 @@ const routes: Routes = [
     component: AddAccountComponent
   },
 
-  { path: 'benutzer', 
+  { path: 'benutzer',
     component: ManageUsersComponent,
     canActivate:[AuthGuardService]
   },

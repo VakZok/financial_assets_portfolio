@@ -93,3 +93,17 @@ input {
 .hint{
   font-size: 0.7em;
 }
+
+.error-field{
+  font-size: 1.5em;
+  border-radius: 1vh;
+  background-color: #FFEBEE;
+  border: 0.07em solid #F44336;
+  display: flex;
+  justify-content: space-evenly;
+  padding-top:1vh;
+  padding-bottom:1vh;
+  margin-left: 0.55vw;
+  margin-right: 0.55vw;
+  margin-bottom: 1vh;
+}
