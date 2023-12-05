@@ -19,7 +19,6 @@ export class NavigationBarComponent {
     */
   ]);
   constructor(private router: Router, public authService: AuthCoreService) {
-
     router.events.pipe(
       filter((e: Event | RouterEvent): e is RouterEvent => e instanceof RouterEvent),
       debounceTime(5)
