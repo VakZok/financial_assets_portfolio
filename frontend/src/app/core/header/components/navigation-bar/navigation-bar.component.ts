@@ -14,7 +14,9 @@ export class NavigationBarComponent {
   currentPage:string = "";
   navMapDisplay = new Map<string, boolean>([
     ['/meinPortfolio', false],
-    ['/pItemHinzufuegen', false],
+    ['/benutzer', false],
+    /*['/pItemHinzufuegen', false],
+    */
   ]);
   constructor(private router: Router, public authService: AuthCoreService) {
 

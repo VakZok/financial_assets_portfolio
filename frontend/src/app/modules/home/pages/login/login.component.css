@@ -2,6 +2,10 @@
   font-family: Segoe UI, Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans, Helvetica Neue, Arial, sans-serif;
 }
 
+h1 {
+  font-size: 50px;
+}
+
 .body {
   min-height: 100%;
   display:flex;

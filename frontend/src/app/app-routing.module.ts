@@ -9,6 +9,7 @@ import {LoginComponent} from "./modules/home/pages/login/login.component";
 import {MissingPermissionsComponent} from "./modules/home/pages/missing-permissions/missing-permissions.component";
 import {AddAccountComponent} from "./modules/home/pages/add-account/add-account.component";
 import {AuthGuardService} from "./core/authentication/auth-guard.service";
+import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-users.component';
 
 const routes: Routes = [
   { path: 'login',
@@ -46,7 +47,10 @@ const routes: Routes = [
     component: AddAccountComponent
   },
 
-
+  { path: 'benutzer', 
+    component: ManageUsersComponent,
+    canActivate:[AuthGuardService]
+  },
 
   // wildcard route
  // { path: '**', component: MyPortfolioComponent} // redirects any unspecified request to home page which is mein_portfolio

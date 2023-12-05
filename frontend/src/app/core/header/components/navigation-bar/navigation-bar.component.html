@@ -1,7 +1,10 @@
 <div class="header-right">
-
+          
   <button *ngIf="this.authService.getAuthState()" routerLink="/meinPortfolio" class="routing-button"
           [disabled]="currentPage.startsWith('/meinPortfolio') ">Mein Portfolio</button>
+ 
+  <button *ngIf="this.authService.getAuthState()" routerLink="/benutzer" class="routing-button"
+          [disabled]="currentPage.startsWith('/benutzer') ">Benutzerverwaltung</button>
 
   <button *ngIf="!this.authService.getAuthState()" routerLink="/login" class="routing-button"
           [disabled]="currentPage.startsWith('/login') ">Login</button>

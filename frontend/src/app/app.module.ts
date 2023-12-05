@@ -31,6 +31,9 @@ import { MissingPermissionsComponent } from './modules/home/pages/missing-permis
 import { AddAccountComponent } from './modules/home/pages/add-account/add-account.component';
 import { LoginFormComponent } from './modules/home/pages/login/login-form/login-form.component';
 import { AccountFormComponent } from './modules/home/pages/add-account/account-form/account-form.component';
+import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-users.component';
+import { UserListComponent } from './modules/home/pages/manage-users/components/user-list/user-list.component';
+
 
 @NgModule({
   declarations: [
@@ -53,6 +56,8 @@ import { AccountFormComponent } from './modules/home/pages/add-account/account-f
     AddAccountComponent,
     LoginFormComponent,
     AccountFormComponent,
+    ManageUsersComponent,
+    UserListComponent,  
   ],
   imports: [
     BrowserModule,
