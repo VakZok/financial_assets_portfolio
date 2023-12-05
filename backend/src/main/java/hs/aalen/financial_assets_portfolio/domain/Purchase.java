@@ -24,7 +24,7 @@ public class Purchase {
     private Share share;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "username")
     private Account account;
 
     /* Constructors */

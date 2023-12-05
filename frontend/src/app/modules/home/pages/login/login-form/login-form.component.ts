@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {UsernameValidator} from "../../../../../core/validators/username-validator";
 import {first} from "rxjs";
 import {LoginModel} from "../../../../../core/models/login.model";
+import {AuthCoreService} from "../../../../../core/authentication/auth-core.service";
 
 async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -35,13 +36,14 @@ export class LoginFormComponent {
 
   // Form Group Validator to ensure that password and username are not longer than 30 characters
   constructor(private authenticationService: AuthenticationService,
+              private authCoreService: AuthCoreService,
               private formBuilder: FormBuilder,
               private router: Router) {
 
     /* Form Validation, check for completeness and sanity */
     this.LoginForm = new FormGroup({
       username: new FormControl('', {
-        asyncValidators: [UsernameValidator(this.authenticationService)],
+        //asyncValidators: [UsernameValidator(this.authenticationService)],
         validators: [
           Validators.required
         ]
@@ -107,6 +109,21 @@ export class LoginFormComponent {
         password: this.LoginForm.controls['password'].value || '',
       }
 
+      this.authCoreService.login(loginDTO.username, loginDTO.password).subscribe(
+        (response) => {
+          // Handle successful login response here
+          console.log('Login successful', response);
+          this.router.navigate(['meinPortfolio']);
+        },
+        (error) => {
+          // Handle login error here
+          console.error('Login error', error);
+          this.router.navigate(['login']);
+        }
+      );
+      console.log("Finished")
+
+      /*
       // on success reset form
       this.authenticationService.postCredentials(loginDTO).subscribe({
         next: (data) => {
@@ -120,7 +137,8 @@ export class LoginFormComponent {
           this.errorMap.set(item.name, item.message);
         }),
         complete: () => this.router.navigate(['meinPortfolio'])
-      })
+      }
+      )*/
     }
   }
 }

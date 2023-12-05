@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router, Event, RouterEvent} from "@angular/router";
 import {debounceTime, filter, take} from "rxjs";
+import {AuthCoreService} from "../../../authentication/auth-core.service";
 
 @Component({
   selector: 'app-navigation-bar',
@@ -9,12 +10,14 @@ import {debounceTime, filter, take} from "rxjs";
 })
 export class NavigationBarComponent {
 
+
   currentPage:string = "";
   navMapDisplay = new Map<string, boolean>([
     ['/meinPortfolio', false],
     ['/pItemHinzufuegen', false],
   ]);
-  constructor(private router: Router) {
+  constructor(private router: Router, public authService: AuthCoreService) {
+
     router.events.pipe(
       filter((e: Event | RouterEvent): e is RouterEvent => e instanceof RouterEvent),
       debounceTime(5)
@@ -22,4 +25,10 @@ export class NavigationBarComponent {
       this.currentPage = e.url
     });
   }
+
+
+  public logout(){
+    this.authService.logout()
+  }
+
 }

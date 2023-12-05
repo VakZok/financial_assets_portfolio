@@ -8,18 +8,48 @@ import { PrivacyPolicyComponent} from "./modules/home/pages/privacy-policy/priva
 import {LoginComponent} from "./modules/home/pages/login/login.component";
 import {MissingPermissionsComponent} from "./modules/home/pages/missing-permissions/missing-permissions.component";
 import {AddAccountComponent} from "./modules/home/pages/add-account/add-account.component";
+import {AuthGuardService} from "./core/authentication/auth-guard.service";
 
 const routes: Routes = [
-  { path: 'meinPortfolio', component: MyPortfolioComponent},
-  { path: 'meinPortfolio/:wkn', component: ShowItemComponent},
-  { path: 'pItemHinzufuegen', component: AddItemComponent},
-  { path: 'legalNotice', component: LegalNoticeComponent},
-  { path: 'privacyPolicy', component: PrivacyPolicyComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'missingPermission', component: MissingPermissionsComponent},
-  { path: 'addAccount', component: AddAccountComponent},
+  { path: 'login',
+    component: LoginComponent
+  },
+
+  { path: 'meinPortfolio',
+    component: MyPortfolioComponent,
+    canActivate:[AuthGuardService]
+  },
+
+  { path: 'meinPortfolio/:wkn',
+    component: ShowItemComponent,
+    canActivate:[AuthGuardService]
+  },
+
+  { path: 'pItemHinzufuegen',
+    component: AddItemComponent,
+    canActivate:[AuthGuardService]
+  },
+
+  { path: 'legalNotice',
+    component: LegalNoticeComponent
+  },
+
+  { path: 'privacyPolicy',
+    component: PrivacyPolicyComponent
+  },
+
+  { path: 'missingPermission',
+    component: MissingPermissionsComponent
+  },
+
+  { path: 'addAccount',
+    component: AddAccountComponent
+  },
+
+
+
   // wildcard route
-  { path: '**', component: MyPortfolioComponent} // redirects any unspecified request to home page which is mein_portfolio
+ // { path: '**', component: MyPortfolioComponent} // redirects any unspecified request to home page which is mein_portfolio
 ];
 
 @NgModule({
