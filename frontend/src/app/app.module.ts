@@ -33,6 +33,7 @@ import { LoginFormComponent } from './modules/home/pages/login/login-form/login-
 import { AccountFormComponent } from './modules/home/pages/add-account/account-form/account-form.component';
 import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-users.component';
 import { UserListComponent } from './modules/home/pages/manage-users/components/user-list/user-list.component';
+import { UserDialogComponent } from './modules/home/pages/manage-users/components/user-dialog/user-dialog.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { UserListComponent } from './modules/home/pages/manage-users/components/
     LoginFormComponent,
     AccountFormComponent,
     ManageUsersComponent,
-    UserListComponent,  
+    UserListComponent,
+    UserDialogComponent,  
   ],
   imports: [
     BrowserModule,
