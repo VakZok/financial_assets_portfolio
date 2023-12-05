@@ -36,7 +36,7 @@ public class AccountController {
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
-    @GetMapping("{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<Object> getAccount(@PathVariable String username) {
         try {
 

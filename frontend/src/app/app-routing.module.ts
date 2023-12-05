@@ -18,17 +18,20 @@ const routes: Routes = [
 
   { path: 'meinPortfolio',
     component: MyPortfolioComponent,
-    canActivate:[AuthGuardService]
+    canActivate:[AuthGuardService],
+    data: {roles:['ADMIN', 'USER']}
   },
 
   { path: 'meinPortfolio/:wkn',
     component: ShowItemComponent,
     canActivate:[AuthGuardService],
+    data: {roles:['ADMIN', 'USER']}
   },
 
   { path: 'pItemHinzufuegen',
     component: AddItemComponent,
-    canActivate:[AuthGuardService]
+    canActivate:[AuthGuardService],
+    data: {roles:['ADMIN', 'USER']}
   },
 
   { path: 'legalNotice',
@@ -44,12 +47,14 @@ const routes: Routes = [
   },
 
   { path: 'addAccount',
-    component: AddAccountComponent
+    component: AddAccountComponent,
+    data: {roles:['USER']}
   },
 
   { path: 'benutzer',
     component: ManageUsersComponent,
-    canActivate:[AuthGuardService]
+    canActivate:[AuthGuardService],
+    data: {roles:['ADMIN']}
   },
 
   // wildcard route

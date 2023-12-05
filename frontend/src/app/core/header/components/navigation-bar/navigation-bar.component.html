@@ -1,9 +1,13 @@
 <div class="header-right">
 
+  <div *ngIf="this.authService.getAuthState()" class="welcome-text">
+    <p>Willkommen, {{this.authService.getName()}}.</p>
+  </div>
+
   <button *ngIf="this.authService.getAuthState()" routerLink="/meinPortfolio" class="routing-button"
           [disabled]="currentPage.startsWith('/meinPortfolio') ">Mein Portfolio</button>
 
-  <button *ngIf="this.authService.getAuthState()" routerLink="/benutzer" class="routing-button"
+  <button *ngIf="this.authService.getAuthState() && this.authService.getRole()=='ADMIN'" routerLink="/benutzer" class="routing-button"
           [disabled]="currentPage.startsWith('/benutzer') ">Benutzerverwaltung</button>
 
   <button *ngIf="!this.authService.getAuthState()" routerLink="/login" class="routing-button"

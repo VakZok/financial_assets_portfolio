@@ -1,5 +1,8 @@
 
 .header-right {
+  display:flex;
+  flex-direction:row;
+  align-items: center;
   margin-left: auto; /* aligns right header part on the right side */
   margin-right: 20px; /* so that the container is not directly on the side end of the window */
 }
@@ -38,4 +41,12 @@
   border-color: darkgrey;
   border-radius: 8px; /* Rounded edges */
   cursor: default;
+}
+
+.welcome-text{
+  margin-top: 1vh;
+  margin-right: 4vw;
+  align-content: space-around;
+  color: whitesmoke;
+  font-size: 2em;
 }
