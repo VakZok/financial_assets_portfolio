@@ -41,6 +41,9 @@ public class AccountController {
         try {
 
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("accFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                            "username", "role", "name"));
             AccountDTO accountDTO = accountService.getAccount(username);
 
             ObjectMapper om = new ObjectMapper();
@@ -59,6 +62,9 @@ public class AccountController {
         try {
 
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("accFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                            "username", "role", "name"));
             ArrayList<AccountDTO> accountDTOList = accountService.getAccounts();
 
             ObjectMapper om = new ObjectMapper();

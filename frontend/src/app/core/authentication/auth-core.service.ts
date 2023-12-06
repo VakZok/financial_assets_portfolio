@@ -30,6 +30,7 @@ export class AuthCoreService {
     return this.isAuthenticatedSubject.asObservable();
   }
 
+
   public login(username: string, password: string) {
     console.log("test")
     return this.http
@@ -43,11 +44,12 @@ export class AuthCoreService {
           console.log("check",res);
 
           let lm : LoginModel = <LoginModel>res;
-
+          console.log("test", `${window.btoa(username + ':' + password)}`)
           this.registerSuccessfulLogin(
             `${window.btoa(username + ':' + password)}`,
             lm.name, lm.role
           );
+
           this.setAuthState(true);
         })
       );
@@ -62,7 +64,12 @@ export class AuthCoreService {
   }
 
   public getToken() {
-    return sessionStorage.getItem(AUTH_TOKEN_NAME);
+    let token = ''
+    if (sessionStorage.getItem(AUTH_TOKEN_NAME) != null) {
+      token = sessionStorage.getItem(AUTH_TOKEN_NAME) || '';
+    }
+    console.log(token)
+    return token
   }
 
   private registerSuccessfulLogin(token: string, name : string, role : string) {

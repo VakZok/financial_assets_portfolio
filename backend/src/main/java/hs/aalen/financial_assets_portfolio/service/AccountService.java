@@ -48,7 +48,6 @@ public class AccountService {
         return new ArrayList<AccountDTO>(accountList.stream().map(AccountDTO::new).toList());
     }
 
-
     public void addAccount(String username, AccountDTO accountDTO) throws FormNotValidException {
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(accountDTO);
         Account account = new Account (accountDTO);

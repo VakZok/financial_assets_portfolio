@@ -15,8 +15,7 @@ public class Account {
     private String role;
 
     /* MAPPED RELATIONSHIPS */
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    Set<Purchase> purchase;
+
 
     /* Constructors */
     public Account(String username, String password, String name, String role) {
@@ -32,7 +31,6 @@ public class Account {
         this.name = accountDTO.getName();
         this.role = accountDTO.getRole();
     }
-
 
 
     public Account() {
@@ -55,7 +53,4 @@ public class Account {
 
     public void setRole(String role) {this.role = role;}
 
-    public Set<Purchase> getPurchase() {return purchase;}
-
-    public void setPurchase(Set<Purchase> purchase) {this.purchase = purchase;}
 }
