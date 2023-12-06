@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import {LoginModel} from "../models/login.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const LOGIN_URL = 'http://localhost:8080/v1/logins';
 const AUTH_TOKEN_NAME = 'authToken';
@@ -17,7 +18,10 @@ export class AuthCoreService {
   private role : string = '';
   private name : string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar) {}
 
   public isAuthenticated$(): Observable<boolean> {
     let token = this.getToken();
@@ -51,6 +55,9 @@ export class AuthCoreService {
           );
 
           this.setAuthState(true);
+          this.snackBar.open('Erfolgreich eingeloggt ✔️', '', {
+            duration: 3000
+          });
         })
       );
   }

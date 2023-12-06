@@ -30,9 +30,9 @@ public class LoginController {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("accFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "username", "role", "name"));
+                             "role", "name"));
 
-            Account account = accountRepo.findByUsername(authentication.getName());
+            Account account = accountRepo.findByUsernameIgnoreCase(authentication.getName());
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setName(account.getName());
             accountDTO.setRole(account.getRole());

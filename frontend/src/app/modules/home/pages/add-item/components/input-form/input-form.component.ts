@@ -11,6 +11,7 @@ import {ShareModel} from "../../../../../../core/models/share.model";
 import {PurchaseModel} from "../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
 
+
 async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   return new Promise<void>((resolve) => {
     formGroup.updateValueAndValidity()
@@ -81,7 +82,7 @@ export class InputFormComponent {
   // send get request after blurring wkn input field
   async onBlurWKN() {
     this.pItemForm.statusChanges.pipe(
-      first(status => status !== 'PENDING')).subscribe(status => {
+      first(status => status !== 'PENDING')).subscribe(() => {
       if (this.pItemForm.controls['wkn'].errors?.['pItemExists']){
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
       }
@@ -123,23 +124,17 @@ export class InputFormComponent {
 
   async onSubmit() {
 
-    //trigger currency pipe for price after submit
-    const price = this.pItemForm.get('purchasePrice')?.value;
-    if (price !== null && price !== undefined) {
-      this.pItemForm.get('purchasePrice')?.setValue(
-        this.currencyPipe.transform(
-          price, 'EUR', 'symbol', '.2-5') || '')
-    }
 
     // loop over input form and remove leading/trailing whitespaces
     for (const controlName in this.pItemForm.controls) {
       if (this.pItemForm.controls.hasOwnProperty(controlName)) {
         const control = this.pItemForm.get(controlName);
-        if (control?.value != null) {
+        if (control?.value != null && controlName !== 'purchasePrice') {
           control?.setValue(control?.value.trim())
         }
       }
     }
+
 
     // map errors that are not async
     if (this.pItemForm.controls['wkn'].errors?.['maxlength']) {
@@ -220,7 +215,7 @@ export class InputFormComponent {
 
       // on success reset form
       this.purchaseService.postNewPItem(purchaseDTO).subscribe({
-        next: (data) => {
+        next: () => {
           this.pItemForm.reset();
           this.form.resetForm();
           this.leftSigns = maxSigns.toString();
@@ -253,4 +248,5 @@ export class InputFormComponent {
     this.router.navigate(['meinPortfolio'])
 
   }
+
 }

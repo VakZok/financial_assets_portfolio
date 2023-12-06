@@ -17,7 +17,7 @@ public class AccountDetailsService implements UserDetailsService {
     /* method to load the user from the Account Repository for the login process */
     @Override
     public AccountDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Account account = this.accountRepo.findByUsername(userName);
+        Account account = this.accountRepo.findByUsernameIgnoreCase(userName);
         if (account == null) {
             System.out.println("test");
             throw new UsernameNotFoundException("Der Account wurde nicht gefunden");

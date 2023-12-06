@@ -6,7 +6,7 @@ import org.springframework.data.repository.ListCrudRepository;
 
 public interface AccountRepository extends ListCrudRepository<Account, String> {
 
-    Account findByUsername(String username);
+    Account findByUsernameIgnoreCase(String username);
 
     boolean existsByUsername(String username);
 
