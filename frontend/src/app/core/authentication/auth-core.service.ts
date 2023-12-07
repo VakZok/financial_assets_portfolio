@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import {LoginModel} from "../models/login.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const LOGIN_URL = 'http://localhost:8080/v1/logins';
 const AUTH_TOKEN_NAME = 'authToken';
@@ -17,7 +18,10 @@ export class AuthCoreService {
   private role : string = '';
   private name : string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar) {}
 
   public isAuthenticated$(): Observable<boolean> {
     let token = this.getToken();
@@ -29,6 +33,7 @@ export class AuthCoreService {
     this.setAuthState(true);
     return this.isAuthenticatedSubject.asObservable();
   }
+
 
   public login(username: string, password: string) {
     console.log("test")
@@ -43,12 +48,16 @@ export class AuthCoreService {
           console.log("check",res);
 
           let lm : LoginModel = <LoginModel>res;
-
+          console.log("test", `${window.btoa(username + ':' + password)}`)
           this.registerSuccessfulLogin(
             `${window.btoa(username + ':' + password)}`,
             lm.name, lm.role
           );
+
           this.setAuthState(true);
+          this.snackBar.open('Erfolgreich eingeloggt ✔️', '', {
+            duration: 3000
+          });
         })
       );
   }
@@ -62,7 +71,12 @@ export class AuthCoreService {
   }
 
   public getToken() {
-    return sessionStorage.getItem(AUTH_TOKEN_NAME);
+    let token = ''
+    if (sessionStorage.getItem(AUTH_TOKEN_NAME) != null) {
+      token = sessionStorage.getItem(AUTH_TOKEN_NAME) || '';
+    }
+    console.log(token)
+    return token
   }
 
   private registerSuccessfulLogin(token: string, name : string, role : string) {

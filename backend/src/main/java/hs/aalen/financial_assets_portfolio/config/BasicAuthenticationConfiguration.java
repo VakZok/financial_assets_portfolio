@@ -56,8 +56,9 @@ public class BasicAuthenticationConfiguration {
                     cors.configurationSource(corsConfigurationSource());
                 })
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll() //authenticated()
-                        //.authenticated()
+                        .anyRequest()
+                                .permitAll()
+                                //.authenticated()
                 ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(Customizer.withDefaults());
 

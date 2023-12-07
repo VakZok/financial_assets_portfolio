@@ -22,14 +22,13 @@ public class AccountService {
     public static final int STRING_MAX_LENGTH = 255;
 
     private final AccountRepository accountRepository;
-    //private final PasswordEncoder passwordEncoder;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
     public AccountDTO getAccount(String username) throws NoSuchElementException {
-        Account account = accountRepository.findByUsername(username);
+        Account account = accountRepository.findByUsernameIgnoreCase(username);
         if (account == null){
             throw new NoSuchElementException("Kein Account mit diesem Benutzernamen vorhanden");
         }
@@ -48,11 +47,11 @@ public class AccountService {
         return new ArrayList<AccountDTO>(accountList.stream().map(AccountDTO::new).toList());
     }
 
-
     public void addAccount(String username, AccountDTO accountDTO) throws FormNotValidException {
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(accountDTO);
-        Account account = new Account (accountDTO);
         if (exceptionDTOList.isEmpty()){
+            Account account = new Account (accountDTO);
+            account.setRole(account.getRole().toUpperCase());
             saveAccount(account);
         }else {
             throw new FormNotValidException("Formfehler", exceptionDTOList);
@@ -60,12 +59,12 @@ public class AccountService {
     }
 
     public void updateAccount(String username, AccountDTO accountDTO) throws FormNotValidException{
-        Account existingAccount = accountRepository.findByUsername(username);
+        Account existingAccount = accountRepository.findByUsernameIgnoreCase(username);
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(accountDTO);
         if (exceptionDTOList.isEmpty()){
             existingAccount.setUsername(accountDTO.getUsername());
             existingAccount.setName(accountDTO.getName());
-            existingAccount.setRole(accountDTO.getRole());
+            existingAccount.setRole(accountDTO.getRole().toUpperCase());
             existingAccount.setPassword(accountDTO.getPassword());
             saveAccount(existingAccount);
         }else {
@@ -77,12 +76,10 @@ public class AccountService {
         accountRepository.deleteByUsername(username);
     }
 
-    //public String encodePassword(String password) {
-    //    return passwordEncoder.encode(password);
-    //}
-
     public boolean checkAccountExists(String username) {
-        return accountRepository.existsByUsername(username);
+        Account account = accountRepository.findByUsernameIgnoreCase(username);
+
+        return account != null && account.getUsername().equalsIgnoreCase(username);
     }
 
     public ArrayList<ExceptionDTO> validateForm(AccountDTO accountDTO){

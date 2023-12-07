@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PurchaseModel} from "../models/purchase.model";
+import {AuthCoreService} from "../authentication/auth-core.service";
 
 
 @Injectable({
@@ -11,20 +12,28 @@ export class PurchaseService {
 
   private apiUrl = 'http://localhost:8080/v1/portfolioItems/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthCoreService) { }
+
+  getHeader() {
+    return new HttpHeaders({
+      'Authorization': 'Basic ' + this.authService.getToken(),
+      'Content-Type': 'application/json'
+    })
+  }
 
   postPurchase(wkn:string, purchase: PurchaseModel): Observable<PurchaseModel>{
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + wkn + '/purchases/add', purchase)
+    const headers = this.getHeader();
+    return this.http.post<any>(this.apiUrl + wkn + '/purchases/add', purchase,{headers})
   }
 
   postNewPItem(purchase: PurchaseModel): Observable<PurchaseModel>{
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.apiUrl + 'add', purchase)
+    const headers = this.getHeader();
+    return this.http.post<any>(this.apiUrl + 'add', purchase,{headers})
   }
 
   getPurchasePrevList(): Observable<PurchaseModel[]> {
-    return this.http.get<PurchaseModel[]>(this.apiUrl + 'preview');
+    const headers = this.getHeader();
+    return this.http.get<PurchaseModel[]>(this.apiUrl + 'preview',{headers});
   }
 
 }

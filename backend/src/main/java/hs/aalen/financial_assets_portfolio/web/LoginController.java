@@ -1,4 +1,9 @@
 package hs.aalen.financial_assets_portfolio.web;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hs.aalen.financial_assets_portfolio.data.AccountDTO;
 import hs.aalen.financial_assets_portfolio.domain.Account;
 import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
@@ -20,12 +25,25 @@ public class LoginController {
     }
 
     @GetMapping("/logins")
-    public ResponseEntity<AccountDTO> login(Authentication authentication ) {
-        Account account = accountRepo.findByUsername(authentication.getName());
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setName(account.getName());
-        accountDTO.setRole(account.getRole());
-        return new ResponseEntity<>(accountDTO, JSON_HEADER, HttpStatus.OK);
+    public ResponseEntity<Object> login(Authentication authentication )  {
+        try {
+            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("accFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                             "role", "name"));
+
+            Account account = accountRepo.findByUsernameIgnoreCase(authentication.getName());
+            AccountDTO accountDTO = new AccountDTO();
+            accountDTO.setName(account.getName());
+            accountDTO.setRole(account.getRole());
+
+            ObjectMapper om = new ObjectMapper();
+            String mappedObject = om.writer(filterProvider).writeValueAsString(accountDTO);
+            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
 
