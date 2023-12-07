@@ -12,7 +12,7 @@ import java.util.List;
 public class AccountDetails implements UserDetails {
     public static final String ROLE_PREFIX = "ROLE_";
 
-    private Account account;
+    private final Account account;
 
     /*Constructor*/
     public AccountDetails(Account account) {

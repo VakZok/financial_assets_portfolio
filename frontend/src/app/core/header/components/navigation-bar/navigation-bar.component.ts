@@ -10,7 +10,6 @@ import {AuthCoreService} from "../../../authentication/auth-core.service";
 })
 export class NavigationBarComponent {
 
-
   currentPage:string = "";
   navMapDisplay = new Map<string, boolean>([
     ['/meinPortfolio', false],
@@ -22,13 +21,10 @@ export class NavigationBarComponent {
       debounceTime(5)
     ).subscribe((e: RouterEvent) => {
       this.currentPage = e.url
-      console.log(this.currentPage)
     });
   }
-
 
   public logout(){
     this.authService.logout()
   }
-
 }

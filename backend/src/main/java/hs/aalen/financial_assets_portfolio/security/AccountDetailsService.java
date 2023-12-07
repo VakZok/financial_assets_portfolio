@@ -2,7 +2,6 @@ package hs.aalen.financial_assets_portfolio.security;
 
 import hs.aalen.financial_assets_portfolio.domain.Account;
 import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

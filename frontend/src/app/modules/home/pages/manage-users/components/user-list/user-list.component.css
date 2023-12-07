@@ -1,33 +1,28 @@
 .mat-column-name {
     font-size: 1.2em;
   }
-  
+
   .mat-column-username {
     font-size: 1.2em;
   }
-  
+
   .mat-column-password {
     font-size: 1.2em;
   }
-  
+
   .mat-column-edituser {
     font-size: 1.2em;
   }
-  
+
   .mat-column-deleteuser {
     font-size: 1.2em;
   }
-  
-  .mat-mdc-row:hover .mat-mdc-cell {
-    border-color: currentColor;
-  }
-  
+
   .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
-    cursor: pointer;
   }
-  
+
   .routing-button{
     border: 3px solid black; /* Black border */
     background-color: white; /* White background */
@@ -38,11 +33,11 @@
     font-size: 1em;
 
   }
-  
+
   .routing-button:hover{
     box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
     transition: 0.2s;
-    cursor: pointer;    
+    cursor: pointer;
     border: 3px solid black; /* Black border */
     background-color: black;
     color:white;
@@ -51,6 +46,18 @@
     justify-content: center;
     padding: 0.5vh 0.5vw 0.5vh 0.5vw;
     font-size: 1em;
-
   }
-  
+
+.routing-button:disabled {
+  box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
+  transition: 0.2s;
+  cursor: default;
+  border: 3px solid lightgrey; /* Black border */
+  background-color: lightgrey;
+  color:grey;
+  border-radius: 1vh;
+  position: relative;
+  justify-content: center;
+  padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+  font-size: 1em;
+}

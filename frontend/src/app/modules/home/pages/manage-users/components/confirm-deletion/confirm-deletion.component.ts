@@ -10,20 +10,20 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
   styleUrls: ['./confirm-deletion.component.css']
 })
 export class ConfirmDeletionComponent {
-  accountUsername:string;  
+  accountUsername:string;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<UserDialogComponent>, 
-    public accountService: UserManagementService, private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<UserDialogComponent>,
+    public accountService: UserManagementService,
     ){
-    this.accountUsername = data.username;
+    this.accountUsername = data.accountDTO.username;
   }
-  
+
   delete(){
     this.accountService.deleteAccount(this.accountUsername).subscribe({
-      next: (data) => {
+      next: () => {
         this.dialogRef.close()
       },
-      
       error: (errors) => errors.error.forEach((item: any) => {
       }),
     })

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.Purchase;
-import hs.aalen.financial_assets_portfolio.domain.Share;
-
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

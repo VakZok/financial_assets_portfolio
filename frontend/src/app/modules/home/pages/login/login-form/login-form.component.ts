@@ -1,23 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import {AuthenticationService} from "../../../../../core/services/authentication.service";
+import {FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {Router} from "@angular/router";
-import {UsernameValidator} from "../../../../../core/validators/username-validator";
-import {first} from "rxjs";
-import {LoginModel} from "../../../../../core/models/login.model";
 import {AuthCoreService} from "../../../../../core/authentication/auth-core.service";
-
-async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
-  return new Promise<void>((resolve) => {
-    formGroup.updateValueAndValidity()
-    const subscription = formGroup.statusChanges.subscribe((status) => {
-      if (status !== 'PENDING') {
-        subscription.unsubscribe(); // Unsubscribe when not pending
-        resolve();
-      }
-    });
-  });
-}
 
 @Component({
   selector: 'app-login-form',
@@ -36,9 +20,7 @@ export class LoginFormComponent {
   @ViewChild(FormGroupDirective) form: any;
 
   // Form Group Validator to ensure that password and username are not longer than 30 characters
-  constructor(private authenticationService: AuthenticationService,
-              private authCoreService: AuthCoreService,
-              private formBuilder: FormBuilder,
+  constructor(private authCoreService: AuthCoreService,
               private router: Router) {
 
     /* Form Validation, check for completeness and sanity */
@@ -101,19 +83,14 @@ export class LoginFormComponent {
       this.authCoreService.login(
         this.LoginForm.controls['username'].value || '',
           this.LoginForm.controls['password'].value || '').subscribe(
-        (response: any) => {
-          // Handle successful login response here
-          console.log('Login successful', response);
+        () => {
           this.router.navigate(['meinPortfolio']);
-          //console.log(this.authCoreService.getRole());
         },
-        (error) => {
+        () => {
           this.errorMap.set('backendError', 'Eingegebener Benutzername oder Passwort nicht korrekt.')
           this.router.navigate(['login']);
         }
       );
-      console.log("Finished")
-
     }
   }
 }

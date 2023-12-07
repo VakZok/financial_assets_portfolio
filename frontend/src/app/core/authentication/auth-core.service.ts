@@ -15,6 +15,7 @@ export class AuthCoreService {
   private isAuthenticatedSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
+  private username : string = '';
   private role : string = '';
   private name : string = '';
 
@@ -34,9 +35,7 @@ export class AuthCoreService {
     return this.isAuthenticatedSubject.asObservable();
   }
 
-
   public login(username: string, password: string) {
-    console.log("test")
     return this.http
       .get(LOGIN_URL, {
         headers: {
@@ -45,15 +44,11 @@ export class AuthCoreService {
       })
       .pipe(
         map((res) => {
-          console.log("check",res);
-
-          let lm : LoginModel = <LoginModel>res;
-          console.log("test", `${window.btoa(username + ':' + password)}`)
+          let lm : LoginModel = <LoginModel> res;
           this.registerSuccessfulLogin(
             `${window.btoa(username + ':' + password)}`,
-            lm.name, lm.role
+            username, lm.name, lm.role
           );
-
           this.setAuthState(true);
           this.snackBar.open('Erfolgreich eingeloggt ✔️', '', {
             duration: 3000
@@ -66,6 +61,7 @@ export class AuthCoreService {
     sessionStorage.removeItem(AUTH_TOKEN_NAME);
     this.role = '';
     this.name = '';
+    this.username = '';
     this.setAuthState(false);
     this.router.navigate(['/login']);
   }
@@ -75,14 +71,14 @@ export class AuthCoreService {
     if (sessionStorage.getItem(AUTH_TOKEN_NAME) != null) {
       token = sessionStorage.getItem(AUTH_TOKEN_NAME) || '';
     }
-    console.log(token)
     return token
   }
 
-  private registerSuccessfulLogin(token: string, name : string, role : string) {
+  private registerSuccessfulLogin(token: string, username: string,  name: string, role: string) {
     sessionStorage.setItem(AUTH_TOKEN_NAME, token);
     this.role = role;
     this.name = name;
+    this.username = username;
     this.setAuthState(true);
   }
 
@@ -101,7 +97,9 @@ export class AuthCoreService {
   public getName() {
     return this.name;
   }
-
+  public getUsername() {
+    return this.username;
+  }
 
   private createBasicAuthToken(username: String, password: String) {
     return 'Basic ' + window.btoa(username + ':' + password);

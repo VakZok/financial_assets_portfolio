@@ -3,7 +3,6 @@ package hs.aalen.financial_assets_portfolio.domain;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 
 @Entity

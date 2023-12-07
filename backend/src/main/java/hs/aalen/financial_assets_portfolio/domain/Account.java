@@ -1,9 +1,7 @@
 package hs.aalen.financial_assets_portfolio.domain;
 
 import hs.aalen.financial_assets_portfolio.data.AccountDTO;
-
 import jakarta.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Account {

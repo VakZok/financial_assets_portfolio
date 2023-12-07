@@ -7,19 +7,15 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hs.aalen.financial_assets_portfolio.data.AccountDTO;
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
-import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
-import hs.aalen.financial_assets_portfolio.domain.Account;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.AccountService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -90,7 +86,7 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/{username}/add")
+    @PutMapping("/{username}")
     public ResponseEntity<Object> updateAccount(@PathVariable String username, @RequestBody AccountDTO accountDTO) {
         try {
             accountService.updateAccount(username, accountDTO);
@@ -104,7 +100,7 @@ public class AccountController {
 
 
     @DeleteMapping("/{username}")
-    public void deleteAccount(@PathVariable String username) {
-        accountService.deleteAccountByUsername(username);
+    public void deleteAccount(@PathVariable String username, Authentication authentication) {
+        accountService.deleteAccountByUsername(username, authentication.getName());
     }
 }

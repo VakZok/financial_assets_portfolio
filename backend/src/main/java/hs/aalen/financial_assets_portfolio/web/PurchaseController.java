@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
-import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PurchaseService;

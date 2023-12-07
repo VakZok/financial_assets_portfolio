@@ -1,5 +1,5 @@
 
-<form class="form" [formGroup]="AccountForm" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="accountForm" (ngSubmit)="onSubmit()">
 
   <div class="row">
 
@@ -14,11 +14,14 @@
     <div class="container">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput id="name" (blur)="onBlurUsername()" maxlength="30" value="Name" type="text"  formControlName="name"/>
+        <input matInput id="name" maxlength="30" value="Name" type="text"  formControlName="name"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
       </mat-form-field>
     </div>
 
+  </div>
+
+  <div class="row">
     <div class="container">
       <mat-form-field>
         <mat-label>Passwort</mat-label>
@@ -26,16 +29,31 @@
         <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
       </mat-form-field>
     </div>
-    
 
     <div class="container">
       <mat-form-field>
         <mat-label>Passwort bestätigen</mat-label>
-        <input matInput id="validatePassword" maxlength="30" type="password" formControlName="validatePassword" />
-        <mat-error class="error" *ngIf="(this.errorMap.get('validatePassword')?.length || 0) >=1">{{errorMap.get('validatePassword')}}</mat-error>
+        <input matInput id="confirmPassword" maxlength="30" type="password" formControlName="confirmPassword" />
+        <mat-error class="error" *ngIf="(this.errorMap.get('confirmPassword')?.length || 0) >=1">{{errorMap.get('confirmPassword')}}</mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Rolle</mat-label>
+        <select  matNativeControl id="role" formControlName="role" >
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+        <mat-error class="error" *ngIf="(this.errorMap.get('role')?.length || 0) >=1">{{errorMap.get('role')}}</mat-error>
       </mat-form-field>
     </div>
   </div>
+
+
 
   <div class="button-area">
     <button [type]="'addAccount'">Hinzufügen</button>

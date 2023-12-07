@@ -28,7 +28,7 @@ export class UserManagementService {
   postAccount(account:AccountModel): Observable<AccountModel> {
     const headers = this.getHeader();
     return this.http.post<AccountModel>(this.apiUrl + '/' + account.username + '/add', account, {headers: headers})
-  } 
+  }
 
   getAccountPreview(): Observable<AccountModel[]> {
     const headers = this.getHeader();
@@ -40,9 +40,9 @@ export class UserManagementService {
     return this.http.get<AccountModel>(this.apiUrl + '/' + username, {headers: headers})
   }
 
-  putAccount(account:AccountModel): Observable<AccountModel> {
+  putAccount(initUsername:string, account:AccountModel): Observable<AccountModel> {
     const headers = this.getHeader();
-    return this.http.put<AccountModel>(this.apiUrl + '/' + account.username, account, {headers: headers})
+    return this.http.put<AccountModel>(this.apiUrl + '/' + initUsername, account, {headers: headers})
   }
 
   deleteAccount(username:string): Observable<AccountModel>{

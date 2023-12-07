@@ -2,7 +2,6 @@ package hs.aalen.financial_assets_portfolio.domain;
 
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
 import jakarta.persistence.*;
-
 import java.util.Set;
 
 @Entity

@@ -6,7 +6,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PurchaseModel} from "../../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
 import {PurchaseService} from "../../../../../../../core/services/purchase.service";
-import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -24,8 +23,10 @@ export class PurchaseDialogComponent {
   ]);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<PurchaseDialogComponent>,
-    private currencyPipe: CurrencyPipe, public purchaseService: PurchaseService, private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<PurchaseDialogComponent>,
+    private currencyPipe: CurrencyPipe,
+    public purchaseService: PurchaseService,
     private snackBar: MatSnackBar){
 
     this.shareDTO = data.shareDTO;
@@ -121,12 +122,12 @@ export class PurchaseDialogComponent {
       }
       // post purchaseDTO
       this.purchaseService.postPurchase(this.shareDTO.wkn || '', purchaseDTO).subscribe({
-        next: (data) => {
+        next: () => {
           this.dialogRef.close()
           this.openSnackBar(this.shareDTO.wkn!)
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
-        error: (errors) => errors.error.forEach((item: any) => {
+        error: (errors) => errors.error.forEach(() => {
         }),
       })
     }

@@ -1,7 +1,6 @@
 package hs.aalen.financial_assets_portfolio.data;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import hs.aalen.financial_assets_portfolio.domain.Account;
 
 
