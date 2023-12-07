@@ -34,6 +34,7 @@ import { AccountFormComponent } from './modules/home/pages/add-account/account-f
 import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-users.component';
 import { UserListComponent } from './modules/home/pages/manage-users/components/user-list/user-list.component';
 import { UserDialogComponent } from './modules/home/pages/manage-users/components/user-dialog/user-dialog.component';
+import { ConfirmDeletionComponent } from './modules/home/pages/manage-users/components/confirm-deletion/confirm-deletion.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { UserDialogComponent } from './modules/home/pages/manage-users/component
     AccountFormComponent,
     ManageUsersComponent,
     UserListComponent,
-    UserDialogComponent,  
+    UserDialogComponent,
+    ConfirmDeletionComponent,  
   ],
   imports: [
     BrowserModule,
