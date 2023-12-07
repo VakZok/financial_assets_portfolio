@@ -1,24 +1,20 @@
-.mat-column-wkn {
+.mat-column-name {
     font-size: 1.2em;
   }
   
-  .mat-column-name {
+  .mat-column-username {
     font-size: 1.2em;
   }
   
-  .mat-column-avgPrice {
+  .mat-column-password {
     font-size: 1.2em;
   }
   
-  .mat-column-totalPrice {
+  .mat-column-edituser {
     font-size: 1.2em;
   }
   
-  .mat-column-totalQuantity {
-    font-size: 1.2em;
-  }
-  
-  .mat-column-buy {
+  .mat-column-deleteuser {
     font-size: 1.2em;
   }
   
@@ -33,24 +29,28 @@
   }
   
   .routing-button{
-    width: 30px; /* Set your desired button size */
-    height: 30px;
     border: 3px solid black; /* Black border */
     background-color: white; /* White background */
-    border-radius: 50%; /* Makes the button round */
+    border-radius: 1vh;
     position: relative;
+    justify-content: center;
+    padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+    font-size: 1em;
+
   }
   
   .routing-button:hover{
     box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
     transition: 0.2s;
-    cursor: pointer;
-    width: 30px; /* Set your desired button size */
-    height: 30px;
+    cursor: pointer;    
     border: 3px solid black; /* Black border */
     background-color: black;
     color:white;
-    border-radius: 50%; /* Makes the button round */
+    border-radius: 1vh;
     position: relative;
+    justify-content: center;
+    padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+    font-size: 1em;
+
   }
   

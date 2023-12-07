@@ -1,0 +1,57 @@
+<mat-dialog-content class="dialog">
+    <h1>Benutzer bearbeiten </h1>  
+    <form class="form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Neuer Name</mat-label>
+          <input matInput id="name" type="text" maxlength="255" formControlName="name" (input)="onInputName($event)"
+                 autocomplete="off" />
+          <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Neuer Benutzername</mat-label>
+          <input matInput id="username" maxlength="255" formControlName="username" (input)="onInputUsername($event)"
+                 autocomplete="off"/>
+          <mat-error class="error" *ngIf="(this.errorMap.get('username')?.length || 0) >=1">{{errorMap.get('username')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Neues Passwort</mat-label>
+          <input matInput id="password" maxlength="255" formControlName="password" (input)="onInputPassword($event)"
+                 autocomplete="off" type="password"/>
+          <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Neues Passwort bestätigen</mat-label>
+          <input matInput id="password" maxlength="255" formControlName="confirmPassword" (input)="onInputPassword($event)"
+                 autocomplete="off" type="password"/>
+          <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Neue Rolle</mat-label>
+          <input matInput id="role" maxlength="255" formControlName="role" (input)="onInputRole($event)"
+                 autocomplete="off"/>
+          <mat-error class="error" *ngIf="(this.errorMap.get('password')?.length || 0) >=1">{{errorMap.get('password')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="button-area">
+        <button [type]="'submit'">Speichern</button>
+        <button mat-dialog-close>Abbrechen</button>
+      </div>
+  
+    </form>
+    
+  </mat-dialog-content>

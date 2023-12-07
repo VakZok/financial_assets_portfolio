@@ -15,8 +15,6 @@ export class NavigationBarComponent {
   navMapDisplay = new Map<string, boolean>([
     ['/meinPortfolio', false],
     ['/benutzer', false],
-    /*['/pItemHinzufuegen', false],
-    */
   ]);
   constructor(private router: Router, public authService: AuthCoreService) {
     router.events.pipe(

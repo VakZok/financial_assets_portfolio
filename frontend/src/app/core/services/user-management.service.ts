@@ -9,7 +9,7 @@ import {AuthCoreService} from "../authentication/auth-core.service";
 })
 export class UserManagementService {
 
-  private apiUrl = 'http://localhost:8080/v1/userManagement';
+  private apiUrl = 'http://localhost:8080/v1/accounts';
 
   getHeader() {
     return new HttpHeaders({
@@ -19,13 +19,35 @@ export class UserManagementService {
   }
   constructor(private http: HttpClient, private authService:AuthCoreService) { }
 
-  checkPItemExists(username:string): Observable<AccountModel> {
+
+  checkUsernameExists(username: string): Observable<AccountModel> {
     const headers = this.getHeader();
-    return this.http.head<AccountModel>(this.apiUrl + '/' + username, {headers})
+    return this.http.head<AccountModel>(this.apiUrl + '/' + username, {headers: headers})
   }
 
   postAccount(account:AccountModel): Observable<AccountModel> {
     const headers = this.getHeader();
-    return this.http.post<AccountModel>(this.apiUrl + '/add', account,{headers} )
+    return this.http.post<AccountModel>(this.apiUrl + '/' + account.username + '/add', account, {headers: headers})
+  } 
+
+  getAccountPreview(): Observable<AccountModel[]> {
+    const headers = this.getHeader();
+    return this.http.get<AccountModel[]>(this.apiUrl + '/preview', {headers: headers})
+  }
+
+  getAccountByUsername(username:string): Observable<AccountModel> {
+    const headers = this.getHeader();
+    return this.http.get<AccountModel>(this.apiUrl + '/' + username, {headers: headers})
+  }
+
+  putAccount(account:AccountModel): Observable<AccountModel> {
+    const headers = this.getHeader();
+    return this.http.put<AccountModel>(this.apiUrl + '/' + account.username, account, {headers: headers})
+  }
+
+  deleteAccount(username:string): Observable<AccountModel>{
+    const headers = this.getHeader();
+    return this.http.delete<AccountModel>(this.apiUrl + '/' + username, {headers: headers})
+
   }
 }
