@@ -42,11 +42,11 @@ const routes: Routes = [
     component: PrivacyPolicyComponent
   },
 
-  { path: 'missingPermission',
+  { path: 'fehlendeBerechtigungen',
     component: MissingPermissionsComponent
   },
 
-  { path: 'addAccount',
+  { path: 'accountHinzufuegen',
     component: AddAccountComponent,
     canActivate:[AuthGuardService],
     data: {roles:['ADMIN']}
