@@ -34,11 +34,11 @@ const routes: Routes = [
     data: {roles:['ADMIN', 'USER']}
   },
 
-  { path: 'legalNotice',
+  { path: 'impressum',
     component: LegalNoticeComponent
   },
 
-  { path: 'privacyPolicy',
+  { path: 'datenschutz',
     component: PrivacyPolicyComponent
   },
 
@@ -59,7 +59,11 @@ const routes: Routes = [
   },
 
   // wildcard route
- // { path: '**', component: MyPortfolioComponent} // redirects any unspecified request to home page which is mein_portfolio
+  { path: '**',
+    component: MyPortfolioComponent,
+    canActivate:[AuthGuardService],
+    data: {roles:['ADMIN', 'USER']}
+  } // redirects any unspecified request to home page which is mein_portfolio
 ];
 
 @NgModule({

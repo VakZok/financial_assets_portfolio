@@ -18,7 +18,6 @@ public class AccountDetailsService implements UserDetailsService {
     public AccountDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Account account = this.accountRepo.findByUsernameIgnoreCase(userName);
         if (account == null) {
-            System.out.println("test");
             throw new UsernameNotFoundException("Der Account wurde nicht gefunden");
         }
         return new AccountDetails(account);
