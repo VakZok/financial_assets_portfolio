@@ -70,8 +70,7 @@ public class PortfolioItemController {
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "shareDTO", "avgPrice", "totalPrice", "totalQuantity"));
             filterProvider.addFilter("shareFilter",
-                    SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "name", "wkn"));
+                    SimpleBeanPropertyFilter.serializeAll());
 
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
