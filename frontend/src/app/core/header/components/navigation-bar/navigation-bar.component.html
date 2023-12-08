@@ -13,6 +13,6 @@
   <button *ngIf="!this.authService.getAuthState()" routerLink="/login" class="routing-button"
           [disabled]="currentPage.startsWith('/login') ">Login</button>
 
-  <button *ngIf="this.authService.getAuthState()" (click)="logout()" class="routing-button">Logout</button>
+  <button *ngIf="this.authService.getAuthState()" (click)="logout()" class="routing-button">{{this.authService.getUsername()}} - Logout</button>
 
 </div>
