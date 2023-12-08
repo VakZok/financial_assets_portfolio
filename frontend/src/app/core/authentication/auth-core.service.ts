@@ -58,7 +58,7 @@ export class AuthCoreService {
   }
 
   public logout() {
-    sessionStorage.removeItem(AUTH_TOKEN_NAME);
+    sessionStorage.clear()
     this.role = '';
     this.name = '';
     this.username = '';
@@ -76,9 +76,9 @@ export class AuthCoreService {
 
   private registerSuccessfulLogin(token: string, username: string,  name: string, role: string) {
     sessionStorage.setItem(AUTH_TOKEN_NAME, token);
-    this.role = role;
-    this.name = name;
-    this.username = username;
+    sessionStorage.setItem('role', role);
+    sessionStorage.setItem('name', name);
+    sessionStorage.setItem('username', username);
     this.setAuthState(true);
   }
 
@@ -91,14 +91,14 @@ export class AuthCoreService {
   }
 
   public getRole(){
-    return this.role;
+    return sessionStorage.getItem('role') || ''
   }
 
   public getName() {
-    return this.name;
+    return sessionStorage.getItem('name') || ''
   }
   public getUsername() {
-    return this.username;
+    return sessionStorage.getItem('username') || ''
   }
 
   private createBasicAuthToken(username: String, password: String) {

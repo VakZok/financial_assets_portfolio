@@ -18,11 +18,13 @@ export class AuthGuardService implements CanActivate {
     }
 
     checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
-        if (this.authService.getAuthState()) {
-            const userRole = this.authService.getRole();
-            return route.data['roles'].includes(userRole);
-        }
-        this.router.navigate(['/login']);
-        return false;
+      if (this.authService.getToken() !== '' && !route.data['roles'].includes(this.authService.getRole())){
+          this.router.navigate(['/meinPortfolio'])
+      } else if (this.authService.getToken() !== '') {
+          const userRole = this.authService.getRole();
+          return route.data['roles'].includes(userRole);
+      } else
+          this.router.navigate(['/login']);
+          return false;
     }
 }
