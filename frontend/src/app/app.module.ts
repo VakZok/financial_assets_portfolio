@@ -35,6 +35,7 @@ import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-u
 import { UserListComponent } from './modules/home/pages/manage-users/components/user-list/user-list.component';
 import { UserDialogComponent } from './modules/home/pages/manage-users/components/user-dialog/user-dialog.component';
 import { ConfirmDeletionComponent } from './modules/home/pages/manage-users/components/confirm-deletion/confirm-deletion.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -61,22 +62,23 @@ import { ConfirmDeletionComponent } from './modules/home/pages/manage-users/comp
     ManageUsersComponent,
     UserListComponent,
     UserDialogComponent,
-    ConfirmDeletionComponent,  
+    ConfirmDeletionComponent,
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatInputModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatButtonModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatInputModule,
+        MatCardModule,
+        MatSnackBarModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatMenuModule,
+    ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
