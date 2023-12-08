@@ -61,9 +61,13 @@ export class UserDialogComponent implements OnInit{
   }
 
   onSubmit() {
+    this.accountForm.controls['password'].updateValueAndValidity()
+    this.accountForm.controls['confirmPassword'].updateValueAndValidity()
+
     // loop over input form and remove leading/trailing whitespaces
     for (const controlName in this.accountForm.controls) {
-      if (this.accountForm.controls.hasOwnProperty(controlName)) {
+      if (this.accountForm.controls.hasOwnProperty(controlName)
+        && (controlName !== 'password') && (controlName !== 'confirmPassword')) {
         const control = this.accountForm.get(controlName);
         if (control?.value != null) {
           control?.setValue(control?.value.trim())
@@ -99,18 +103,20 @@ export class UserDialogComponent implements OnInit{
 
     if (this.accountForm.controls['confirmPassword'].errors?.['required']) {
       this.errorMap.set('confirmPassword', 'Bitte bestätigen sie das Passwort');
+    } else if (this.accountForm.controls['password']?.value !== this.accountForm.controls['confirmPassword']?.value) {
+      this.accountForm.controls['password'].setErrors(['passwordMismatch'])
+      this.accountForm.controls['confirmPassword'].setErrors(['passwordMismatch'])
+      this.errorMap.set('password', 'Passwörter stimmen nicht überein');
+      this.errorMap.set('confirmPassword', 'Passwörter stimmen nicht überein');
     } else {
       this.errorMap.set('confirmPassword', '');
     }
-
 
     if (this.accountForm.valid) {
       // initialize errors if form is valid
       for (let [key, error] of this.errorMap) {
         this.errorMap.set(key, '');
       }
-
-
 
       //create accountDTO
       const accountDTO: AccountModel = {

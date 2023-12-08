@@ -82,7 +82,8 @@ export class AccountFormComponent {
     async onSubmit() {
         // loop over input form and remove leading/trailing whitespaces
         for (const controlName in this.accountForm.controls) {
-            if (this.accountForm.controls.hasOwnProperty(controlName)) {
+            if (this.accountForm.controls.hasOwnProperty(controlName)
+              && (controlName !== 'password') && (controlName !== 'confirmPassword')) {
                 const control = this.accountForm.get(controlName);
                 if (control?.value != null) {
                     control?.setValue(control?.value.trim())
