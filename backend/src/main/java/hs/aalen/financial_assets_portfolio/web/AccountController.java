@@ -87,16 +87,22 @@ public class AccountController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Object> updateAccount(@PathVariable String username, @RequestBody AccountDTO accountDTO) {
-        try {
-            accountService.updateAccount(username, accountDTO);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(new ExceptionDTO("username", e.getMessage()), HttpStatus.CONFLICT);
-        } catch (FormNotValidException e) {
-            return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Object> updateAccount(
+            @PathVariable String username,
+            @RequestBody AccountDTO accountDTO,
+            Authentication authentication) {
+
+            try {
+                accountService.updateAccount(username, accountDTO, authentication);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            } catch (DataIntegrityViolationException e) {
+                return new ResponseEntity<>(new ExceptionDTO("username", e.getMessage()), HttpStatus.CONFLICT);
+            } catch (FormNotValidException e) {
+                return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
+            }
     }
+
+
 
 
     @DeleteMapping("/{username}")

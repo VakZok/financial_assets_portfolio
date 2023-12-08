@@ -6,6 +6,7 @@ import hs.aalen.financial_assets_portfolio.domain.Account;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -53,32 +54,35 @@ public class AccountService {
         }
     }
     @Transactional
-    public void updateAccount(String username, AccountDTO accountDTO) throws FormNotValidException{
-        Account existingAccount = accountRepository.findByUsernameIgnoreCase(username);
-        ArrayList<ExceptionDTO> exceptionDTOList = this.validateUpdateForm(username, accountDTO);
+    public void updateAccount(String username, AccountDTO accountDTO, Authentication authentication) throws FormNotValidException{
+        if(!username.equals(authentication.getName())){
+            Account existingAccount = accountRepository.findByUsernameIgnoreCase(username);
+            ArrayList<ExceptionDTO> exceptionDTOList = this.validateUpdateForm(username, accountDTO);
 
-        if (exceptionDTOList.isEmpty()){
-            if(!existingAccount.getUsername().equals(accountDTO.getUsername()) && !accountDTO.getUsername().isEmpty()){
-                existingAccount = new Account(
-                        accountDTO.getUsername(),
-                        existingAccount.getPassword(),
-                        existingAccount.getName(),
-                        existingAccount.getRole());
-                accountRepository.deleteByUsername(username);
+            if (exceptionDTOList.isEmpty()){
+                if(!existingAccount.getUsername().equals(accountDTO.getUsername()) && !accountDTO.getUsername().isEmpty()){
+                    existingAccount = new Account(
+                            accountDTO.getUsername(),
+                            existingAccount.getPassword(),
+                            existingAccount.getName(),
+                            existingAccount.getRole());
+                    accountRepository.deleteByUsername(username);
+                }
+                if(!existingAccount.getName().equals(accountDTO.getName()) && !accountDTO.getName().isEmpty()){
+                    existingAccount.setName(accountDTO.getName());
+                }
+                if(!existingAccount.getPassword().equals(accountDTO.getPassword()) && !accountDTO.getPassword().isEmpty()){
+                    existingAccount.setPassword(accountDTO.getPassword());
+                }
+                if(!existingAccount.getRole().equalsIgnoreCase(accountDTO.getRole()) && !accountDTO.getRole().isEmpty()){
+                    existingAccount.setRole(accountDTO.getRole().toUpperCase());
+                }
+                saveAccount(existingAccount);
+            }else {
+                throw new FormNotValidException("Formfehler", exceptionDTOList);
             }
-            if(!existingAccount.getName().equals(accountDTO.getName()) && !accountDTO.getName().isEmpty()){
-                existingAccount.setName(accountDTO.getName());
-            }
-            if(!existingAccount.getPassword().equals(accountDTO.getPassword()) && !accountDTO.getPassword().isEmpty()){
-                existingAccount.setPassword(accountDTO.getPassword());
-            }
-            if(!existingAccount.getRole().equalsIgnoreCase(accountDTO.getRole()) && !accountDTO.getRole().isEmpty()){
-                existingAccount.setRole(accountDTO.getRole().toUpperCase());
-            }
-            saveAccount(existingAccount);
-        }else {
-            throw new FormNotValidException("Formfehler", exceptionDTOList);
         }
+
     }
     @Transactional
     public void deleteAccountByUsername(String username, String authenticatedUsername) {
