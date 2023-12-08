@@ -48,6 +48,8 @@ h1 {
     padding: 1vh 1vw 1vh 1vw;
     font-size: 1.5vh;
     user-select: none;
+    margin-left: 1vw;
+    margin-right: 1vw;
   }
   
   button:hover{

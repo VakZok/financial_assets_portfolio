@@ -10,6 +10,10 @@
     font-size: 1.2em;
   }
 
+  .mat-column-role {
+    font-size: 1.2em;
+  }
+
   .mat-column-edituser {
     font-size: 1.2em;
   }
@@ -61,3 +65,34 @@
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
   font-size: 1em;
 }
+
+.button-area{
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 1.2em;
+  float:right;
+}
+
+.adduser-button{
+  width: 30px; /* Set your desired button size */
+  height: 30px;
+  border: 3px solid black; /* Black border */
+  background-color: white; /* White background */
+  border-radius: 50%; /* Makes the button round */
+  position: static;
+  margin-left:0.8vh;
+}
+
+.adduser-button:hover{
+  box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
+  transition: 0.2s;
+  cursor: pointer;
+  width: 30px; /* Set your desired button size */
+  height: 30px;
+  border: 3px solid black; /* Black border */
+  background-color: black;
+  color:white;
+  border-radius: 50%; /* Makes the button round */
+  position: relative;
+}
+

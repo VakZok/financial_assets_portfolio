@@ -5,17 +5,17 @@
 
     <div class="container">
       <mat-form-field>
-        <mat-label>Benutzername</mat-label>
-        <input matInput id="username" (blur)="onBlurUsername()" maxlength="30" value="Benutzername" type="text"  formControlName="username"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('username')?.length || 0) >=1">{{errorMap.get('username')}}</mat-error>
+        <mat-label>Name</mat-label>
+        <input matInput id="name" maxlength="30" value="Name" type="text"  formControlName="name"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput id="name" maxlength="30" value="Name" type="text"  formControlName="name"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
+        <mat-label>Benutzername</mat-label>
+        <input matInput id="username" (blur)="onBlurUsername()" maxlength="30" value="Benutzername" type="text"  formControlName="username"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('username')?.length || 0) >=1">{{errorMap.get('username')}}</mat-error>
       </mat-form-field>
     </div>
 
