@@ -2,7 +2,7 @@ INSERT INTO account (username, password, name, role)
 VALUES ('john.doe', 'mypassword', 'John Doe', 'ADMIN');
 
 INSERT INTO account (username, password, name, role)
-VALUES ('npc', 'npcppassword', 'Npc', 'USER');
+VALUES ('npc', 'npcpassword', 'Npc', 'USER');
 
 INSERT INTO share (wkn, name, description, category)
 VALUES ('123456', 'Allianz', 'Versicherungsgesellschaft', 'Aktie');
