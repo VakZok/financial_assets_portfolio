@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 public interface PurchaseRepository extends ListCrudRepository<Purchase, Long> {
-    ArrayList<Purchase> findAllByShare_Wkn(String wkn);
+    ArrayList<Purchase> findAllByShare_Isin(String isin);
 }
 
 

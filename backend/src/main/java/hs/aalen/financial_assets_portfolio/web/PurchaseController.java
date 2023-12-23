@@ -75,13 +75,13 @@ public class PurchaseController {
     }
 
     /* POST REQUESTS */
-    @PostMapping("portfolioItems/{wkn}/purchases/add")
-    public ResponseEntity<Object> addNewPurchase(@PathVariable String wkn, @RequestBody PurchaseDTO purchaseDTO) {
+    @PostMapping("portfolioItems/{isin}/purchases/add")
+    public ResponseEntity<Object> addNewPurchase(@PathVariable String isin, @RequestBody PurchaseDTO purchaseDTO) {
         try {
-            purchaseService.addNewPurchase(wkn, purchaseDTO);
+            purchaseService.addNewPurchase(isin, purchaseDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(new ExceptionDTO("wkn", e.getMessage()), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ExceptionDTO("isin", e.getMessage()), HttpStatus.CONFLICT);
         } catch (FormNotValidException e) {
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }

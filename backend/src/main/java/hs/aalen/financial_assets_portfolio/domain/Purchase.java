@@ -19,7 +19,7 @@ public class Purchase {
 
     /* MAPPED RELATIONSHIPS */
     @ManyToOne
-    @JoinColumn(name = "wkn")
+    @JoinColumn(name = "isin")
     private Share share;
 
 

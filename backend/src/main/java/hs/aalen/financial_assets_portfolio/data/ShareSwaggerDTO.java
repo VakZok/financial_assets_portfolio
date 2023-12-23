@@ -10,7 +10,7 @@ public class ShareSwaggerDTO {
 
     /* Constructors */
     public ShareSwaggerDTO(Share share) {
-        //this.isin = share.getIsin();
+        this.isin = share.getIsin();
         this.name = share.getName();
         this.category = share.getCategory();
         this.description = share.getDescription();

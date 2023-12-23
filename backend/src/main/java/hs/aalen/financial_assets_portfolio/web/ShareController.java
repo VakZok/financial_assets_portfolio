@@ -27,13 +27,13 @@ public class ShareController {
     }
 
     /* GET REQUESTS */
-    @GetMapping("/shares/{wkn}")
-    public ResponseEntity<Object> getShare(@PathVariable String wkn) {
+    @GetMapping("/shares/{isin}")
+    public ResponseEntity<Object> getShare(@PathVariable String isin) {
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("shareFilter", SimpleBeanPropertyFilter.serializeAllExcept());
 
-            ShareDTO shareDTO = shareService.getShare(wkn);
+            ShareDTO shareDTO = shareService.getShare(isin);
 
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());

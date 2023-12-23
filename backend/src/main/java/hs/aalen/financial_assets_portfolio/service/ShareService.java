@@ -15,7 +15,7 @@ public class ShareService {
 
 
     /* CONSTANTS */
-    public static final int WKN_LENGTH = 6;
+    public static final int ISIN_LENGTH = 12;
     public static final int STRING_MAX_LENGTH = 255;
 
     private final ShareRepository shareRepository;
@@ -38,8 +38,8 @@ public class ShareService {
     }
 
     /* Method that returns the share searched by the wkn */
-    public ShareDTO getShare(String wkn) throws NoSuchElementException{
-        Share share = shareRepository.findByWkn(wkn.toUpperCase());
+    public ShareDTO getShare(String isin) throws NoSuchElementException{
+        Share share = shareRepository.findByIsin(isin.toUpperCase());
         if (share == null){
             throw new NoSuchElementException();
         }
@@ -53,22 +53,22 @@ public class ShareService {
     }
 
     /* Method that checks if the Portfolio Item already exists */
-    public boolean checkShareExists(String wkn){
-        return this.shareRepository.existsByWkn(wkn.toUpperCase());
+    public boolean checkShareExists(String isin){
+        return this.shareRepository.existsByIsin(isin.toUpperCase());
     }
 
     /* Method that checks the validity of the input */
     public ArrayList<ExceptionDTO> validateForm(ShareDTO shareDTO){
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
 
-        if (checkShareExists(shareDTO.getWkn())){
-            exceptions.add(new ExceptionDTO("wkn", "Portfolio-Item mit dieser WKN bereits vorhanden"));
+        if (checkShareExists(shareDTO.getIsin())){
+            exceptions.add(new ExceptionDTO("isin", "Portfolio-Item mit dieser ISIN ist bereits vorhanden"));
         }
-        if (shareDTO.getWkn().length() > WKN_LENGTH ){
-            exceptions.add(new ExceptionDTO("wkn", "Die WKN darf maximal aus 6 Zeichen bestehen"));
+        if (shareDTO.getIsin().length() > ISIN_LENGTH ){
+            exceptions.add(new ExceptionDTO("isin", "Die ISIN darf maximal aus 12 Zeichen bestehen"));
         }
-        if(shareDTO.getWkn() == null || shareDTO.getWkn().isEmpty()){
-            exceptions.add(new ExceptionDTO("wkn", "Bitte füllen Sie die WKN aus"));
+        if(shareDTO.getIsin() == null || shareDTO.getIsin().isEmpty()){
+            exceptions.add(new ExceptionDTO("isin", "Bitte füllen Sie die ISIN aus"));
         }
         if(shareDTO.getName() == null || shareDTO.getName().isEmpty()){
             exceptions.add(new ExceptionDTO("name", "Bitte tragen Sie einen Namen ein"));

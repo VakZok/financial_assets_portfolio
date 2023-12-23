@@ -31,10 +31,10 @@ public class PortfolioItemController {
     }
 
     /* GET REQUESTS */
-    @GetMapping("portfolioItems/{wkn}")
-    public ResponseEntity<Object> getPItemByWKN(@PathVariable String wkn) {
+    @GetMapping("portfolioItems/{isin}")
+    public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin) {
         try {
-            PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByWKN(wkn);
+            PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByISIN(isin);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 
             filterProvider.addFilter("pItemFilter",
@@ -43,7 +43,7 @@ public class PortfolioItemController {
 
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "name", "wkn", "description", "category"));
+                            "name", "isin", "description", "category"));
 
             filterProvider.addFilter("purchaseFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(

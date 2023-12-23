@@ -8,14 +8,14 @@ public class ShareDTO {
      * and not exposing too much information.
      */
 
-    private String wkn;
+    private String isin;
     private String name;
     private String category;
     private String description;
 
     /* Constructors */
     public ShareDTO(Share share) {
-        this.wkn = share.getWkn();
+        this.isin = share.getIsin();
         this.name = share.getName();
         this.category = share.getCategory();
         this.description = share.getDescription();
@@ -24,12 +24,12 @@ public class ShareDTO {
     public ShareDTO(){}
 
     /* Getters and Setters */
-    public String getWkn() {
-        return wkn;
+    public String getIsin() {
+        return isin;
     }
 
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
+    public void setIsin(String isin) {
+        this.isin = isin;
     }
 
     public String getName() {

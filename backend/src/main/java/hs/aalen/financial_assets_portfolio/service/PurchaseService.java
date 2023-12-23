@@ -44,8 +44,8 @@ public class PurchaseService {
         }
     }
 
-    public ArrayList<PurchaseDTO> getPurchases(String wkn){
-        return  new ArrayList<>(purchaseRepository.findAllByShare_Wkn(wkn).stream().map(PurchaseDTO::new).toList());
+    public ArrayList<PurchaseDTO> getPurchases(String isin){
+        return  new ArrayList<>(purchaseRepository.findAllByShare_Isin(isin).stream().map(PurchaseDTO::new).toList());
     }
 
     /* Method that returns the portfolio item list */
@@ -62,11 +62,11 @@ public class PurchaseService {
         this.purchaseRepository.save(purchase);
     }
 
-    public void addNewPurchase(String wkn, PurchaseDTO purchaseDTO) throws FormNotValidException{
+    public void addNewPurchase(String isin, PurchaseDTO purchaseDTO) throws FormNotValidException{
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(purchaseDTO);
         exceptionDTOList.addAll(this.validateForm(purchaseDTO));
         if(exceptionDTOList.isEmpty()){
-            ShareDTO shareDTO = this.shareService.getShare(wkn);
+            ShareDTO shareDTO = this.shareService.getShare(isin);
             purchaseDTO.setShareDTO(shareDTO);
             savePurchase(purchaseDTO);
         } else {

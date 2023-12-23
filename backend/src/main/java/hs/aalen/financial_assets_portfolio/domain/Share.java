@@ -9,7 +9,7 @@ public class Share {
     /* PROPERTIES OF ENTITY */
     @Id
     @Column(unique = true)
-    private String wkn;
+    private String isin;
     private String name;
     private String category;
     private String description;
@@ -19,22 +19,22 @@ public class Share {
     Set<Purchase> purchases;
 
     /* Constructors */
-    public Share(String wkn, String name, String category, String description) {
-        this.wkn = wkn;
+    public Share(String isin, String name, String category, String description) {
+        this.isin = isin;
         this.name = name;
         this.category = category;
         this.description = description;
     }
 
     public Share(ShareDTO shareDTO){
-        this.wkn = shareDTO.getWkn().toUpperCase();
+        this.isin = shareDTO.getIsin().toUpperCase();
         this.name = shareDTO.getName();
         this.category = shareDTO.getCategory();
         this.description = shareDTO.getDescription();
     }
 
     public Share(ShareDTO shareDTO, Share share){
-        this.wkn = share.getWkn().toUpperCase();
+        this.isin = share.getIsin().toUpperCase();
         this.name = shareDTO.getName();
         this.category = shareDTO.getCategory();
         this.description = shareDTO.getDescription();
@@ -43,12 +43,12 @@ public class Share {
     public Share(){}
 
     /* Getters and Setters */
-    public String getWkn() {
-        return wkn;
+    public String getIsin() {
+        return isin;
     }
 
-    public void setWkn(String wkn) {
-        this.wkn = wkn;
+    public void setIsin(String isin) {
+        this.isin = isin;
     }
 
     public String getName() {

@@ -21,9 +21,9 @@ public class PortfolioItemService {
         this.shareService = shareService;
     }
 
-    public PortfolioItemDTO getPItemByWKN(String wkn)throws NoSuchElementException {
-        if (this.shareService.checkShareExists(wkn)) {
-            return aggregatePItem(this.shareService.getShare(wkn));
+    public PortfolioItemDTO getPItemByISIN(String isin)throws NoSuchElementException {
+        if (this.shareService.checkShareExists(isin)) {
+            return aggregatePItem(this.shareService.getShare(isin));
         } else {
             throw new NoSuchElementException();
         }
@@ -49,7 +49,7 @@ public class PortfolioItemService {
 
 
     public PortfolioItemDTO aggregatePItem(ShareDTO shareDTO){
-        ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getWkn());
+        ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getIsin());
 
         // create a double stream of price*quantity and sum it up to get total price
         double totalPrice = purchaseDTOList.stream()
