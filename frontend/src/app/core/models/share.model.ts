@@ -1,6 +1,6 @@
 
 export class ShareModel {
-    wkn?: string = '';
+    isin?: string = '';
     name?: string = '';
     category?: string = '';
     description?: string = '';

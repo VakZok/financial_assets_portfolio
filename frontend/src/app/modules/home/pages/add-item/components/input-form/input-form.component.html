@@ -4,11 +4,22 @@
 
   <div class="row">
 
+    <!-- old
     <div class="container">
       <mat-form-field>
         <mat-label>WKN</mat-label>
         <input matInput id="wkn" (blur)="onBlurWKN()" maxlength="6" value="wkn" type="text"  formControlName="wkn"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('wkn')?.length || 0) >=1">{{errorMap.get('wkn')}}</mat-error>
+      </mat-form-field>
+    </div>
+    -->
+
+    <!-- new -->
+    <div class="container">
+      <mat-form-field>
+        <mat-label>ISIN</mat-label>
+        <input matInput id="isin" (blur)="onBlurISIN()" maxlength="6" value="isin" type="text"  formControlName="isin"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('isin')?.length || 0) >=1">{{errorMap.get('isin')}}</mat-error>
       </mat-form-field>
     </div>
 
