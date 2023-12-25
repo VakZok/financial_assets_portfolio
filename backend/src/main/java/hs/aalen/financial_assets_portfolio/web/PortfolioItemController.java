@@ -34,6 +34,7 @@ public class PortfolioItemController {
     @GetMapping("portfolioItems/{isin}")
     public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin) {
         try {
+            PortfolioItemDTO result = pItemService.getPItemSwagger(isin);
             PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByISIN(isin);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 

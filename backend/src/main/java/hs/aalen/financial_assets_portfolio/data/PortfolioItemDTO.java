@@ -23,6 +23,14 @@ public class PortfolioItemDTO {
         this.purchaseDTOList = purchaseDTOList;
     }
 
+    public PortfolioItemDTO(ShareSwaggerDTO shareSwaggerDTO){
+        this.shareDTO = shareDTO;
+        this.avgPrice = avgPrice;
+        this.totalPrice = totalPrice;
+        this.totalQuantity = totalQuantity;
+        this.purchaseDTOList = purchaseDTOList;
+    }
+
     public PortfolioItemDTO(){};
 
     public ShareDTO getShareDTO() {

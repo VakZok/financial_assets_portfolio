@@ -7,6 +7,7 @@ public class ShareSwaggerDTO {
     private String name;
     private String category;
     private String description;
+    private double price;
 
     /* Constructors */
     public ShareSwaggerDTO(Share share) {
@@ -14,6 +15,7 @@ public class ShareSwaggerDTO {
         this.name = share.getName();
         this.category = share.getCategory();
         this.description = share.getDescription();
+        this.price = this.getPrice();
     }
 
     public ShareSwaggerDTO(){}
@@ -50,4 +52,8 @@ public class ShareSwaggerDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public double getPrice() { return price; }
+
+    public void setPrice(double price) { this.price = price; }
 }

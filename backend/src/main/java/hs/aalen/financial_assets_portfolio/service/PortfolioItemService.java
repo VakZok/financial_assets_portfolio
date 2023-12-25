@@ -1,10 +1,9 @@
 package hs.aalen.financial_assets_portfolio.service;
 
-import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
-import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
-import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
-import hs.aalen.financial_assets_portfolio.data.ShareDTO;
+import hs.aalen.financial_assets_portfolio.client.ShareSwaggerClient;
+import hs.aalen.financial_assets_portfolio.data.*;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -13,8 +12,20 @@ import java.util.NoSuchElementException;
 public class PortfolioItemService {
 
 
-    private final PurchaseService purchaseService;
-    private final ShareService shareService;
+    private PurchaseService purchaseService;
+    private ShareService shareService;
+    private ShareSwaggerClient shareSwaggerClient;
+
+    @Autowired
+    public PortfolioItemService(ShareSwaggerClient shareSwaggerClient) {
+        this.shareSwaggerClient = shareSwaggerClient;
+    }
+
+    public PortfolioItemDTO getPItemSwagger(String isin) {
+        ShareSwaggerDTO shareSwaggerDTO = shareSwaggerClient.getShare(isin);
+        PortfolioItemDTO portfolioItemDTO = new PortfolioItemDTO(shareSwaggerDTO);
+        return portfolioItemDTO;
+    }
 
     public PortfolioItemService(PurchaseService purchaseService, ShareService shareService) {
         this.purchaseService = purchaseService;
