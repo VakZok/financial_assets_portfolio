@@ -9,7 +9,7 @@
       <mat-form-field>
         <mat-label>ISIN</mat-label>
         <!-- Replace input with span -->
-        <span matInput id="isin" class="display-field">{{ backendISINData }}</span>
+        <span id="isin" class="display-field">{{ backendISINData }}</span>
         <!-- Remove blur event and formControlName since it's not an input anymore -->
         <!-- Remove error handling -->
       </mat-form-field>
@@ -18,21 +18,21 @@
     <div class="container">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <span matInput id="name" class="display-field">{{ nameFromBackend }}</span>
+        <span id="name" class="display-field">{{ nameFromBackend }}</span>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Kategorie</mat-label>
-        <span matInput id="category" class="display-field">{{ categoryFromBackend }}</span>
+        <span id="category" class="display-field">{{ categoryFromBackend }}</span>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Beschreibung</mat-label>
-        <div matInput id="description" class="display-field">{{ descriptionFromBackend }}</div>
+        <div id="description" class="display-field">{{ descriptionFromBackend }}</div>
       </mat-form-field>
     </div>
   </div>
