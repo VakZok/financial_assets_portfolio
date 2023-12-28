@@ -36,8 +36,7 @@ const maxSigns : number = 255;
 })
 export class InputFormComponent {
   pItemForm: FormGroup;
-  pItems:PortfolioItemModel[]=[];
-  dataSource = new MatTableDataSource<any>(this.pItems);
+  metaData: PortfolioItemModel | undefined;
 
   errorMap = new Map<string, string>([
     ['isin', ''],
@@ -87,23 +86,11 @@ export class InputFormComponent {
   getData(isin:string) {
     this.pItemService.getPItemSwagger(isin).subscribe({
       next: (data) => {
-        this.pItems.push(data)
-        this.dataSource.data = this.pItems
+        this.metaData = data;
       },
     })
   }
 
-  /* old
-  // send get request after blurring wkn input field
-  async onBlurWKN() {
-    this.pItemForm.statusChanges.pipe(
-      first(status => status !== 'PENDING')).subscribe(() => {
-      if (this.pItemForm.controls['wkn'].errors?.['pItemExists']){
-        this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
-      }
-    })
-  }
-   */
 
   // new
   // send get request after blurring isin input field
@@ -118,41 +105,15 @@ export class InputFormComponent {
     })
   }
 
-  // function that counts the amount of left signs
-  onKeyUpDescription(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.leftSigns = String(maxSigns - inputElement.value.length)
-  }
+
   // function to prevent other characters than digits
   onInputQuantity(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
   }
-  //function to prevent writing more than one comma into purchasePrice
-  onKeyDownPrice(event: KeyboardEvent) {
-    const inputElement = event.target as HTMLInputElement;
-    if (event.key == ',' && inputElement.value.length == 0){
-      event.preventDefault();
-    }
-  }
-  //function that formats purchase Price
-  onInputPurchasePrice(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    inputElement.value = inputElement.value.replace(
-      /[^\d,]/g,'').replace(
-      /(,.*)\,/g,'$1').replace(/^(\d+\,?\d*).*/g,'$1');
 
-  }
-
-  transformPrice(event:Event){
-    const inputElement = event.target as HTMLInputElement;
-    inputElement.value = this.currencyPipe.transform(
-      inputElement.value.replace(
-        ',', '.'), 'EUR', 'symbol', '.2-5') || '';
-  }
 
   async onSubmit() {
-
 
     // loop over input form and remove leading/trailing whitespaces
     for (const controlName in this.pItemForm.controls) {

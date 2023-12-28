@@ -15,12 +15,12 @@ import {ShareModel} from "../../../../../../core/models/share.model";
 export class PortfolioListComponent implements OnInit{
 
   pItems:PortfolioItemModel[]=[];
-  displayedColumns: string[] = ['wkn', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'buy'];
+  displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
 
   constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router, private dialog:MatDialog) {
   }
-  // aggregated by wkn
+  // aggregated by isin
   ngOnInit(): void {
     this.getData()
   }
@@ -36,8 +36,8 @@ export class PortfolioListComponent implements OnInit{
     })
   }
 
-  goToPItem(wkn:string){
-    this.router.navigate(['meinPortfolio',wkn])
+  goToPItem(isin:string){
+    this.router.navigate(['meinPortfolio',isin])
   }
 
   openDialog(event:Event, shareDTO: ShareModel){

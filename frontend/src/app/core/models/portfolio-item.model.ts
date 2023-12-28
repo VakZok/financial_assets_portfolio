@@ -6,5 +6,9 @@ export class PortfolioItemModel {
   avgPrice?: number
   totalQuantity?: number
   totalPrice?: number
+  currentPurchasePrice?: number
+  isFavorite?: boolean
+  profitAndLoss?: number
+  profitAndLossCum?: number
   purchaseDTOList?: PurchaseModel[]
 }

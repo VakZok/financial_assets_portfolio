@@ -8,31 +8,29 @@
     <div class="container">
       <mat-form-field>
         <mat-label>ISIN</mat-label>
-        <!-- Replace input with span -->
-        <span id="isin" class="display-field">{{ backendISINData }}</span>
-        <!-- Remove blur event and formControlName since it's not an input anymore -->
-        <!-- Remove error handling -->
+        <input matInput id="isin" (blur)="onBlurISIN($event)" maxlength="12" value="isin" type="text"  formControlName="isin"/>
+        <mat-error class="error" *ngIf="(this.errorMap.get('isin')?.length || 0) >=1">{{errorMap.get('isin')}}</mat-error>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <span id="name" class="display-field">{{ nameFromBackend }}</span>
+        <span id="name" class="display-field">{{ metaData?.shareDTO?.name}}</span>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Kategorie</mat-label>
-        <span id="category" class="display-field">{{ categoryFromBackend }}</span>
+        <span id="category" class="display-field">{{ metaData?.shareDTO?.category }}</span>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Beschreibung</mat-label>
-        <div id="description" class="display-field">{{ descriptionFromBackend }}</div>
+        <div id="description" class="display-field">{{ metaData?.shareDTO?.description }}</div>
       </mat-form-field>
     </div>
   </div>
@@ -50,9 +48,7 @@
     <div class="container">
       <mat-form-field>
         <mat-label>Kaufpreis pro Stück</mat-label>
-        <input matInput id="purchase-price" type="text" maxlength="255" formControlName="purchasePrice"
-               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" (blur)="transformPrice($event)"  />
-        <mat-error class="error" *ngIf="(this.errorMap.get('purchasePrice')?.length || 0) >=1">{{errorMap.get('purchasePrice')}}</mat-error>
+        <span id="price" class="display-field">{{ metaData?.currentPurchasePrice }}</span>
       </mat-form-field>
     </div>
 
