@@ -81,6 +81,25 @@ public class PortfolioItemController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping(value = "/portfolioItems/liked")
+    public ResponseEntity<Object> getPItemsLiked() {
+        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview();
+        try {
+            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("pItemFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity"));
+            filterProvider.addFilter("shareFilter",
+                    SimpleBeanPropertyFilter.serializeAll());
+
+            ObjectMapper om = new ObjectMapper();
+            String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
+            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @PostMapping("portfolioItems/add")
     public ResponseEntity<Object> postPItem(@RequestBody PurchaseDTO purchaseDTO) {

@@ -13,14 +13,22 @@ public class PortfolioItemDTO {
     private double avgPrice;
     private double totalPrice;
     private int totalQuantity;
+    private double profitAndLoss;
+    private double profitAndLossCum;
     private ArrayList<PurchaseDTO> purchaseDTOList;
 
-    public PortfolioItemDTO(ShareDTO shareDTO, double avgPrice, double totalPrice, int totalQuantity, ArrayList<PurchaseDTO> purchaseDTOList) {
+    public PortfolioItemDTO(
+            ShareDTO shareDTO, double avgPrice,
+            double totalPrice, int totalQuantity,
+            ArrayList<PurchaseDTO> purchaseDTOList,
+            double profitAndLoss, double profitAndLossCum) {
         this.shareDTO = shareDTO;
         this.avgPrice = avgPrice;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.purchaseDTOList = purchaseDTOList;
+        this.profitAndLoss = profitAndLoss;
+        this.profitAndLossCum = profitAndLossCum;
     }
 
     public PortfolioItemDTO(ShareSwaggerDTO shareSwaggerDTO){
@@ -71,5 +79,21 @@ public class PortfolioItemDTO {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public double getProfitAndLoss() {
+        return profitAndLoss;
+    }
+
+    public void setProfitAndLoss(double profitAndLoss) {
+        this.profitAndLoss = profitAndLoss;
+    }
+
+    public double getProfitAndLossCum() {
+        return profitAndLossCum;
+    }
+
+    public void setProfitAndLossCum(double profitAndLossCum) {
+        this.profitAndLossCum = profitAndLossCum;
     }
 }
