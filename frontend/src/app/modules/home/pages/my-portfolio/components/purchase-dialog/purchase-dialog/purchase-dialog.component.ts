@@ -121,10 +121,10 @@ export class PurchaseDialogComponent {
         quantity: parseInt(this.purchaseForm.controls['quantity'].value || ''),
       }
       // post purchaseDTO
-      this.purchaseService.postPurchase(this.shareDTO.wkn || '', purchaseDTO).subscribe({
+      this.purchaseService.postPurchase(this.shareDTO.isin || '', purchaseDTO).subscribe({
         next: () => {
           this.dialogRef.close()
-          this.openSnackBar(this.shareDTO.wkn!)
+          this.openSnackBar(this.shareDTO.isin!)
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
         error: (errors) => errors.error.forEach(() => {

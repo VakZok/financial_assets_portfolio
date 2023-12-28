@@ -1,8 +1,8 @@
 <ng-container *ngIf="data$ | async as data">
    <div class="metabody">
-    <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.wkn}}</h1>
+    <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.isin}}</h1>
     <ul class="list">
-      <li class="item"><b>WKN:</b> {{data.shareDTO?.wkn}}</li>
+      <li class="item"><b>ISIN:</b> {{data.shareDTO?.isin}}</li>
       <li class="item"><b>Name:</b> {{data.shareDTO?.name}}</li>
       <li lang="de" class="item"><b>Detaillierte Beschreibung:</b> <br> {{data.shareDTO?.description}} </li>
       <li class="item"><b>Kategorie:</b> {{data.shareDTO?.category}}</li>

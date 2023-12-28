@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
 import {PurchaseService} from "../../../../../../core/services/purchase.service";
@@ -10,6 +10,8 @@ import {first} from "rxjs";
 import {ShareModel} from "../../../../../../core/models/share.model";
 import {PurchaseModel} from "../../../../../../core/models/purchase.model";
 import {format} from "date-fns";
+import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
+import {MatTableDataSource} from "@angular/material/table";
 
 
 async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
@@ -34,9 +36,11 @@ const maxSigns : number = 255;
 })
 export class InputFormComponent {
   pItemForm: FormGroup;
+  pItems:PortfolioItemModel[]=[];
+  dataSource = new MatTableDataSource<any>(this.pItems);
 
   errorMap = new Map<string, string>([
-    ['wkn', ''],
+    ['isin', ''],
     ['name', ''],
     ['description', ''],
     ['category', ''],
@@ -56,7 +60,7 @@ export class InputFormComponent {
 
     /* Form Validation, check for completeness and sanity */
     this.pItemForm = new FormGroup({
-      wkn: new FormControl('', {
+      isin: new FormControl('', {
         asyncValidators:[WKNValidator(this.pItemService)],
         validators:[
           Validators.required,
@@ -79,12 +83,37 @@ export class InputFormComponent {
     })
   }
 
+  // get data for preview
+  getData(isin:string) {
+    this.pItemService.getPItemSwagger(isin).subscribe({
+      next: (data) => {
+        this.pItems.push(data)
+        this.dataSource.data = this.pItems
+      },
+    })
+  }
+
+  /* old
   // send get request after blurring wkn input field
   async onBlurWKN() {
     this.pItemForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(() => {
       if (this.pItemForm.controls['wkn'].errors?.['pItemExists']){
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
+      }
+    })
+  }
+   */
+
+  // new
+  // send get request after blurring isin input field
+  async onBlurISIN(event:Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.getData(inputElement.value)
+    this.pItemForm.statusChanges.pipe(
+      first(status => status !== 'PENDING')).subscribe(() => {
+      if (this.pItemForm.controls['isin'].errors?.['pItemExists']){
+        this.errorMap.set('isin', 'Portfolio-Item mit dieser ISIN bereits vorhanden');
       }
     })
   }
@@ -137,12 +166,12 @@ export class InputFormComponent {
 
 
     // map errors that are not async
-    if (this.pItemForm.controls['wkn'].errors?.['maxlength']) {
-      this.errorMap.set('wkn', 'Die WKN darf maximal aus 6 Stellen bestehen');
-    } else if (this.pItemForm.controls['wkn'].errors?.['required']) {
-      this.errorMap.set('wkn', 'Bitte füllen sie die WKN aus');
+    if (this.pItemForm.controls['isin'].errors?.['maxlength']) {
+      this.errorMap.set('isin', 'Die ISIN darf maximal aus 6 Stellen bestehen');
+    } else if (this.pItemForm.controls['isin'].errors?.['required']) {
+      this.errorMap.set('isin', 'Bitte füllen sie die ISIN aus');
     } else {
-      this.errorMap.set('wkn', '');
+      this.errorMap.set('isin', '');
     }
 
     if (this.pItemForm.controls['name'].errors?.['required']) {
@@ -184,10 +213,20 @@ export class InputFormComponent {
     // wait until Form Validation has finished
     await waitForFormNotPending(this.pItemForm)
 
+    /* old
     // map async wkn error
     if ( this.pItemForm.invalid) {
       if (this.pItemForm.controls['wkn'].errors?.['pItemExists']) {
         this.errorMap.set('wkn', 'Portfolio-Item mit dieser WKN bereits vorhanden');
+      }
+    }
+     */
+
+    // new
+    // map async isin error
+    if ( this.pItemForm.invalid) {
+      if (this.pItemForm.controls['isin'].errors?.['pItemExists']) {
+        this.errorMap.set('isin', 'Portfolio-Item mit dieser ISIN bereits vorhanden');
       }
     }
 
@@ -199,7 +238,7 @@ export class InputFormComponent {
 
       // create shareDTO from pItemForm
       const shareDTO: ShareModel = {
-        wkn: this.pItemForm.controls['wkn'].value || '',
+        isin: this.pItemForm.controls['isin'].value || '',
         name: this.pItemForm.controls['name'].value || '',
         category: this.pItemForm.controls['category'].value || '',
         description: this.pItemForm.controls['description'].value || '',
@@ -225,7 +264,7 @@ export class InputFormComponent {
           this.pItemForm.get(item.name)?.setErrors(item.message)
           this.errorMap.set(item.name, item.message);
         }),
-        complete: () => this.onSuccess(shareDTO.wkn!)
+        complete: () => this.onSuccess(shareDTO.isin!)
       })
     }
   }
@@ -241,8 +280,8 @@ export class InputFormComponent {
   }
 
   // method to navigate back, and open snackbar for success
-  onSuccess(wkn:string){
-      this.snackBar.open('Neues Portfolio-Item "' + wkn + '" erfolgreich hinzugefügt ✔️', '', {
+  onSuccess(isin:string){
+      this.snackBar.open('Neues Portfolio-Item "' + isin + '" erfolgreich hinzugefügt ✔️', '', {
         duration: 3000
       });
     this.router.navigate(['meinPortfolio'])
