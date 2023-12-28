@@ -9,9 +9,11 @@ import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +34,10 @@ public class PortfolioItemController {
 
     /* GET REQUESTS */
     @GetMapping("portfolioItems/{isin}")
-    public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin) {
+    public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin, Authentication authentication) {
         try {
             PortfolioItemDTO result = pItemService.getPItemSwagger(isin);
-            PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByISIN(isin);
+            PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByISIN(authentication.getName(), isin);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 
             filterProvider.addFilter("pItemFilter",
@@ -63,13 +65,16 @@ public class PortfolioItemController {
     }
 
     @GetMapping(value = "/portfolioItems/preview")
-    public ResponseEntity<Object> getPItemsPreview() {
-        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview();
+    public ResponseEntity<Object> getPItemsPreview(Authentication authentication) {
+        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName());
+        for (PortfolioItemDTO item : portfolioItemDTOList){
+            System.out.println(item.getIsFavorite());
+        }
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity"));
+                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity",  "profitAndLoss", "profitAndLossCum", "isFavorite"));
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.serializeAll());
 
@@ -82,13 +87,13 @@ public class PortfolioItemController {
         }
     }
     @GetMapping(value = "/portfolioItems/liked")
-    public ResponseEntity<Object> getPItemsLiked() {
-        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview();
+    public ResponseEntity<Object> getPItemsLiked(Authentication authentication) {
+        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getLikedPItems(authentication.getName());
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity"));
+                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity", "isFavorite", "profitAndLoss", "profitAndLossCum"));
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.serializeAll());
 
@@ -99,6 +104,12 @@ public class PortfolioItemController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("portfolioItems/{isin}/likes")
+    public ResponseEntity<Object> postLike(@PathVariable String isin, Authentication authentication) {
+        this.pItemService.postLikedPItem(authentication.getName(), isin);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("portfolioItems/add")
@@ -112,5 +123,10 @@ public class PortfolioItemController {
         }
     }
 
+    @DeleteMapping("portfolioItems/{isin}/likes")
+    public ResponseEntity<Object> deleteLike(@PathVariable String isin, Authentication authentication) {
+        this.pItemService.deleteLikedPItems(authentication.getName(), isin);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

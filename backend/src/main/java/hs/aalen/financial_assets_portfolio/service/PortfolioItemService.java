@@ -28,7 +28,7 @@ public class PortfolioItemService {
     public ArrayList<PortfolioItemDTO> getLikedPItems(String username){
         ArrayList<Share> likedShares = new ArrayList<Share> (this.likesRepository.findAllByAccountUsername(username).stream().map(Likes::getShare).toList());
         ArrayList<ShareDTO> shareDTOList = new ArrayList<ShareDTO> (likedShares.stream().map(ShareDTO::new).toList());
-        return new ArrayList<>(shareDTOList.stream().map(this::aggregatePItem).toList());
+        return new ArrayList<>(shareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO)).toList());
     }
 
     public void postLikedPItem(String username, String isin){
@@ -51,10 +51,12 @@ public class PortfolioItemService {
         return portfolioItemDTO;
     }
 
-    public PortfolioItemService(PurchaseService purchaseService,
-                                ShareService shareService,
-                                ShareSwaggerClient shareSwaggerClient,
-                                LikesRepository likesRepository, AccountRepository accountRepository) {
+    public PortfolioItemService(
+            PurchaseService purchaseService,
+            ShareService shareService,
+            ShareSwaggerClient shareSwaggerClient,
+            LikesRepository likesRepository, AccountRepository accountRepository) {
+
         this.purchaseService = purchaseService;
         this.shareService = shareService;
         this.shareSwaggerClient = shareSwaggerClient;
@@ -62,17 +64,17 @@ public class PortfolioItemService {
         this.accountRepository = accountRepository;
     }
 
-    public PortfolioItemDTO getPItemByISIN(String isin)throws NoSuchElementException {
+    public PortfolioItemDTO getPItemByISIN(String username, String isin)throws NoSuchElementException {
         if (this.shareService.checkShareExists(isin)) {
-            return aggregatePItem(this.shareService.getShare(isin));
+            return aggregatePItem(username, this.shareService.getShare(isin));
         } else {
             throw new NoSuchElementException();
         }
     }
 
-    public ArrayList<PortfolioItemDTO> getPItemsPreview(){
+    public ArrayList<PortfolioItemDTO> getPItemsPreview(String username ){
         ArrayList<ShareDTO> shareDTOList = this.shareService.getShareList();
-        return new ArrayList<>(shareDTOList.stream().map(this::aggregatePItem).toList());
+        return new ArrayList<>(shareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO)).toList());
     }
 
     public void addNewPItem(PurchaseDTO purchaseDTO) throws FormNotValidException{
@@ -88,9 +90,12 @@ public class PortfolioItemService {
         }
     }
 
-
-    public PortfolioItemDTO aggregatePItem(ShareDTO shareDTO){
+    public PortfolioItemDTO aggregatePItem(String username, ShareDTO shareDTO){
         ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getIsin());
+        String isin = shareDTO.getIsin();
+        LikesId likesId = new LikesId(username,isin);
+        boolean isFavorite = this.likesRepository.existsById(likesId);
+
 
         // create a double stream of price*quantity and sum it up to get total price
         double totalPrice = purchaseDTOList.stream()
@@ -102,6 +107,12 @@ public class PortfolioItemService {
 
         double avgPrice = totalPrice / totalQuantity;
 
-        return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity, purchaseDTOList);
+        //double currentPrice = this.shareSwaggerClient.getShare(isin).getPrice();
+
+        //double profitAndLossCum = currentPrice*totalQuantity - totalPrice;
+        //double profitAndLoss = currentPrice - avgPrice;
+
+        return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
+                purchaseDTOList, 0, 0, isFavorite);
     }
 }

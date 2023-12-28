@@ -9,5 +9,7 @@ import java.util.List;
 public interface LikesRepository extends ListCrudRepository<Likes, LikesId> {
     public List<Likes> findAllByAccountUsername(String username);
 
+    public void deleteAllByAccountUsername(String username);
+
 }
 

@@ -5,6 +5,7 @@ import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.domain.Account;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
+import hs.aalen.financial_assets_portfolio.persistence.LikesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,12 @@ public class AccountService {
     public static final int STRING_MAX_LENGTH = 30;
 
     private final AccountRepository accountRepository;
+    private final LikesRepository likesRepository;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, LikesRepository likesRepository) {
+
         this.accountRepository = accountRepository;
+        this.likesRepository = likesRepository;
     }
 
     public AccountDTO getAccount(String username) throws NoSuchElementException {
@@ -87,6 +91,7 @@ public class AccountService {
     @Transactional
     public void deleteAccountByUsername(String username, String authenticatedUsername) {
         if(!username.equals(authenticatedUsername)){
+            likesRepository.deleteAllByAccountUsername(username);
             accountRepository.deleteByUsername(username);
         }
     }
