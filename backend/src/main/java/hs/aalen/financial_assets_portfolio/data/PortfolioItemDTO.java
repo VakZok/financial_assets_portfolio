@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+
 @JsonFilter("pItemFilter")
 public class PortfolioItemDTO {
     @JsonFilter("shareFilter")
@@ -13,14 +13,31 @@ public class PortfolioItemDTO {
     private double avgPrice;
     private double totalPrice;
     private int totalQuantity;
+    private double currentPurchasePrice;
+    private boolean isFavorite;
+    private double profitAndLoss;
+    private double profitAndLossCum;
     private ArrayList<PurchaseDTO> purchaseDTOList;
 
-    public PortfolioItemDTO(ShareDTO shareDTO, double avgPrice, double totalPrice, int totalQuantity, ArrayList<PurchaseDTO> purchaseDTOList) {
+    public PortfolioItemDTO(
+            ShareDTO shareDTO, double avgPrice,
+            double totalPrice, int totalQuantity,
+            ArrayList<PurchaseDTO> purchaseDTOList,
+            double profitAndLoss, double profitAndLossCum,
+            boolean isFavorite) {
         this.shareDTO = shareDTO;
         this.avgPrice = avgPrice;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.purchaseDTOList = purchaseDTOList;
+        this.profitAndLoss = profitAndLoss;
+        this.profitAndLossCum = profitAndLossCum;
+        this.isFavorite = isFavorite;
+    }
+
+    public PortfolioItemDTO(ShareSwaggerDTO shareSwaggerDTO){
+        this.shareDTO = new ShareDTO(shareSwaggerDTO);
+        this.currentPurchasePrice = shareSwaggerDTO.getPrice();
     }
 
     public PortfolioItemDTO(){};
@@ -63,5 +80,37 @@ public class PortfolioItemDTO {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public double getProfitAndLoss() {
+        return profitAndLoss;
+    }
+
+    public void setProfitAndLoss(double profitAndLoss) {
+        this.profitAndLoss = profitAndLoss;
+    }
+
+    public double getProfitAndLossCum() {
+        return profitAndLossCum;
+    }
+
+    public void setProfitAndLossCum(double profitAndLossCum) {
+        this.profitAndLossCum = profitAndLossCum;
+    }
+
+    public boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public double getCurrentPurchasePrice() {
+        return currentPurchasePrice;
+    }
+
+    public void setCurrentPurchasePrice(double currentPurchasePrice) {
+        this.currentPurchasePrice = currentPurchasePrice;
     }
 }

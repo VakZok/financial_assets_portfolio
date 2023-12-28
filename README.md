@@ -5,7 +5,7 @@
 ## Current Data Model:
 
 
-<img src="ER Diagramm Sprint2 Team1.drawio.png"
+<img src="ER Diagramm Sprint4 Team1.drawio.png"
      alt="Markdown Monster icon"
      style="float: left; margin-right: 10px;" />
 
