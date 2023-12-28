@@ -21,6 +21,12 @@ public class ShareDTO {
         this.description = share.getDescription();
     }
 
+    public ShareDTO(ShareSwaggerDTO shareSwaggerDTO) {
+        this.isin = shareSwaggerDTO.getIsin();
+        this.name = shareSwaggerDTO.getName();
+        this.category = shareSwaggerDTO.getType();
+        this.description = shareSwaggerDTO.getDescription();
+    }
     public ShareDTO(){}
 
     /* Getters and Setters */

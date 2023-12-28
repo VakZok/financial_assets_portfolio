@@ -5,18 +5,11 @@ import hs.aalen.financial_assets_portfolio.domain.Share;
 public class ShareSwaggerDTO {
     private String isin;
     private String name;
-    private String category;
+    private String type;
     private String description;
     private double price;
 
     /* Constructors */
-    public ShareSwaggerDTO(Share share) {
-        this.isin = share.getIsin();
-        this.name = share.getName();
-        this.category = share.getCategory();
-        this.description = share.getDescription();
-        this.price = this.getPrice();
-    }
 
     public ShareSwaggerDTO(){}
 
@@ -37,12 +30,12 @@ public class ShareSwaggerDTO {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getType() {
+        return type;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {

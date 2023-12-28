@@ -13,6 +13,7 @@ public class PortfolioItemDTO {
     private double avgPrice;
     private double totalPrice;
     private int totalQuantity;
+    private double currentPurchasePrice;
     private boolean isFavorite;
     private double profitAndLoss;
     private double profitAndLossCum;
@@ -35,11 +36,8 @@ public class PortfolioItemDTO {
     }
 
     public PortfolioItemDTO(ShareSwaggerDTO shareSwaggerDTO){
-        this.shareDTO = shareDTO;
-        this.avgPrice = avgPrice;
-        this.totalPrice = totalPrice;
-        this.totalQuantity = totalQuantity;
-        this.purchaseDTOList = purchaseDTOList;
+        this.shareDTO = new ShareDTO(shareSwaggerDTO);
+        this.currentPurchasePrice = shareSwaggerDTO.getPrice();
     }
 
     public PortfolioItemDTO(){};
@@ -106,5 +104,13 @@ public class PortfolioItemDTO {
 
     public void setIsFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public double getCurrentPurchasePrice() {
+        return currentPurchasePrice;
+    }
+
+    public void setCurrentPurchasePrice(double currentPurchasePrice) {
+        this.currentPurchasePrice = currentPurchasePrice;
     }
 }

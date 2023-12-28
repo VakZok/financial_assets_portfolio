@@ -33,10 +33,37 @@ public class PortfolioItemController {
     }
 
     /* GET REQUESTS */
+    @GetMapping("swagger/pItem/{isin}")
+    public ResponseEntity<Object> getPItemSwaggerByIsin(@PathVariable String isin) {
+        try {
+            PortfolioItemDTO result = this.pItemService.getPItemSwagger(isin);
+            SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+
+            filterProvider.addFilter("pItemFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                            "shareDTO", "currentPurchasePrice"));
+
+            filterProvider.addFilter("shareFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept(
+                            "name", "isin", "description", "category"));
+
+            filterProvider.addFilter("purchaseFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept());
+
+            ObjectMapper om = new ObjectMapper();
+            om.registerModule(new JavaTimeModule());
+            String mappedObject = om.writer(filterProvider).writeValueAsString(result);
+            return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
+
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @GetMapping("portfolioItems/{isin}")
     public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin, Authentication authentication) {
         try {
-            PortfolioItemDTO result = pItemService.getPItemSwagger(isin);
             PortfolioItemDTO portfolioItemDTO = this.pItemService.getPItemByISIN(authentication.getName(), isin);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 
