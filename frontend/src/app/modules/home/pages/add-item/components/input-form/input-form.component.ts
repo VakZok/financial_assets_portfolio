@@ -34,7 +34,7 @@ const maxSigns : number = 255;
   templateUrl: './input-form.component.html',
   styleUrls: ['./input-form.component.css']
 })
-export class InputFormComponent implements OnInit{
+export class InputFormComponent {
   pItemForm: FormGroup;
   pItems:PortfolioItemModel[]=[];
   dataSource = new MatTableDataSource<any>(this.pItems);
@@ -83,12 +83,8 @@ export class InputFormComponent implements OnInit{
     })
   }
 
-  ngOnInit(): void {
-    this.getData()
-  }
-
   // get data for preview
-  getData(isin?:string) {
+  getData(isin:string) {
     this.pItemService.getPItemSwagger(isin).subscribe({
       next: (data) => {
         this.pItems.push(data)
@@ -111,7 +107,9 @@ export class InputFormComponent implements OnInit{
 
   // new
   // send get request after blurring isin input field
-  async onBlurISIN() {
+  async onBlurISIN(event:Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.getData(inputElement.value)
     this.pItemForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(() => {
       if (this.pItemForm.controls['isin'].errors?.['pItemExists']){

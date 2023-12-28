@@ -4,51 +4,37 @@
 
   <div class="row">
 
-    <!-- old
-    <div class="container">
-      <mat-form-field>
-        <mat-label>WKN</mat-label>
-        <input matInput id="wkn" (blur)="onBlurWKN()" maxlength="6" value="wkn" type="text"  formControlName="wkn"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('wkn')?.length || 0) >=1">{{errorMap.get('wkn')}}</mat-error>
-      </mat-form-field>
-    </div>
-    -->
-
     <!-- new -->
     <div class="container">
       <mat-form-field>
         <mat-label>ISIN</mat-label>
-        <input matInput id="isin" (blur)="onBlurISIN()" maxlength="6" value="isin" type="text"  formControlName="isin"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('isin')?.length || 0) >=1">{{errorMap.get('isin')}}</mat-error>
+        <!-- Replace input with span -->
+        <span matInput id="isin" class="display-field">{{ backendISINData }}</span>
+        <!-- Remove blur event and formControlName since it's not an input anymore -->
+        <!-- Remove error handling -->
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput id="name" maxlength="255" type="text" formControlName="name" />
-        <mat-error class="error" *ngIf="(this.errorMap.get('name')?.length || 0) >=1">{{errorMap.get('name')}}</mat-error>
+        <span matInput id="name" class="display-field">{{ nameFromBackend }}</span>
       </mat-form-field>
     </div>
 
     <div class="container">
       <mat-form-field>
         <mat-label>Kategorie</mat-label>
-        <input matInput id="category" maxlength="255" type="text" formControlName="category" />
-        <mat-error class="error" *ngIf="(this.errorMap.get('category')?.length || 0) >=1">{{errorMap.get('category')}}</mat-error>
+        <span matInput id="category" class="display-field">{{ categoryFromBackend }}</span>
       </mat-form-field>
     </div>
 
-  </div>
-
-  <div class="container">
-    <mat-form-field>
-      <mat-label>Beschreibung</mat-label>
-      <textarea matInput id="description" maxlength="255" type="text" formControlName="description"
-                (keyup)="onKeyUpDescription($event)"></textarea>
-      <mat-error class="error" *ngIf="(this.errorMap.get('description')?.length || 0) >=1">{{errorMap.get('description')}}</mat-error>
-      <mat-hint class="hint" align="end">{{this.leftSigns}} / 255 Zeichen</mat-hint>
-    </mat-form-field>
+    <div class="container">
+      <mat-form-field>
+        <mat-label>Beschreibung</mat-label>
+        <div matInput id="description" class="display-field">{{ descriptionFromBackend }}</div>
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row bottom">
