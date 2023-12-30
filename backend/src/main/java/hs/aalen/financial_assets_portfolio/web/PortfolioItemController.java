@@ -55,7 +55,7 @@ public class PortfolioItemController {
             String mappedObject = om.writer(filterProvider).writeValueAsString(result);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
 
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -69,7 +69,7 @@ public class PortfolioItemController {
 
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList"));
+                            "shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList", "profitAndLoss", "profitAndLossCum"));
 
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
@@ -93,8 +93,8 @@ public class PortfolioItemController {
 
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPItemsPreview(Authentication authentication) {
-        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName());
         try {
+            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName());
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
@@ -105,15 +105,16 @@ public class PortfolioItemController {
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
-
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
     @GetMapping(value = "/portfolioItems/liked")
     public ResponseEntity<Object> getPItemsLiked(Authentication authentication) {
-        List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getLikedPItems(authentication.getName());
         try {
+            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getLikedPItems(authentication.getName());
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
@@ -124,7 +125,8 @@ public class PortfolioItemController {
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);
-
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

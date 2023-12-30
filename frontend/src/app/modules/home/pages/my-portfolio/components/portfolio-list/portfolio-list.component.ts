@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PortfolioItemModel} from "../../../../../../core/models/portfolio-item.model";
 import {PortfolioItemService} from "../../../../../../core/services/portfolio-item.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {PurchaseDialogComponent} from "../purchase-dialog/purchase-dialog/purchase-dialog.component";
@@ -13,14 +13,14 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './portfolio-list.component.html',
   styleUrls: ['./portfolio-list.component.css']
 })
+
 export class PortfolioListComponent implements OnInit{
 
   pItems:PortfolioItemModel[]=[];
-  displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'buy'];
+  displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'profitAndLoss', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
-  favPressed = false
-
-  constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router, private dialog:MatDialog, private snackBar: MatSnackBar) {
+  loading:boolean = false;
+  constructor( private pItemService: PortfolioItemService, private router: Router, private dialog:MatDialog, private snackBar: MatSnackBar) {
   }
   // aggregated by isin
   ngOnInit(): void {
@@ -30,6 +30,7 @@ export class PortfolioListComponent implements OnInit{
     else if(this.router.url.includes('/meinPortfolio')){
       this.getData()
     }
+
   }
 
   get headerTitle() {
@@ -43,23 +44,34 @@ export class PortfolioListComponent implements OnInit{
 
   // get data for preview
   getData() {
+    this.loading = true;
     this.pItems = [] // instantiate pItems List
     this.pItemService.getPItemPreview().subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
+        this.loading = false;
       },
+      error:() =>{
+        this.loading = false;
+      }
     })
+
   }
 
   // get data for favorites
   getFavData() {
-    this.pItems = [] // instantiate pItems List
+    this.loading = true;
+    this.pItems = [];// instantiate pItems List
     this.pItemService.getLikedPItems().subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
+        this.loading = false;
       },
+      error:() =>{
+        this.loading = false;
+      }
     })
   }
 

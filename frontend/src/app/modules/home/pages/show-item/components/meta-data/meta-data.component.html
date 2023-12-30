@@ -8,6 +8,8 @@
       <li class="item"><b>Kategorie:</b> {{data.shareDTO?.category}}</li>
       <li class="item"><b>Gesamtanzahl:</b> {{data.totalQuantity}}</li>
       <li class="item"><b>Durchschnittspreis:</b> {{data.avgPrice |currency:'EUR':'symbol'}}</li>
+      <li class="item"><b>Gewinn/Verlust pro Aktie:</b> {{data.profitAndLoss |currency:'EUR':'symbol'}}</li>
+      <li class="item"><b>Gewinn/Verlust Gesamt:</b> {{data.profitAndLossCum |currency:'EUR':'symbol'}}</li>
     </ul>
   </div>
 </ng-container>
