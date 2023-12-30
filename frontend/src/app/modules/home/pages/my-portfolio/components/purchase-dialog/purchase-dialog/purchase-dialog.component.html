@@ -1,35 +1,41 @@
-<mat-dialog-content class="dialog">
-  <h1>{{data.shareDTO.name}} - {{data.shareDTO.isin}} nachkaufen </h1>
-  <li class="item"><b>ISIN:</b> {{data.shareDTO.isin}}</li>
-  <li class="item"><b>Name:</b> {{data.shareDTO.name}}</li>
-  <li class="item"><b>Detaillierte Beschreibung:</b> {{data.shareDTO.description}}</li>
-  <li class="item"><b>Kategorie:</b> {{data.shareDTO.category}}</li>
-  <form class="form" [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+<div class="dialog">
 
-    <div class="container">
-      <mat-form-field class="form-field">
-        <mat-label>Kaufpreis pro Stück</mat-label>
-        <input matInput id="purchase-price" type="text" maxlength="255" formControlName="purchasePrice"
-               (input)="onInputPurchasePrice($event)" (keydown)="onKeyDownPrice($event)" (blur)="transformPrice($event)"
-               autocomplete="off"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('purchasePrice')?.length || 0) >=1">{{errorMap.get('purchasePrice')}}</mat-error>
-      </mat-form-field>
-    </div>
+  <div *ngIf="!loading">
+    <h1>Portfolio-Item nachkaufen </h1>
+    <p class="item"><b>ISIN:</b> {{this.metaData.shareDTO?.isin}}</p>
+    <p class="item"><b>Name:</b> {{this.metaData.shareDTO?.name}}</p>
+    <p class="item"><b>Detaillierte Beschreibung:</b> {{this.metaData.shareDTO?.description}}</p>
+    <p class="item"><b>Kategorie:</b> {{this.metaData.shareDTO?.category}}</p>
+    <p class="item"><b>Kaufpreis:</b> {{this.metaData.currentPurchasePrice |currency:'EUR':'symbol'}}</p>
 
-    <div class="container">
-      <mat-form-field class="form-field">
-        <mat-label>Anzahl</mat-label>
-        <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)"
-               autocomplete="off"/>
-        <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
-      </mat-form-field>
-    </div>
+    <form class="form" [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
 
-    <div class="button-area">
-      <button [type]="'submit'">Kaufen</button>
-      <button mat-dialog-close>Abbrechen</button>
-    </div>
+      <div class="container">
+        <mat-form-field class="form-field">
+          <mat-label>Anzahl</mat-label>
+          <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)"
+                 autocomplete="off"/>
+          <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
+        </mat-form-field>
+      </div>
 
-  </form>
-</mat-dialog-content>
+      <div class="button-area">
+        <div *ngIf="!sending">
+          <button [type]="'submit'">Kaufen</button>
+        </div>
+        <div id="sending" *ngIf="sending">
+          <mat-spinner diameter="50"></mat-spinner>
+        </div>
+        <button mat-dialog-close>Abbrechen</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="loading" *ngIf="loading">
+    <mat-spinner diameter = "65"></mat-spinner>
+  </div>
+
+
+</div>
+
 
