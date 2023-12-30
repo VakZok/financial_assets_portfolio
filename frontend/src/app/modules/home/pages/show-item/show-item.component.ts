@@ -21,7 +21,7 @@ export class ShowItemComponent {
   // get Data of PItem
   ngOnInit(): void {
     this.data$=this.route.paramMap.pipe(
-      switchMap((params:ParamMap)=>this.pItemService.getPItemByWKN(params.get("wkn")!))
+      switchMap((params:ParamMap)=>this.pItemService.getPItemByISIN(params.get("wkn")!))
     )
     this.data$.subscribe(data=>{
       if(data.purchaseDTOList){

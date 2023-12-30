@@ -35,6 +35,19 @@ public class PortfolioItemDTO {
         this.isFavorite = isFavorite;
     }
 
+    public PortfolioItemDTO(
+            ShareDTO shareDTO, double avgPrice,
+            double totalPrice, int totalQuantity,
+            ArrayList<PurchaseDTO> purchaseDTOList,
+            boolean isFavorite) {
+        this.shareDTO = shareDTO;
+        this.avgPrice = avgPrice;
+        this.totalPrice = totalPrice;
+        this.totalQuantity = totalQuantity;
+        this.purchaseDTOList = purchaseDTOList;
+        this.isFavorite = isFavorite;
+    }
+
     public PortfolioItemDTO(ShareSwaggerDTO shareSwaggerDTO){
         this.shareDTO = new ShareDTO(shareSwaggerDTO);
         this.currentPurchasePrice = shareSwaggerDTO.getPrice();

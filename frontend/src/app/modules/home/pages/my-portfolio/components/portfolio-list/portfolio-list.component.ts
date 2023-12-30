@@ -46,11 +46,18 @@ export class PortfolioListComponent implements OnInit{
   getData() {
     this.loading = true;
     this.pItems = [] // instantiate pItems List
-    this.pItemService.getPItemPreview().subscribe({
+    this.pItemService.getPItemPreview(false).subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
         this.loading = false;
+        this.pItemService.getPItemPreview(true).subscribe({
+          next: (datax: PortfolioItemModel[]) => {
+            this.pItems = []
+            datax.forEach(itemx => this.pItems.push(itemx))
+            this.dataSource.data = this.pItems
+          }
+        })
       },
       error:() =>{
         this.loading = false;
@@ -63,7 +70,7 @@ export class PortfolioListComponent implements OnInit{
   getFavData() {
     this.loading = true;
     this.pItems = [];// instantiate pItems List
-    this.pItemService.getLikedPItems().subscribe({
+    this.pItemService.getLikedPItems(true).subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
