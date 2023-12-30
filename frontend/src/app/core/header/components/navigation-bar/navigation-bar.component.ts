@@ -13,6 +13,7 @@ export class NavigationBarComponent {
   currentPage:string = "";
   navMapDisplay = new Map<string, boolean>([
     ['/meinPortfolio', false],
+    ['/meineFavoriten', false],
     ['/benutzer', false],
   ]);
   constructor(private router: Router, public authService: AuthCoreService) {
