@@ -36,6 +36,7 @@ import { UserListComponent } from './modules/home/pages/manage-users/components/
 import { UserDialogComponent } from './modules/home/pages/manage-users/components/user-dialog/user-dialog.component';
 import { ConfirmDeletionComponent } from './modules/home/pages/manage-users/components/confirm-deletion/confirm-deletion.component';
 import {MatMenuModule} from "@angular/material/menu";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import {MatMenuModule} from "@angular/material/menu";
         MatButtonModule,
         MatDialogModule,
         MatMenuModule,
+        MatProgressSpinnerModule,
     ],
   providers: [{
     provide: LOCALE_ID,

@@ -10,7 +10,7 @@ import {AuthCoreService} from "../authentication/auth-core.service";
 export class PortfolioItemService {
 
   private apiUrl = 'http://localhost:8080/v1/portfolioItems';
-  private swaggerUrl = 'http://localhost:8080/swagger/pItem/{isin}';
+  private swaggerUrl = 'http://localhost:8080/v1/swagger/pItem';
 
   constructor(private http: HttpClient, private authService: AuthCoreService) { }
 

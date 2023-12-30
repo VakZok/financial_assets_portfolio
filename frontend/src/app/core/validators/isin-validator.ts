@@ -4,7 +4,7 @@ import {catchError, debounceTime, map, Observable, of, switchMap, take} from "rx
 import {PortfolioItemService} from "../services/portfolio-item.service";
 
 
-export function WKNValidator(pItemService: PortfolioItemService): AsyncValidatorFn {
+export function IsinValidator(pItemService: PortfolioItemService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     return control.valueChanges.pipe(
       debounceTime(100), // Delay the validation for 100 milliseconds to avoid spamming the server

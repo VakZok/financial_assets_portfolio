@@ -56,9 +56,33 @@ button:active{
   color: black;
 }
 
+#input-isin{
+  max-width:90%;
+  margin-right:-40%;
+}
+
+#cont-isin{
+  width:22%;
+}
+
+#cont-name{
+  width:60%;
+}
+
+#cont-category{
+  width:15%;
+}
+#cont-price{
+  width:20%;
+}
+
+.display-field-top{
+  margin-top:1vh;
+  font-size:1em;
+}
+
 .row{
   display: flex;
-  justify-content: space-evenly;
   width: 100%;
 }
 
@@ -72,14 +96,12 @@ button:active{
   border-radius: 1vh;
 }
 
-#description:focus{
-  outline: none;
-}
-
-#description-footer{
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.display-field-top {
+  resize: none;
+  color: black;
+  background-color: whitesmoke;
+  border: none;
+  font-family:Roboto, "Helvetica Neue", sans-serif
 }
 
 input {

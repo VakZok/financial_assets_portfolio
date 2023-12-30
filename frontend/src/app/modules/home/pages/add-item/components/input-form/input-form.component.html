@@ -3,59 +3,53 @@
 <form class="form" [formGroup]="pItemForm" (ngSubmit)="onSubmit()">
 
   <div class="row">
-
     <!-- new -->
-    <div class="container">
-      <mat-form-field>
-        <mat-label>ISIN</mat-label>
+    <div id="cont-isin" class="container">
+      <mat-form-field id="input-isin">
+        <mat-label><b>ISIN</b></mat-label>
         <input matInput id="isin" (blur)="onBlurISIN($event)" maxlength="12" value="isin" type="text"  formControlName="isin"/>
         <mat-error class="error" *ngIf="(this.errorMap.get('isin')?.length || 0) >=1">{{errorMap.get('isin')}}</mat-error>
       </mat-form-field>
     </div>
-
     <div class="container">
       <mat-form-field>
-        <mat-label>Name</mat-label>
-        <span id="name" class="display-field">{{ metaData?.shareDTO?.name}}</span>
-      </mat-form-field>
-    </div>
-
-    <div class="container">
-      <mat-form-field>
-        <mat-label>Kategorie</mat-label>
-        <span id="category" class="display-field">{{ metaData?.shareDTO?.category }}</span>
-      </mat-form-field>
-    </div>
-
-    <div class="container">
-      <mat-form-field>
-        <mat-label>Beschreibung</mat-label>
-        <div id="description" class="display-field">{{ metaData?.shareDTO?.description }}</div>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="row bottom">
-
-    <div class="container">
-      <mat-form-field>
-        <mat-label>Anzahl</mat-label>
+        <mat-label><b>Anzahl</b></mat-label>
         <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)" />
         <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
       </mat-form-field>
     </div>
 
-    <div class="container">
-      <mat-form-field>
-        <mat-label>Kaufpreis pro Stück</mat-label>
-        <span id="price" class="display-field">{{ metaData?.currentPurchasePrice }}</span>
-      </mat-form-field>
+  </div>
+
+  <div class="container">
+      <mat-label><b>Beschreibung</b></mat-label>
+      <textarea id="description" class="display-field-top" disabled>{{metaData?.shareDTO?.description }}</textarea>
+  </div>
+
+  <div class="row bottom">
+
+    <div id = "cont-name" class="container">
+      <mat-label><b>Name</b></mat-label>
+      <textarea matInput id="name" class="display-field-top" value="{{metaData?.shareDTO?.name}}" disabled></textarea>
+    </div>
+    <div id = "cont-category" class="container">
+      <mat-label><b>Kategorie</b></mat-label>
+      <textarea matInput id="category" class="display-field-top" value="{{metaData?.shareDTO?.category}}"disabled></textarea>
+    </div>
+    <div id = "cont-price" class="container">
+      <mat-label><b>Kaufpreis pro Stück</b></mat-label>
+      <textarea matInput id="price" class="display-field-top" disabled>{{metaData?.currentPurchasePrice|currency:'EUR':'symbol'}}</textarea>
     </div>
 
   </div>
 
   <div class="button-area">
-    <button [type]="'submit'">Hinzufügen</button>
+    <div *ngIf="!this.sending">
+      <button [type]="'submit'">Hinzufügen</button>
+    </div>
+    <div *ngIf="this.sending">
+      <mat-spinner diameter="45"></mat-spinner>
+    </div>
     <button [type]="'button'" (click)="clearForm()">Zurücksetzen</button>
   </div>
 

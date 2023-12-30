@@ -1,5 +1,6 @@
 package hs.aalen.financial_assets_portfolio.service;
 
+import hs.aalen.financial_assets_portfolio.client.ShareSwaggerClient;
 import hs.aalen.financial_assets_portfolio.data.ExceptionDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import hs.aalen.financial_assets_portfolio.data.ShareDTO;
@@ -25,13 +26,15 @@ public class PurchaseService {
 
     /* CONNECTED REPOSITORIES AND SERVICES */
     private final PurchaseRepository purchaseRepository;
-    private final ShareService shareService;
-
+    private final ShareSwaggerClient swaggerClient;
 
     /* PROCESSING METHODS */
-    public PurchaseService(PurchaseRepository purchaseRepository, ShareService shareService) {
+    public PurchaseService(
+            PurchaseRepository purchaseRepository,
+            ShareSwaggerClient swaggerClient) {
+
         this.purchaseRepository = purchaseRepository;
-        this.shareService = shareService;
+        this.swaggerClient = swaggerClient;
     }
 
     /* Method that returns the purchase searched by the id */
@@ -66,7 +69,7 @@ public class PurchaseService {
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(purchaseDTO);
         exceptionDTOList.addAll(this.validateForm(purchaseDTO));
         if(exceptionDTOList.isEmpty()){
-            ShareDTO shareDTO = this.shareService.getShare(isin);
+            ShareDTO shareDTO = new ShareDTO(this.swaggerClient.getShare(isin));
             purchaseDTO.setShareDTO(shareDTO);
             savePurchase(purchaseDTO);
         } else {
