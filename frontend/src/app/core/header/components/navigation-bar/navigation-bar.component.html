@@ -5,7 +5,10 @@
   </div>
 
   <button *ngIf="this.authService.getToken()!== ''" routerLink="/meinPortfolio" class="routing-button"
-          [disabled]="currentPage.startsWith('/meinPortfolio') ">Mein Portfolio</button>
+          [disabled]="currentPage.startsWith('/meinPortfolio') ">Portfolio</button>
+
+  <button *ngIf="this.authService.getToken()!== ''" routerLink="/meineFavoriten" class="routing-button"
+          [disabled]="currentPage.startsWith('/meineFavoriten') ">Favoriten</button>
 
   <button *ngIf="this.authService.getToken() !== '' && this.authService.getRole()=='ADMIN'" routerLink="/benutzer" class="routing-button"
           [disabled]="currentPage.startsWith('/benutzer') ">Benutzerverwaltung</button>

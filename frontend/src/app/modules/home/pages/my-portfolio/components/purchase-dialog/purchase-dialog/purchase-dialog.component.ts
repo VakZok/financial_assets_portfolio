@@ -134,8 +134,8 @@ export class PurchaseDialogComponent {
   }
 
   // snackbar for success
-  openSnackBar(wkn:string) {
-    this.snackBar.open('Order für "' + wkn + '" wurde erfolgreich ausgeführt ✔️', '', {
+  openSnackBar(isin:string) {
+    this.snackBar.open('Order für "' + isin + '" wurde erfolgreich ausgeführt ✔️', '', {
       duration: 3000
     });
   }

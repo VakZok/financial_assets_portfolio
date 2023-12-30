@@ -28,6 +28,18 @@ const routes: Routes = [
     data: {roles:['ADMIN', 'USER']}
   },
 
+  { path: 'meineFavoriten',
+  component: MyPortfolioComponent,
+  canActivate:[AuthGuardService],
+  data: {roles:['ADMIN', 'USER']}
+  },
+
+  { path: 'meineFavoriten/:wkn',
+    component: ShowItemComponent,
+    canActivate:[AuthGuardService],
+    data: {roles:['ADMIN', 'USER']}
+  },
+
   { path: 'pItemHinzufuegen',
     component: AddItemComponent,
     canActivate:[AuthGuardService],

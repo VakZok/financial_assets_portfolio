@@ -6,6 +6,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {PurchaseDialogComponent} from "../purchase-dialog/purchase-dialog/purchase-dialog.component";
 import {ShareModel} from "../../../../../../core/models/share.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-portfolio-list',
@@ -17,18 +18,44 @@ export class PortfolioListComponent implements OnInit{
   pItems:PortfolioItemModel[]=[];
   displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
+  favPressed = false
 
-  constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router, private dialog:MatDialog) {
+  constructor( private pItemService: PortfolioItemService, private route: ActivatedRoute, private router: Router, private dialog:MatDialog, private snackBar: MatSnackBar) {
   }
   // aggregated by isin
   ngOnInit(): void {
-    this.getData()
+    if(this.router.url.includes('/meineFavoriten')){
+      this.getFavData()
+    }
+    else if(this.router.url.includes('/meinPortfolio')){
+      this.getData()
+    }
+  }
+
+  get headerTitle() {
+    if (this.router.url.includes('/meineFavoriten')) {
+      return 'Meine Favoriten';
+    } 
+    else {
+      return 'Mein Portfolio';  
+    }  
   }
 
   // get data for preview
   getData() {
     this.pItems = [] // instantiate pItems List
     this.pItemService.getPItemPreview().subscribe({
+      next: (data) => {
+        data.forEach( item => this.pItems.push(item)) // populate pItems List
+        this.dataSource.data = this.pItems
+      },
+    })
+  }
+
+  // get data for favorites
+  getFavData() {
+    this.pItems = [] // instantiate pItems List
+    this.pItemService.getLikedPItems().subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
@@ -52,5 +79,29 @@ export class PortfolioListComponent implements OnInit{
     dialogRef.afterClosed().subscribe(() => {
       this.getData()
     })
+  }
+
+  favoritePItem(event:Event, pitemDTO: PortfolioItemModel, shareDTO: ShareModel){
+    event.stopPropagation();
+    this.favPressed != this.favPressed;
+    if(pitemDTO.isFavorite == true){
+      /*this.pItemService.deleteLike(shareDTO.isin!).subscribe({
+        next: () => {          
+          this.openSnackBar(shareDTO.isin!)
+        },       
+      })  */          
+      pitemDTO.isFavorite = false      
+    }
+    else if(pitemDTO.isFavorite == false){
+      /*this.pItemService.postLike(shareDTO.isin!) */
+      pitemDTO.isFavorite = true      
+    }
+    
+  }
+  // snackbar for success
+  openSnackBar(isin:string) {
+    this.snackBar.open('Favorit für "' + isin + '" hinzugefügt ❤', '', {
+      duration: 3000
+    });
   }
 }

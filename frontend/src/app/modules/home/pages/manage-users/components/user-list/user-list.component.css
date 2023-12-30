@@ -69,7 +69,7 @@
 .button-area{
   margin-bottom: 15px;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.1em;
   float:right;
 }
 
@@ -79,8 +79,11 @@
   border: 3px solid black; /* Black border */
   background-color: white; /* White background */
   border-radius: 50%; /* Makes the button round */
-  position: static;
-  margin-left:0.8vh;
+  position: relative;
+  margin-left:0.4vh;
+  font-size: 1em;
+  padding: 0px;
+  line-height: 0px;
 }
 
 .adduser-button:hover{
@@ -94,5 +97,8 @@
   color:white;
   border-radius: 50%; /* Makes the button round */
   position: relative;
+  font-size: 1em;
+  padding: 0px;
+  line-height: 0px;
 }
 
