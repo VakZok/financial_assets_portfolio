@@ -83,12 +83,13 @@ export class PortfolioListComponent implements OnInit{
 
   favoritePItem(event:Event, pItemDTO: PortfolioItemModel){
     event.stopPropagation();
-    //this.favPressed != this.favPressed;
-    console.log(pItemDTO)
     if(pItemDTO.isFavorite == true){
       this.pItemService.deleteLike(pItemDTO.shareDTO?.isin ||'').subscribe({
         next: () => {
           pItemDTO.isFavorite = false
+          if (this.router.url.includes('/meineFavoriten')) {
+            this.dataSource.data = this.dataSource.data.filter(pItem => pItem.isFavorite == true);
+          }
         },
       })
     }

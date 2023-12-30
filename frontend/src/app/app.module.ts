@@ -37,6 +37,7 @@ import { UserDialogComponent } from './modules/home/pages/manage-users/component
 import { ConfirmDeletionComponent } from './modules/home/pages/manage-users/components/confirm-deletion/confirm-deletion.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -65,22 +66,23 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     UserDialogComponent,
     ConfirmDeletionComponent,
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatTableModule,
-        MatInputModule,
-        MatCardModule,
-        MatSnackBarModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatInputModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+  ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
