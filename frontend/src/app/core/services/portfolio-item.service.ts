@@ -53,12 +53,12 @@ export class PortfolioItemService {
 
   postLike(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
-    return this.http.post<PortfolioItemModel>(this.apiUrl + {isin} + '/likes', {headers})
+    return this.http.post<PortfolioItemModel>(this.apiUrl + '/' + isin + '/likes', '',{headers})
   }
 
   deleteLike(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
-    return this.http.delete<PortfolioItemModel>(this.apiUrl + {isin} + 'likes', {headers})
+    return this.http.delete<PortfolioItemModel>(this.apiUrl + '/' + isin + '/likes', {headers})
   }
 }
 

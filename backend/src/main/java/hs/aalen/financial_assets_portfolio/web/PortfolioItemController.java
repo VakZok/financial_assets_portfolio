@@ -94,9 +94,6 @@ public class PortfolioItemController {
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPItemsPreview(Authentication authentication) {
         List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName());
-        for (PortfolioItemDTO item : portfolioItemDTOList){
-            System.out.println(item.getIsFavorite());
-        }
         try {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",

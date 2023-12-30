@@ -42,7 +42,7 @@
     <ng-container matColumnDef="buy">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <button (click)="favoritePItem($event, element.pitemDTO, element.shareDTO)" [ngClass]="{'favorite-button-pressed' : favPressed, 'favorite-button': !favPressed}" >❤</button>
+        <button (click)="favoritePItem($event, element)" [ngClass]="{'favorite-button-pressed' : favPressed, 'favorite-button': !favPressed}" >❤</button>
         <button routerLink="/meinPortfolio" class="routing-button" (click)="openDialog($event, element.shareDTO)">✚</button>
       </td>
     </ng-container>

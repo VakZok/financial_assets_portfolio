@@ -106,11 +106,11 @@ public class PortfolioItemService {
                 .mapToInt(PurchaseDTO::getQuantity).sum();
 
         double avgPrice = totalPrice / totalQuantity;
-        //double currentPrice = this.shareSwaggerClient.getShare(isin).getPrice();
-        //double profitAndLossCum = currentPrice*totalQuantity - totalPrice;
-        //double profitAndLoss = currentPrice - avgPrice;
+        double currentPrice = this.shareSwaggerClient.getShare(isin).getPrice();
+        double profitAndLossCum = currentPrice*totalQuantity - totalPrice;
+        double profitAndLoss = currentPrice - avgPrice;
 
         return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
-                purchaseDTOList, 0, 0, isFavorite);
+                purchaseDTOList, profitAndLoss, profitAndLossCum, isFavorite);
     }
 }

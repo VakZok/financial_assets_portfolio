@@ -35,10 +35,10 @@ export class PortfolioListComponent implements OnInit{
   get headerTitle() {
     if (this.router.url.includes('/meineFavoriten')) {
       return 'Meine Favoriten';
-    } 
+    }
     else {
-      return 'Mein Portfolio';  
-    }  
+      return 'Mein Portfolio';
+    }
   }
 
   // get data for preview
@@ -81,22 +81,28 @@ export class PortfolioListComponent implements OnInit{
     })
   }
 
-  favoritePItem(event:Event, pitemDTO: PortfolioItemModel, shareDTO: ShareModel){
+  favoritePItem(event:Event, pItemDTO: PortfolioItemModel){
     event.stopPropagation();
-    this.favPressed != this.favPressed;
-    if(pitemDTO.isFavorite == true){
-      /*this.pItemService.deleteLike(shareDTO.isin!).subscribe({
-        next: () => {          
-          this.openSnackBar(shareDTO.isin!)
-        },       
-      })  */          
-      pitemDTO.isFavorite = false      
+    //this.favPressed != this.favPressed;
+    console.log(pItemDTO)
+    if(pItemDTO.isFavorite == true){
+      this.pItemService.deleteLike(pItemDTO.shareDTO?.isin ||'').subscribe({
+        next: () => {
+          pItemDTO.isFavorite = false
+        },
+      })
     }
-    else if(pitemDTO.isFavorite == false){
-      /*this.pItemService.postLike(shareDTO.isin!) */
-      pitemDTO.isFavorite = true      
+
+    else if(pItemDTO.isFavorite == false){
+      this.pItemService.postLike(pItemDTO.shareDTO?.isin || '').subscribe({
+        next: () => {
+          this.openSnackBar(pItemDTO.shareDTO?.isin || '')
+          pItemDTO.isFavorite = true
+        }
+      })
+
     }
-    
+
   }
   // snackbar for success
   openSnackBar(isin:string) {
