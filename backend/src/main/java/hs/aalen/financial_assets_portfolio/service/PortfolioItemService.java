@@ -111,6 +111,6 @@ public class PortfolioItemService {
         double profitAndLoss = currentPrice - avgPrice;
 
         return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
-                purchaseDTOList, profitAndLoss, profitAndLossCum, isFavorite);
+                purchaseDTOList, 0, 0, isFavorite);
     }
 }

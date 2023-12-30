@@ -91,6 +91,8 @@ public class PortfolioItemController {
         }
     }
 
+    //@GetMapping(value="/portfolioItems/")
+
     @GetMapping(value = "/portfolioItems/preview")
     public ResponseEntity<Object> getPItemsPreview(Authentication authentication) {
         try {
@@ -143,7 +145,6 @@ public class PortfolioItemController {
         try {
             this.pItemService.addNewPItem(purchaseDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
-
         } catch (FormNotValidException e) {
             return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
         }
