@@ -22,6 +22,10 @@
   font-size: 1.2em;
 }
 
+.mat-column-profitAndLoss {
+  font-size: 1.2em;
+}
+
 .mat-mdc-row:hover .mat-mdc-cell {
   border-color: currentColor;
 }
@@ -39,6 +43,8 @@
   background-color: white; /* White background */
   border-radius: 50%; /* Makes the button round */
   margin-left:0.8vh;
+  padding: 0px;
+  line-height: 0px;
 }
 
 .routing-button:hover, .favorite-button:hover{
@@ -52,6 +58,8 @@
   color:white;
   border-radius: 50%; /* Makes the button round */
   margin-left:0.8vh;
+  padding:0px;
+  line-height:0px;
 }
 
 .favorite-button{
@@ -61,6 +69,8 @@
   background-color: white;
   border-radius: 50%; /* Makes the button round */
   margin-left:0.8vh;
+  padding:0px;
+  line-height: 0px;
 }
 
 .buy-button{
@@ -69,8 +79,10 @@
   border: 3px solid black; /* Black border */
   background-color: white; /* White background */
   border-radius: 50%; /* Makes the button round */
-  margin-left:0.4vh;
+  margin-left:1vh;
   font-size: 1em;
+  padding: 0px;
+  line-height: 0px;
 }
 
 .buy-button:hover{
@@ -84,13 +96,17 @@
   color:white;
   border-radius: 50%; /* Makes the button round */
   font-size: 2vh;
+  padding: 0px;
+  line-height: 0px;
 }
 
 .button-area{
   margin-bottom: 15px;
+  margin-right: 15px;
   font-weight: bold;
-  font-size: 1.1em;
-  float:right;
+  font-size: 1.4em;
+  justify-content: flex-end;
+  display: flex;
 }
 
 h1 {
@@ -101,21 +117,37 @@ h1 {
   align-items: center;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.2em;
+  background-color: whitesmoke;
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  margin-bottom: 2vh;
+  padding: 1.2vh 1.2vw 1.8vh 0.7vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  color: black;
+}
+
 .add{
   margin-top:0.1vh;
-  margin-left:-0.11vw;
+  margin-left:-0.05vw;
 }
 
 .not-liked{
   margin-top:0.2vh;
-  margin-left:-0.1vw;
+  margin-left:-0.05vw;
   color:black;
 }
 
 .not-liked:hover{
   margin-top:0.2vh;
-  margin-left:-0.1vw;
-  color:white;
+  margin-left:-0.05vw;
+  color:white;  
 }
 
 .liked{
@@ -125,6 +157,6 @@ h1 {
 }
 
 .spinner{
-  margin-top: 13vh;
-  margin-left: 5vw;
+  margin-top: 5vh;
+  margin-left: 7vw;
 }

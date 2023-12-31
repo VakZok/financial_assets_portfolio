@@ -1,11 +1,13 @@
-<!-- <div *ngIf="getLikedPItems == '' ">Es wurden noch keine Favoriten hinzugefügt. </div> -->
 <h1>{{ headerTitle }}</h1>
+
 <div *ngIf="!this.loading" >
 
   <div class="button-area">
-    Kaufen <button routerLink="/pItemHinzufuegen" class="buy-button"><mat-icon class="add">add</mat-icon></button>
-  </div>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <div>Kaufen</div> 
+    <button routerLink="/pItemHinzufuegen" class="buy-button"><mat-icon class="add">add</mat-icon></button>
+  </div>  
+  
+  <table *ngIf="dataSource.data.length !== 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- ISIN Column -->
     <ng-container matColumnDef="isin">
@@ -63,6 +65,8 @@
     <tr mat-row (click)="goToPItem(row.shareDTO.isin)" *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
+
+  <div class="container" *ngIf="dataSource.data.length === 0">{{ emptyDataMessage }}</div>
 
 </div>
 

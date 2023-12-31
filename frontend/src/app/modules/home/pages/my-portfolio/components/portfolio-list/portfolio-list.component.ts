@@ -42,6 +42,15 @@ export class PortfolioListComponent implements OnInit{
     }
   }
 
+  get emptyDataMessage() {
+    if (this.router.url.includes('/meineFavoriten')) {
+      return 'Es sind noch keine Favoriten vorhanden. Portfolio-Items können in "Mein Portfolio" als Favoriten markiert werden.';
+    }
+    else {
+      return 'Es sind noch keine Portfolio-Items vorhanden. Wählen Sie "Kaufen", um neue Portfolio-Items hinzuzufügen.';
+    }
+  }
+
   // get data for preview
   getData() {
     this.loading = true;
