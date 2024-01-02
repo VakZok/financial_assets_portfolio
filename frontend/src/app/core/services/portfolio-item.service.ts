@@ -21,11 +21,15 @@ export class PortfolioItemService {
     })
   }
 
-
-  getPItemPreview(includePrice:boolean): Observable<PortfolioItemModel[]> {
+  getPItemPreview(includePrice:boolean, favoritesOnly:boolean): Observable<PortfolioItemModel[]> {
     const headers = this.getHeader();
     const params = new HttpParams().set('includePrice', includePrice)
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview',{headers, params})
+    if(favoritesOnly){
+      return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/liked',{headers, params})
+    } else {
+      return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview',{headers, params})
+    }
+
   }
 
   getPItemByISIN(isin:string): Observable<PortfolioItemModel> {
@@ -46,12 +50,6 @@ export class PortfolioItemService {
   getPItemSwagger(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
     return this.http.get<PortfolioItemModel>(this.swaggerUrl + '/' + isin, {headers})
-  }
-
-  getLikedPItems(includePrice:boolean): Observable<PortfolioItemModel[]> {
-    const headers = this.getHeader();
-    const params = new HttpParams().set('includePrice', includePrice)
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/liked',{headers, params})
   }
 
   postLike(isin:string): Observable<PortfolioItemModel> {

@@ -70,7 +70,7 @@ public class PortfolioItemController {
 
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList", "profitAndLoss", "profitAndLossCum"));
+                            "shareDTO", "avgPrice", "totalQuantity", "purchaseDTOList", "currentPurchasePrice", "profitAndLoss", "profitAndLossCum"));
 
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
@@ -99,7 +99,7 @@ public class PortfolioItemController {
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
-                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity",  "profitAndLoss", "profitAndLossCum", "isFavorite"));
+                            "shareDTO", "avgPrice", "totalPrice", "totalQuantity", "profitAndLossCum", "isFavorite"));
             filterProvider.addFilter("shareFilter",
                     SimpleBeanPropertyFilter.serializeAll());
 

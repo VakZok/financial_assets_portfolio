@@ -22,7 +22,7 @@ const routes: Routes = [
     data: {roles:['ADMIN', 'USER']}
   },
 
-  { path: 'meinPortfolio/:wkn',
+  { path: 'meinPortfolio/:isin',
     component: ShowItemComponent,
     canActivate:[AuthGuardService],
     data: {roles:['ADMIN', 'USER']}
@@ -34,7 +34,7 @@ const routes: Routes = [
   data: {roles:['ADMIN', 'USER']}
   },
 
-  { path: 'meineFavoriten/:wkn',
+  { path: 'meineFavoriten/:isin',
     component: ShowItemComponent,
     canActivate:[AuthGuardService],
     data: {roles:['ADMIN', 'USER']}

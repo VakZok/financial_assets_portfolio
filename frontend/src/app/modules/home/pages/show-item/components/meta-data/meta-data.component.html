@@ -1,15 +1,37 @@
-<ng-container *ngIf="data$ | async as data">
-   <div class="metabody">
-    <h1>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.isin}}</h1>
-    <ul class="list">
-      <li class="item"><b>ISIN:</b> {{data.shareDTO?.isin}}</li>
-      <li class="item"><b>Name:</b> {{data.shareDTO?.name}}</li>
-      <li lang="de" class="item"><b>Detaillierte Beschreibung:</b> <br> {{data.shareDTO?.description}} </li>
-      <li class="item"><b>Kategorie:</b> {{data.shareDTO?.category}}</li>
-      <li class="item"><b>Gesamtanzahl:</b> {{data.totalQuantity}}</li>
-      <li class="item"><b>Durchschnittspreis:</b> {{data.avgPrice |currency:'EUR':'symbol'}}</li>
-      <li class="item"><b>Gewinn/Verlust pro Aktie:</b> {{data.profitAndLoss |currency:'EUR':'symbol'}}</li>
-      <li class="item"><b>Gewinn/Verlust Gesamt:</b> {{data.profitAndLossCum |currency:'EUR':'symbol'}}</li>
-    </ul>
+
+<ng-container class="metabody" *ngIf="data$ | async as data">
+    <div class="metabody">
+      <h2>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.isin}}</h2>
+       <div class="row">
+         <p class="item"><b>ISIN:</b> {{data.shareDTO?.isin}}</p>
+         <p class="item"><b>Name:</b> {{data.shareDTO?.name}}</p>
+       </div>
+      <p lang="de" class="item"><b>Detaillierte Beschreibung:</b> <br> {{data.shareDTO?.description}} </p>
+
+    <div class="row">
+      <p class="item"><b>Kategorie:</b> {{data.shareDTO?.category}}</p>
+      <p class="item"><b>Anzahl Wertpapiere:</b> {{data.totalQuantity}}</p>
+    </div>
+
+    <h3>Pro Wertpapier:</h3>
+       <div class="row-price">
+         <p class="item"><b>Aktueller Kurs:</b> {{data.currentPurchasePrice |currency:'EUR':'symbol'}}</p>
+         <p class="item"><b>Durchschnittlicher Einkaufspreis:</b> {{data.avgPrice |currency:'EUR':'symbol'}}</p>
+         <div *ngIf="(data.profitAndLoss || 0) >= 0">
+           <p class="item profit"><b>Gewinn:</b> {{data.profitAndLoss |currency:'EUR':'symbol'}}</p>
+         </div>
+         <div *ngIf="(data.profitAndLoss || 0) < 0">
+           <p class="item loss"><b>Verlust:</b> {{data.profitAndLoss |currency:'EUR':'symbol'}}</p>
+         </div>
+       </div>
+
+    <h3>Gesamt:</h3>
+    <div *ngIf="(data.profitAndLossCum || 0) >= 0">
+      <p class="item profit"><b>Gewinn Gesamt:</b> {{data.profitAndLossCum |currency:'EUR':'symbol'}}</p>
+    </div>
+    <div *ngIf="(data.profitAndLossCum || 0) < 0">
+      <p class="item loss"><b>Verlust Gesamt:</b> {{data.profitAndLossCum |currency:'EUR':'symbol'}}</p>
+    </div>
   </div>
 </ng-container>
+

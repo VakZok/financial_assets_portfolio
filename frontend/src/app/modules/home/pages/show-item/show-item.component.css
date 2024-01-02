@@ -9,7 +9,7 @@
   .body {
     background-color: whitesmoke;
     min-height: 100%;
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 10vh;
@@ -43,5 +43,8 @@
     display: flex;
   }
 
+  .spinner{
+    margin-top: 20%;
+  }
 
 

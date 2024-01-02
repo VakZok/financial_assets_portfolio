@@ -11,7 +11,9 @@ import hs.aalen.financial_assets_portfolio.persistence.AccountRepository;
 import hs.aalen.financial_assets_portfolio.persistence.LikesRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.*;
 
 @Service
 public class PortfolioItemService {
@@ -38,12 +40,16 @@ public class PortfolioItemService {
     }
 
     public ArrayList<PortfolioItemDTO> getLikedPItems(String username, boolean includePrice){
-        ArrayList<Share> likedShares = new ArrayList<>(this.likesRepository.findAllByAccountUsername(username).stream().map(Likes::getShare).toList());
-        ArrayList<ShareDTO> shareDTOList = new ArrayList<>(likedShares.stream().map(ShareDTO::new).toList());
+        ArrayList<ShareDTO> likedShareDTOList = new ArrayList<>(
+                this.likesRepository.findAllByAccountUsername(username)
+                        .stream().map(liked -> new ShareDTO(liked.getShare())).toList());
 
-
-
-        return new ArrayList<>(shareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO, includePrice)).toList());
+        if (includePrice) {
+            ArrayList<ShareSwaggerDTO> shareSwaggerDTOList = getShareSwaggerDTOList(likedShareDTOList);
+            return new ArrayList<>(shareSwaggerDTOList.stream().map(shareSwaggerDTO -> getPItemWPL(username, shareSwaggerDTO)).toList());
+        } else {
+            return new ArrayList<>(likedShareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO)).toList());
+        }
     }
 
     public void postLikedPItem(String username, String isin){
@@ -67,7 +73,7 @@ public class PortfolioItemService {
 
     public PortfolioItemDTO getPItemByISIN(String username, String isin)throws NoSuchElementException {
         if (this.shareService.checkShareExists(isin)) {
-            return aggregatePItem(username, this.shareService.getShare(isin), true);
+            return getPItemWPL(username, this.shareSwaggerClient.getShare(isin));
         } else {
             throw new NoSuchElementException();
         }
@@ -75,7 +81,14 @@ public class PortfolioItemService {
 
     public ArrayList<PortfolioItemDTO> getPItemsPreview(String username, boolean includePrice ){
         ArrayList<ShareDTO> shareDTOList = this.shareService.getShareList();
-        return new ArrayList<>(shareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO, includePrice)).toList());
+
+        if (includePrice) {
+            ArrayList<ShareSwaggerDTO> shareSwaggerDTOList = getShareSwaggerDTOList(shareDTOList);
+            return new ArrayList<>(shareSwaggerDTOList.stream().map(shareSwaggerDTO -> getPItemWPL(username, shareSwaggerDTO)).toList());
+        } else {
+            return new ArrayList<>(shareDTOList.stream().map(shareDTO -> aggregatePItem(username, shareDTO)).toList());
+        }
+
     }
 
     public void addNewPItem(PurchaseDTO purchaseDTO) throws FormNotValidException{
@@ -92,7 +105,7 @@ public class PortfolioItemService {
         }
     }
 
-    public PortfolioItemDTO aggregatePItem(String username, ShareDTO shareDTO, boolean includePrice){
+    public PortfolioItemDTO aggregatePItem(String username, ShareDTO shareDTO){
         ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getIsin());
         String isin = shareDTO.getIsin();
         LikesId likesId = new LikesId(username,isin);
@@ -108,17 +121,57 @@ public class PortfolioItemService {
                 .mapToInt(PurchaseDTO::getQuantity).sum();
 
         double avgPrice = totalPrice / totalQuantity;
-        if (includePrice) {
-            double currentPrice = this.shareSwaggerClient.getShare(shareDTO.getIsin()).getPrice();
-            double profitAndLossCum = currentPrice * totalQuantity - totalPrice;
-            double profitAndLoss = currentPrice - avgPrice;
-            return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
-                    purchaseDTOList, profitAndLoss, profitAndLossCum, isFavorite);
-        } else {
-            return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
-                    purchaseDTOList, isFavorite);
-        }
+        return new PortfolioItemDTO(shareDTO, avgPrice, totalPrice, totalQuantity,
+                purchaseDTOList, isFavorite);
+    }
+
+    public PortfolioItemDTO getPItemWPL(String username, ShareSwaggerDTO shareSwaggerDTO){
+        ShareDTO shareDTO = new ShareDTO(shareSwaggerDTO);
+        PortfolioItemDTO pItemDTO = aggregatePItem(username, shareDTO);
+        double currentPrice = shareSwaggerDTO.getPrice();
+
+        double profitAndLossCum = currentPrice * pItemDTO.getTotalQuantity() - pItemDTO.getTotalPrice();
+        double profitAndLoss = currentPrice - pItemDTO.getAvgPrice();
+        pItemDTO.setCurrentPurchasePrice(currentPrice);
+        pItemDTO.setProfitAndLoss(profitAndLoss);
+        pItemDTO.setProfitAndLossCum(profitAndLossCum);
+        return pItemDTO;
 
     }
 
+    public ArrayList<ShareSwaggerDTO> getShareSwaggerDTOList(ArrayList<ShareDTO> shareDTOList) {
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(availableProcessors);
+        ArrayList <ShareSwaggerDTO> shareSwaggerDTOList = new ArrayList<>();
+
+        List<Future<ShareSwaggerDTO>> futures = new ArrayList<>();
+
+        for (ShareDTO shareDTO : shareDTOList) {
+            Future<ShareSwaggerDTO> future = executor.submit(new FeignHttpRequest(shareDTO.getIsin(), shareSwaggerClient));
+            futures.add(future);
+        }
+        executor.shutdown();
+        for (Future<ShareSwaggerDTO> future : futures) {
+            try {
+                shareSwaggerDTOList.add(future.get()); // This will block until the result is available
+
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return shareSwaggerDTOList;
+    }
+}
+
+class FeignHttpRequest implements Callable<ShareSwaggerDTO> {
+    private final ShareSwaggerClient client;
+    private final String isin;
+    public FeignHttpRequest(String isin, ShareSwaggerClient client){
+        this.client = client;
+        this.isin = isin;
+    }
+    @Override
+    public ShareSwaggerDTO call(){
+        return this.client.getShare(isin);
+    }
 }

@@ -5,16 +5,16 @@
   </div>
 
   <button *ngIf="this.authService.getToken()!== ''" routerLink="/meinPortfolio" class="routing-button"
-          [disabled]="currentPage.startsWith('/meinPortfolio') ">Portfolio</button>
+          [disabled]="currentPage.endsWith('/meinPortfolio') ">Portfolio</button>
 
   <button *ngIf="this.authService.getToken()!== ''" routerLink="/meineFavoriten" class="routing-button"
-          [disabled]="currentPage.startsWith('/meineFavoriten') ">Favoriten</button>
+          [disabled]="currentPage.endsWith('/meineFavoriten') ">Favoriten</button>
 
   <button *ngIf="this.authService.getToken() !== '' && this.authService.getRole()=='ADMIN'" routerLink="/benutzer" class="routing-button"
-          [disabled]="currentPage.startsWith('/benutzer') ">Benutzerverwaltung</button>
+          [disabled]="currentPage.endsWith('/benutzer') ">Benutzerverwaltung</button>
 
   <button *ngIf="this.authService.getToken() == '' " routerLink="/login" class="routing-button"
-          [disabled]="currentPage.startsWith('/login') ">Login</button>
+          [disabled]="currentPage.endsWith('/login') ">Login</button>
 
   <button *ngIf="this.authService.getToken()!== '' " (click)="logout()" class="routing-button">Logout</button>
 
