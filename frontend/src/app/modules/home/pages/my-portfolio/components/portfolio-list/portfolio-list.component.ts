@@ -20,18 +20,15 @@ export class PortfolioListComponent implements OnInit{
   displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'profitAndLoss', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);
   loading:boolean = false;
+  profitLossLoaded:boolean = false;
   constructor( private pItemService: PortfolioItemService, private router: Router, private dialog:MatDialog, private snackBar: MatSnackBar) {
   }
   // aggregated by isin
   ngOnInit(): void {
-    if(this.router.url.includes('/meineFavoriten')){
-      this.getFavData()
-    }
-    else if(this.router.url.includes('/meinPortfolio')){
-      this.getData()
-    }
-
+    this.getData()
   }
+
+
 
   get headerTitle() {
     if (this.router.url.includes('/meineFavoriten')) {
@@ -53,30 +50,27 @@ export class PortfolioListComponent implements OnInit{
 
   // get data for preview
   getData() {
+    let favoritesOnly:boolean = false;
+    if(this.router.url.includes('/meineFavoriten')){
+      favoritesOnly = true;
+    }
+
     this.loading = true;
     this.pItems = [] // instantiate pItems List
-    this.pItemService.getPItemPreview().subscribe({
+    this.pItemService.getPItemPreview(false, favoritesOnly).subscribe({
       next: (data) => {
         data.forEach( item => this.pItems.push(item)) // populate pItems List
         this.dataSource.data = this.pItems
         this.loading = false;
-      },
-      error:() =>{
-        this.loading = false;
-      }
-    })
-
-  }
-
-  // get data for favorites
-  getFavData() {
-    this.loading = true;
-    this.pItems = [];// instantiate pItems List
-    this.pItemService.getLikedPItems().subscribe({
-      next: (data) => {
-        data.forEach( item => this.pItems.push(item)) // populate pItems List
-        this.dataSource.data = this.pItems
-        this.loading = false;
+        this.pItemService.getPItemPreview(true, favoritesOnly).subscribe({
+          next: (datPL: PortfolioItemModel[]) => {
+            datPL.forEach(itemUp => {
+              const index = this.dataSource.data.findIndex(itemOld => itemOld.shareDTO?.isin === itemUp.shareDTO?.isin)
+              if(index!== -1){this.dataSource.data[index].profitAndLossCum = itemUp.profitAndLossCum}
+              this.profitLossLoaded = true;
+            }) // populate loaded profit and loss
+          }
+        })
       },
       error:() =>{
         this.loading = false;
@@ -91,9 +85,7 @@ export class PortfolioListComponent implements OnInit{
   openDialog(event:Event, shareDTO: ShareModel){
     event.stopPropagation();
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      data: {
-        shareDTO: shareDTO
-        }
+      data: {shareDTO: shareDTO}
       })
 
     // refresh data of PItems List after Purchase Dialog is closed
@@ -114,7 +106,6 @@ export class PortfolioListComponent implements OnInit{
         },
       })
     }
-
     else if(pItemDTO.isFavorite == false){
       this.pItemService.postLike(pItemDTO.shareDTO?.isin || '').subscribe({
         next: () => {
@@ -122,10 +113,9 @@ export class PortfolioListComponent implements OnInit{
           pItemDTO.isFavorite = true
         }
       })
-
     }
-
   }
+
   // snackbar for success
   openSnackBar(isin:string) {
     this.snackBar.open('Favorit für "' + isin + '" hinzugefügt ❤', '', {

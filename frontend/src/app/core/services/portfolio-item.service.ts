@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PortfolioItemModel} from "../models/portfolio-item.model";
 import {AuthCoreService} from "../authentication/auth-core.service";
@@ -21,19 +21,25 @@ export class PortfolioItemService {
     })
   }
 
-  getPItemPreview(): Observable<PortfolioItemModel[]> {
+  getPItemPreview(includePrice:boolean, favoritesOnly:boolean): Observable<PortfolioItemModel[]> {
     const headers = this.getHeader();
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview',{headers})
+    const params = new HttpParams().set('includePrice', includePrice)
+    if(favoritesOnly){
+      return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/liked',{headers, params})
+    } else {
+      return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/preview',{headers, params})
+    }
+
   }
 
-  getPItemByWKN(wkn:string): Observable<PortfolioItemModel> {
+  getPItemByISIN(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
-    return this.http.get<PortfolioItemModel>(this.apiUrl + '/' + wkn,{headers})
+    return this.http.get<PortfolioItemModel>(this.apiUrl + '/' + isin,{headers})
   }
 
-  checkPItemExists(wkn:string): Observable<PortfolioItemModel> {
+  checkPItemExists(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
-    return this.http.head<PortfolioItemModel>(this.apiUrl + '/' + wkn,{headers})
+    return this.http.head<PortfolioItemModel>(this.apiUrl + '/' + isin,{headers})
   }
 
   postPItem(pItem:PortfolioItemModel): Observable<PortfolioItemModel> {
@@ -44,11 +50,6 @@ export class PortfolioItemService {
   getPItemSwagger(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
     return this.http.get<PortfolioItemModel>(this.swaggerUrl + '/' + isin, {headers})
-  }
-
-  getLikedPItems(): Observable<PortfolioItemModel[]> {
-    const headers = this.getHeader();
-    return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/liked',{headers})
   }
 
   postLike(isin:string): Observable<PortfolioItemModel> {

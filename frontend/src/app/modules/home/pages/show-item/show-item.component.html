@@ -3,12 +3,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 </head>
+
 <div class="body" >
 
-  <app-meta-data [data$] = "data$" ></app-meta-data>
-  <app-purchase-list [dataSource] = "dataSource" ></app-purchase-list>
-  <div class="button-area">
-    <button routerLink="/meinPortfolio" class="routing-button">Zurück</button>
+  <div class="body" *ngIf="this.loading">
+    <app-meta-data class="meta-data" [data$] = "data$" ></app-meta-data>
+    <app-purchase-list [dataSource] = "dataSource" ></app-purchase-list>
+    <div class="button-area">
+      <button routerLink="/meinPortfolio" class="routing-button">Zurück</button>
+    </div>
+  </div>
+  <div class="spinner" *ngIf="!this.loading">
+    <mat-spinner></mat-spinner>
   </div>
 
 </div>

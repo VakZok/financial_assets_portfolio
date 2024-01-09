@@ -1,25 +1,10 @@
-.mat-column-isin {
+
+td {
   font-size: 1.2em;
 }
 
-.mat-column-name {
-  font-size: 1.2em;
-}
-
-.mat-column-avgPrice {
-  font-size: 1.2em;
-}
-
-.mat-column-totalPrice {
-  font-size: 1.2em;
-}
-
-.mat-column-totalQuantity {
-  font-size: 1.2em;
-}
-
-.mat-column-buy {
-  font-size: 1.2em;
+th {
+  font-size:1.2em;
 }
 
 .mat-column-profitAndLoss {
@@ -37,45 +22,40 @@
 }
 
 .routing-button{
-  width: 3vh; /* Set your desired button size */
-  height: 3vh;
+  width: 35px; /* Set your desired button size */
+  height: 35px;
   border: 3px solid black; /* Black border */
   background-color: white; /* White background */
   border-radius: 50%; /* Makes the button round */
-  margin-left:0.8vh;
-  padding: 0px;
-  line-height: 0px;
+  margin-left:20px;
 }
 
 .routing-button:hover, .favorite-button:hover{
   box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
   transition: 0.2s;
   cursor: pointer;
-  width: 3vh; /* Set your desired button size */
-  height: 3vh;
+  width: 35px; /* Set your desired button size */
+  height: 35px;
   border: 3px solid black; /* Black border */
   background-color: black;
   color:white;
   border-radius: 50%; /* Makes the button round */
-  margin-left:0.8vh;
-  padding:0px;
-  line-height:0px;
+
+  margin-left: 20px;
 }
 
 .favorite-button{
-  width: 3vh; /* Set your desired button size */
-  height: 3vh;
+  width: 35px; /* Set your desired button size */
+  height: 35px;
   border: 3px solid white;
   background-color: white;
   border-radius: 50%; /* Makes the button round */
-  margin-left:0.8vh;
-  padding:0px;
-  line-height: 0px;
+  margin-left:20px;
 }
 
 .buy-button{
-  width: 3vh; /* Set your desired button size */
-  height: 3vh;
+  width: 35px; /* Set your desired button size */
+  height: 35px;
   border: 3px solid black; /* Black border */
   background-color: white; /* White background */
   border-radius: 50%; /* Makes the button round */
@@ -89,8 +69,8 @@
   box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
   transition: 0.2s;
   cursor: pointer;
-  width: 3vh; /* Set your desired button size */
-  height: 3vh;
+  width: 35px; /* Set your desired button size */
+  height: 35px;
   border: 3px solid black; /* Black border */
   background-color: black;
   color:white;
@@ -134,8 +114,8 @@ h1 {
 }
 
 .add{
-  margin-top:0.1vh;
-  margin-left:-0.05vw;
+  margin-top:2px;
+  margin-left:-1px;
 }
 
 .not-liked{
@@ -159,4 +139,12 @@ h1 {
 .spinner{
   margin-top: 5vh;
   margin-left: 7vw;
+}
+
+.profit{
+  color: green;
+}
+
+.loss {
+  color:red;
 }
