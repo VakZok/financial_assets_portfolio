@@ -11,7 +11,7 @@
   color: white; /* Change the color to your desired color */
   text-decoration: none; /* Remove underline if needed */
   font-size: xx-large; /* set font size*/
-  margin-left: 40px; /* put space between the two router links */
+  margin-left: 40px; /* put space between the router links */
 }
 
 .header-right a:hover {
@@ -27,7 +27,7 @@
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s; /* Smooth transition on hover */
   font-size: 22px;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .routing-button:hover {
@@ -45,7 +45,7 @@
 
 .welcome-text{
   margin-top: 1vh;
-  margin-right: 2vw;
+  margin-right: 7vw;
   align-content: space-around;
   color: whitesmoke;
   font-size: 1.5em;
