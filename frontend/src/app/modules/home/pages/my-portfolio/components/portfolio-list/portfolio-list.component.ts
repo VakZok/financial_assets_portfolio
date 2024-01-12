@@ -90,7 +90,8 @@ export class PortfolioListComponent implements OnInit{
 
     // refresh data of PItems List after Purchase Dialog is closed
     dialogRef.afterClosed().subscribe(() => {
-      this.getData()
+      this.profitLossLoaded = false;
+      this.getData();
     })
   }
 
