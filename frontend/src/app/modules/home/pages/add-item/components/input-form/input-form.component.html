@@ -14,7 +14,7 @@
     <div class="container">
       <mat-form-field>
         <mat-label><b>Anzahl</b></mat-label>
-        <input matInput id="quantity" maxlength="255" formControlName="quantity" (input)="onInputQuantity($event)" />
+        <input matInput id="quantity" maxlength="6" formControlName="quantity" (input)="onInputQuantity($event)" />
         <mat-error class="error" *ngIf="(this.errorMap.get('quantity')?.length || 0) >=1">{{errorMap.get('quantity')}}</mat-error>
       </mat-form-field>
     </div>

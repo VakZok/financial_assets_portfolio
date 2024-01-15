@@ -67,7 +67,6 @@ public class PurchaseService {
 
     public void addNewPurchase(String isin, PurchaseDTO purchaseDTO) throws FormNotValidException{
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateForm(purchaseDTO);
-        exceptionDTOList.addAll(this.validateForm(purchaseDTO));
         if(exceptionDTOList.isEmpty()){
             ShareDTO shareDTO = new ShareDTO(this.swaggerClient.getShare(isin));
             purchaseDTO.setShareDTO(shareDTO);
@@ -85,6 +84,9 @@ public class PurchaseService {
         }
         if(purchaseDTO.getQuantity() == 0){
             exceptions.add(new ExceptionDTO("quantity", "Bitte tragen Sie eine Anzahl ein"));
+        }
+        if(purchaseDTO.getQuantity() >= 1000000) {
+            exceptions.add(new ExceptionDTO("quantity", "Maximale Anzahl: 1 Mio. Stück."));
         }
         if(purchaseDTO.getPurchaseDate() == null){
             exceptions.add(new ExceptionDTO(

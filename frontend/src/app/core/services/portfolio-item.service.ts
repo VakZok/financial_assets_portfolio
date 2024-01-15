@@ -21,9 +21,9 @@ export class PortfolioItemService {
     })
   }
 
-  getPItemPreview(includePrice:boolean, favoritesOnly:boolean): Observable<PortfolioItemModel[]> {
+  getPItemPreview(includePL:boolean, favoritesOnly:boolean): Observable<PortfolioItemModel[]> {
     const headers = this.getHeader();
-    const params = new HttpParams().set('includePrice', includePrice)
+    const params = new HttpParams().set('includePL', includePL)
     if(favoritesOnly){
       return this.http.get<PortfolioItemModel[]>(this.apiUrl + '/liked',{headers, params})
     } else {

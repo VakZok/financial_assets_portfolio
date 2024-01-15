@@ -34,7 +34,6 @@ h1 {
     border: 0.11em solid lightgrey;
     font-size: 1em;
     color: black;
-    overflow:auto;
   }
 
   button{
@@ -69,4 +68,8 @@ h1 {
 
   .container{
     min-height: 10vh;
+  }
+
+  .error{
+    font-size:0.8em;
   }

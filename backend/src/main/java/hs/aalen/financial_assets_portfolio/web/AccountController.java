@@ -56,7 +56,6 @@ public class AccountController {
     @GetMapping("/preview")
     public ResponseEntity<Object> getAccounts() {
         try {
-
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("accFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(

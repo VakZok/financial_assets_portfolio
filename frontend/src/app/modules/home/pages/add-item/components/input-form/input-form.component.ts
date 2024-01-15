@@ -66,7 +66,7 @@ export class InputFormComponent {
       this.pItemService.getPItemSwagger(isin).subscribe({
         next: (data) => {this.metaData = data},
         error:()=> {
-          this.pItemForm.controls['isin'].setErrors(['isinUnknown']);
+          this.pItemForm.controls['isin'].setErrors([{'isinUnknown': true}]);
           this.errorMap.set('isin', 'ISIN nicht bekannt.');
         }
       })
@@ -80,7 +80,7 @@ export class InputFormComponent {
     this.pItemForm.statusChanges.pipe(
       first(status => status !== 'PENDING')).subscribe(() => {
       if (this.pItemForm.controls['isin'].errors?.['pItemExists']){
-        this.errorMap.set('isin', 'Portfolio-Item mit dieser ISIN bereits vorhanden');
+        this.errorMap.set('isin', 'ISIN bereits vorhanden');
       }
     })
   }
@@ -105,6 +105,7 @@ export class InputFormComponent {
 
     this.getData(this.pItemForm.controls['isin'].value)
 
+
     // map errors that are not async
     if (this.pItemForm.controls['isin'].errors?.['maxlength']) {
       this.errorMap.set('isin', 'Die ISIN darf maximal aus 12 Stellen bestehen');
@@ -124,48 +125,48 @@ export class InputFormComponent {
 
     // wait until Form Validation has finished
     await waitForFormNotPending(this.pItemForm)
-
     // map async isin error
-    if ( this.pItemForm.invalid) {
+    if (this.pItemForm.invalid) {
       if (this.pItemForm.controls['isin'].errors?.['pItemExists']) {
-        this.errorMap.set('isin', 'Portfolio-Item mit dieser ISIN bereits vorhanden');
+        this.errorMap.set('isin', 'ISIN bereits vorhanden');
       }
-    }
+    } else if (this.pItemForm.valid) {
+      console.log("check")
+      if (this.pItemForm.valid) {
+        // initialize errors if form is valid
+        for (let [key] of this.errorMap) {
+          this.errorMap.set(key, '');
+        }
 
-    if (this.pItemForm.valid) {
-      // initialize errors if form is valid
-      for (let [key] of this.errorMap) {
-        this.errorMap.set(key, '');
-      }
+        // create shareDTO from pItemForm
+        const shareDTO: ShareModel = {
+          isin: this.pItemForm.controls['isin'].value || '',
+        }
 
-      // create shareDTO from pItemForm
-      const shareDTO: ShareModel = {
-        isin: this.pItemForm.controls['isin'].value || '',
+        //create purchaseDTO from pItemForm
+        const purchaseDTO: PurchaseModel = {
+          purchaseDate: format(new Date(), 'yyyy-MM-dd'),
+          purchasePrice: this.metaData?.currentPurchasePrice,
+          quantity: parseInt(this.pItemForm.controls['quantity'].value || ''),
+          shareDTO: shareDTO
+        }
+        this.sending = true;
+        // on success reset form
+        this.purchaseService.postNewPItem(purchaseDTO).subscribe({
+          next: () => {
+            this.sending = false;
+            this.pItemForm.reset();
+            this.form.resetForm();
+          },
+          // if backend-validation produces exceptions on postNewPItem, set them on the errorMap
+          error: (errors) => errors.error.forEach((item: any) => {
+            this.sending = false;
+            this.pItemForm.get(item.name)?.setErrors(item.message);
+            this.errorMap.set(item.name, item.message);
+          }),
+          complete: () => this.onSuccess(shareDTO.isin!)
+        })
       }
-
-      //create purchaseDTO from pItemForm
-      const purchaseDTO: PurchaseModel = {
-        purchaseDate: format(new Date(), 'yyyy-MM-dd'),
-        purchasePrice: this.metaData?.currentPurchasePrice,
-        quantity: parseInt(this.pItemForm.controls['quantity'].value || ''),
-        shareDTO: shareDTO
-      }
-      this.sending = true;
-      // on success reset form
-      this.purchaseService.postNewPItem(purchaseDTO).subscribe({
-        next: () => {
-          this.sending = false;
-          this.pItemForm.reset();
-          this.form.resetForm();
-        },
-        // if backend-validation produces exceptions on postNewPItem, set them on the errorMap
-        error: (errors) => errors.error.forEach((item: any) => {
-          this.sending = false;
-          this.pItemForm.get(item.name)?.setErrors(item.message);
-          this.errorMap.set(item.name, item.message);
-        }),
-        complete: () => this.onSuccess(shareDTO.isin!)
-      })
     }
   }
 
@@ -173,6 +174,7 @@ export class InputFormComponent {
   clearForm() {
     this.form.resetForm();
     this.pItemForm.reset();
+    this.metaData = {};
     for (let [key] of this.errorMap){
       this.errorMap.set(key, '');
     }

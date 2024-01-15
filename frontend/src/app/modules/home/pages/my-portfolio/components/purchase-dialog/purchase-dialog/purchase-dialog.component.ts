@@ -101,8 +101,10 @@ export class PurchaseDialogComponent implements OnInit {
           this.openSnackBar(this.isin)
         },
         // if backend validation produces exceptions on postPItem, set them on the errorMap
-        error: (errors) => errors.error.forEach(() => {
-          this.sending = false
+        error: (errors) => errors.error.forEach((item: any) => {
+          this.sending = false;
+          this.purchaseForm.get(item.name)?.setErrors(item.message);
+          this.errorMap.set(item.name, item.message);
         }),
       })
     }

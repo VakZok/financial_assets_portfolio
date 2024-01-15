@@ -62,7 +62,7 @@ public class ShareService {
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
 
         if (checkShareExists(shareDTO.getIsin())){
-            exceptions.add(new ExceptionDTO("isin", "Portfolio-Item mit dieser ISIN ist bereits vorhanden"));
+            exceptions.add(new ExceptionDTO("isin", "ISIN bereits vorhanden"));
         }
         if (shareDTO.getIsin().length() > ISIN_LENGTH ){
             exceptions.add(new ExceptionDTO("isin", "Die ISIN darf maximal aus 12 Zeichen bestehen"));

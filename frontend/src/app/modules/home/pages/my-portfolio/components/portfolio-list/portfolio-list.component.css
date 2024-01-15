@@ -120,19 +120,16 @@ h1 {
 
 .not-liked{
   margin-top:0.2vh;
-  margin-left:-0.05vw;
   color:black;
 }
 
 .not-liked:hover{
   margin-top:0.2vh;
-  margin-left:-0.05vw;
-  color:white;  
+  color:white;
 }
 
 .liked{
   margin-top:0.2vh;
-  margin-left:-0.1vw;
   color: #DA0000;
 }
 

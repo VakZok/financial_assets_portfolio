@@ -93,15 +93,20 @@ public class PortfolioItemService {
 
     public void addNewPItem(PurchaseDTO purchaseDTO) throws FormNotValidException{
         ShareDTO shareDTO = purchaseDTO.getShareDTO();
-        ShareDTO shareDTOSwag = new ShareDTO(this.shareSwaggerClient.getShare(shareDTO.getIsin()));
         ArrayList<ExceptionDTO> exceptionList = new ArrayList<>();
-        exceptionList.addAll(shareService.validateForm(shareDTOSwag));
-        exceptionList.addAll(purchaseService.validateForm(purchaseDTO));
-        if (exceptionList.isEmpty()){
-            shareService.saveShare(shareDTOSwag);
-            purchaseService.savePurchase(purchaseDTO);
-        } else {
-            throw new FormNotValidException("Formfehler", exceptionList);
+        try{
+            ShareDTO shareDTOSwag = new ShareDTO(this.shareSwaggerClient.getShare(shareDTO.getIsin()));
+            exceptionList.addAll(shareService.validateForm(shareDTOSwag));
+            exceptionList.addAll(purchaseService.validateForm(purchaseDTO));
+            if (exceptionList.isEmpty()){
+                shareService.saveShare(shareDTOSwag);
+                purchaseService.savePurchase(purchaseDTO);
+            } else {
+                throw new FormNotValidException("Formfehler", exceptionList);
+            }
+        } catch(NullPointerException e) {
+            exceptionList.add(new ExceptionDTO("isin", "ISIN nicht bekannt"));
+            throw new FormNotValidException("Isin unbekannt", exceptionList );
         }
     }
 

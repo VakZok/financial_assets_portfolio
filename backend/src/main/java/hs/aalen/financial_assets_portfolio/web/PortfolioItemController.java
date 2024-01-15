@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import feign.Response;
 import hs.aalen.financial_assets_portfolio.data.PortfolioItemDTO;
 import hs.aalen.financial_assets_portfolio.data.PurchaseDTO;
 import hs.aalen.financial_assets_portfolio.exceptions.FormNotValidException;
 import hs.aalen.financial_assets_portfolio.service.PortfolioItemService;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,9 +91,9 @@ public class PortfolioItemController {
     }
 
     @GetMapping(value = "/portfolioItems/preview")
-    public ResponseEntity<Object> getPItemsPreview(@RequestParam boolean includePrice, Authentication authentication) {
+    public ResponseEntity<Object> getPItemsPreview(@RequestParam boolean includePL, Authentication authentication) {
         try {
-            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName(), includePrice);
+            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getPItemsPreview(authentication.getName(), includePL);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
@@ -113,9 +111,9 @@ public class PortfolioItemController {
         }
     }
     @GetMapping(value = "/portfolioItems/liked")
-    public ResponseEntity<Object> getPItemsLiked(@RequestParam boolean includePrice, Authentication authentication) {
+    public ResponseEntity<Object> getPItemsLiked(@RequestParam boolean includePL, Authentication authentication) {
         try {
-            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getLikedPItems(authentication.getName(), includePrice);
+            List<PortfolioItemDTO> portfolioItemDTOList = this.pItemService.getLikedPItems(authentication.getName(), includePL);
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("pItemFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
