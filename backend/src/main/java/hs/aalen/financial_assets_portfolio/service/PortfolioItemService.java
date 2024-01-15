@@ -17,6 +17,17 @@ import java.util.concurrent.*;
 
 @Service
 public class PortfolioItemService {
+    /** The service that manges the main business case of handling PortfolioItems.
+     * The service contains methods for processing and creating PortfolioItemDTOs
+     * which are used to communicate with the frontend.
+     * purchaseService:      The database repository containing purchase objects.
+     * shareService:         The service that manages share objects.
+     * shareSwaggerClient:   The feign client that is used to get share objects from
+     *                       an external API
+     * likesRepository:      The repository that manages likes objects
+     * accountRepository:    The repository that manages user information
+     *
+     */
 
 
     private final PurchaseService purchaseService;
@@ -26,6 +37,7 @@ public class PortfolioItemService {
     private final AccountRepository accountRepository;
 
 
+    /* CONSTRUCTOR */
     public PortfolioItemService(
             PurchaseService purchaseService,
             ShareService shareService,
@@ -39,12 +51,20 @@ public class PortfolioItemService {
         this.accountRepository = accountRepository;
     }
 
-    public ArrayList<PortfolioItemDTO> getLikedPItems(String username, boolean includePrice){
+    public ArrayList<PortfolioItemDTO> getLikedPItems(String username, boolean includePL){
+        /* Method returns the list of liked PortfolioItems
+        *  username:  The username associated with the liked PortfolioItems
+        *  includePL: A flag, that is indicating whether profit and loss should be included.
+        *             The flag is used to speed up loading tables in the frontend. Firstly, tables
+        *             are loaded without profit and loss, secondly the profit and loss information
+        *             is updated. This improves the UX since it decouples the table loading time from
+        *             the response time of the external API.
+        * */
         ArrayList<ShareDTO> likedShareDTOList = new ArrayList<>(
                 this.likesRepository.findAllByAccountUsername(username)
-                        .stream().map(liked -> new ShareDTO(liked.getShare())).toList());
-
-        if (includePrice) {
+                        .stream().map(liked -> new ShareDTO(liked.getShare())).toList()
+        );
+        if (includePL) {
             ArrayList<ShareSwaggerDTO> shareSwaggerDTOList = getShareSwaggerDTOList(likedShareDTOList);
             return new ArrayList<>(shareSwaggerDTOList.stream().map(shareSwaggerDTO -> getPItemWPL(username, shareSwaggerDTO)).toList());
         } else {
@@ -79,10 +99,17 @@ public class PortfolioItemService {
         }
     }
 
-    public ArrayList<PortfolioItemDTO> getPItemsPreview(String username, boolean includePrice ){
+    public ArrayList<PortfolioItemDTO> getPItemsPreview(String username, boolean includePL ){
+        /* Method returns the preview list of owned PortfolioItems.
+         *  username:  The username associated with the liked PortfolioItems
+         *  includePL: A flag, that is indicating whether profit and loss should be included.
+         *             The flag is used to speed up loading tables in the frontend. Firstly, tables
+         *             are loaded without profit and loss, secondly the profit and loss information
+         *             is updated. This improves the UX since it decouples the table loading time from
+         *             the response time of the external API.
+         * */
         ArrayList<ShareDTO> shareDTOList = this.shareService.getShareList();
-
-        if (includePrice) {
+        if (includePL) {
             ArrayList<ShareSwaggerDTO> shareSwaggerDTOList = getShareSwaggerDTOList(shareDTOList);
             return new ArrayList<>(shareSwaggerDTOList.stream().map(shareSwaggerDTO -> getPItemWPL(username, shareSwaggerDTO)).toList());
         } else {
@@ -111,17 +138,19 @@ public class PortfolioItemService {
     }
 
     public PortfolioItemDTO aggregatePItem(String username, ShareDTO shareDTO){
+        /* The method is used to create PortfolioItems from the related purchases.
+           It collects the purchases for a shareDTO, checks whether the authenticated
+           user liked the share, and aggregates further metrics i.e. averagePrice, totalPrice
+           and totalQuantity. It returns a new object of class PortfolioItemDTO.
+         */
         ArrayList<PurchaseDTO> purchaseDTOList = this.purchaseService.getPurchases(shareDTO.getIsin());
         String isin = shareDTO.getIsin();
         LikesId likesId = new LikesId(username,isin);
         boolean isFavorite = this.likesRepository.existsById(likesId);
-
-        // create a double stream of price*quantity and sum it up to get total price
         double totalPrice = purchaseDTOList.stream()
                 .mapToDouble(pItem ->
                         pItem.getQuantity() * pItem.getPurchasePrice()).sum();
 
-        // create an int stream of quantities and sum them up to get total quantity
         int totalQuantity = purchaseDTOList.stream()
                 .mapToInt(PurchaseDTO::getQuantity).sum();
 
@@ -131,6 +160,10 @@ public class PortfolioItemService {
     }
 
     public PortfolioItemDTO getPItemWPL(String username, ShareSwaggerDTO shareSwaggerDTO){
+        /* The method is used to create a PortfolioItemDTO. It uses the method
+           "aggregatePitem" to create a PortfolioItemDTO and adds profit/loss information,
+           calculated from the requested price of the external API.
+         */
         ShareDTO shareDTO = new ShareDTO(shareSwaggerDTO);
         PortfolioItemDTO pItemDTO = aggregatePItem(username, shareDTO);
         double currentPrice = shareSwaggerDTO.getPrice();
@@ -145,12 +178,15 @@ public class PortfolioItemService {
     }
 
     public ArrayList<ShareSwaggerDTO> getShareSwaggerDTOList(ArrayList<ShareDTO> shareDTOList) {
+        /* This method is used to fastly get multiple shares from the external API.
+           The method launches multithreaded http requests, where the number of threads is
+           dependent on the number of available Processors. For a computer with 8 available processors,
+           the loading time can be reduced by a approx. factor of 8.
+         */
         int availableProcessors = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(availableProcessors);
         ArrayList <ShareSwaggerDTO> shareSwaggerDTOList = new ArrayList<>();
-
         List<Future<ShareSwaggerDTO>> futures = new ArrayList<>();
-
         for (ShareDTO shareDTO : shareDTOList) {
             Future<ShareSwaggerDTO> future = executor.submit(new FeignHttpRequest(shareDTO.getIsin(), shareSwaggerClient));
             futures.add(future);
@@ -158,8 +194,7 @@ public class PortfolioItemService {
         executor.shutdown();
         for (Future<ShareSwaggerDTO> future : futures) {
             try {
-                shareSwaggerDTOList.add(future.get()); // This will block until the result is available
-
+                shareSwaggerDTOList.add(future.get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -169,12 +204,18 @@ public class PortfolioItemService {
 }
 
 class FeignHttpRequest implements Callable<ShareSwaggerDTO> {
+    /** A wrapper class that implements the interface Callable.
+        It is used to make the feign http requests multithreadable.
+        isin:   The ISIN of the share that should be requested.
+        client: The client that should be used for requesting.
+     */
     private final ShareSwaggerClient client;
     private final String isin;
     public FeignHttpRequest(String isin, ShareSwaggerClient client){
         this.client = client;
         this.isin = isin;
     }
+
     @Override
     public ShareSwaggerDTO call(){
         return this.client.getShare(isin);

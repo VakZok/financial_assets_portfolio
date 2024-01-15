@@ -76,7 +76,7 @@ public class AccountController {
     @PostMapping("/{username}/add")
     public ResponseEntity<Object> addAccount(@PathVariable String username, @RequestBody AccountDTO accountDTO) {
         try {
-            accountService.addAccount(username, accountDTO);
+            accountService.addAccount(accountDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(new ExceptionDTO("username", e.getMessage()), HttpStatus.CONFLICT);

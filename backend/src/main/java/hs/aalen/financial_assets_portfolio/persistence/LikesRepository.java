@@ -7,9 +7,9 @@ import org.springframework.data.repository.ListCrudRepository;
 import java.util.List;
 
 public interface LikesRepository extends ListCrudRepository<Likes, LikesId> {
-    public List<Likes> findAllByAccountUsername(String username);
+    List<Likes> findAllByAccountUsername(String username);
 
-    public void deleteAllByAccountUsername(String username);
+    void deleteAllByAccountUsername(String username);
 
 }
 

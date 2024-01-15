@@ -6,7 +6,16 @@ import java.util.Set;
 
 @Entity
 public class Share {
-    /* PROPERTIES OF ENTITY */
+    /** The entity class for share objects that are stored and
+     * managed by the database.
+     * isin:          Identifier of the share.
+     * name:          The name of the share.
+     * category:      The category of the share.
+     * description:   A detailed description of the share.
+     *
+     */
+
+
     @Id
     @Column(unique = true)
     private String isin;
@@ -18,7 +27,7 @@ public class Share {
     @OneToMany(mappedBy = "share", cascade = CascadeType.ALL)
     Set<Purchase> purchases;
 
-    /* Constructors */
+    /* CONSTRUCTORS*/
     public Share(String isin, String name, String category, String description) {
         this.isin = isin;
         this.name = name;

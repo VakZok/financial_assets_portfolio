@@ -7,7 +7,16 @@ import java.time.LocalDate;
 
 @Entity
 public class Purchase {
-    /* PROPERTIES OF ENTITY */
+    /** The entity class Purchase that is used to store and manage Purchase objects
+     * in the database.
+     * id:            Identifier for the purchase.
+     * purchaseDate:  The purchase Date.
+     * purchasePrice: The purchase price for a single stock.
+     * quantity:      The quantity of stocks bought in this purchase.
+     * shareDTO:      The share associated with the purchase.
+     *
+     */
+
     @Id
     @Column(unique = true)
     @GeneratedValue(generator = "increment")
@@ -17,13 +26,15 @@ public class Purchase {
     private double purchasePrice;
     private int quantity;
 
+
+
     /* MAPPED RELATIONSHIPS */
     @ManyToOne
     @JoinColumn(name = "isin")
     private Share share;
 
 
-    /* Constructors */
+    /* CONSTRUCTORS */
     public Purchase(LocalDate purchaseDate, double purchasePrice, int quantity, Share share) {
         this.purchaseDate = purchaseDate;
         this.purchasePrice = purchasePrice;
@@ -42,7 +53,7 @@ public class Purchase {
     public Purchase() {
     }
 
-    /* Getters and Setters */
+    /* GETTERS AND SETTERS */
     public Long getId() {
         return id;
     }

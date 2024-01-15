@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FeignClientConfiguration {
+    /** Feign client configuration used to communicate with
+     * the external stock API
+     */
 
     @Bean
     public RequestInterceptor apiKeyInterceptor() {

@@ -8,7 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountDetailsService implements UserDetailsService {
+    /** AccountDetailsService class implementing UserDetailsService.
+     * The class is used to connect the backend authentication with the
+     * database repository where user credentials are stored.
+     * accountRepo: The repository where user credentials are stored
+     */
     private final AccountRepository accountRepo;
+
+    /* CONSTRUCTOR */
     private AccountDetailsService(AccountRepository accountRepo){
         this.accountRepo = accountRepo;
     }

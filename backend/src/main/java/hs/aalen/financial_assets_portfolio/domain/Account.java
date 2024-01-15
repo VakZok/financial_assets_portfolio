@@ -5,17 +5,24 @@ import jakarta.persistence.*;
 
 @Entity
 public class Account {
-    /* PROPERTIES OF ENTITY */
+    /**
+     * The entity class for Account, containing the account
+     * user credentials that are stored in the database.
+     * username: The username of the account.
+     * password: The password associated with the account.
+     * name:     The name associated with the account.
+     * role:     The role or authorization level of the account.
+     */
+
     @Id
     private String username;
     private String password;
     private String name;
     private String role;
 
-    /* MAPPED RELATIONSHIPS */
 
+    /* CONSTRUCTORS */
 
-    /* Constructors */
     public Account(String username, String password, String name, String role) {
         this.username = username;
         this.password = password;
@@ -34,7 +41,8 @@ public class Account {
     public Account() {
     }
 
-    /* Getters and Setters */
+    /* GETTERS AND SETTERS */
+
     public String getUsername() {return username;}
 
     public void setUsername(String username) {this.username = username;}

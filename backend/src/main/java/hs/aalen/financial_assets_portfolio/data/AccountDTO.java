@@ -6,19 +6,22 @@ import hs.aalen.financial_assets_portfolio.domain.Account;
 
 @JsonFilter("accFilter")
 public class AccountDTO {
+    /**
+     * A Data Transfer Object (DTO) representing an account with essential information.
+     * This class is used to transfer user information between frontend and backend.
+     * username: The username of the account.
+     * password: The password associated with the account.
+     * name:     The name associated with the account.
+     * role:     The role or authorization level of the account.
+     */
+
     private String username;
     private String password;
     private String name;
     private String role;
 
-    public AccountDTO(String username, String password, String name, String role) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.role = role;
-    }
 
-
+    /* CONSTRUCTORS */
     public AccountDTO(Account account) {
         this.username = account.getUsername();
         this.password = account.getPassword();
@@ -26,8 +29,11 @@ public class AccountDTO {
         this.role = account.getRole();
     }
 
+
     public AccountDTO() {
     }
+
+    /* GETTERS AND SETTERS */
 
     public String getUsername() {return username;}
 

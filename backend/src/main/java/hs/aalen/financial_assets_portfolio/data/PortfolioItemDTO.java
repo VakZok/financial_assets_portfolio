@@ -1,13 +1,28 @@
 package hs.aalen.financial_assets_portfolio.data;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.ArrayList;
 
 
 @JsonFilter("pItemFilter")
 public class PortfolioItemDTO {
+    /** This is the Data Transfer Object (DTO) for the major business case.
+     * The transfer object PortfolioItemDTO aggregates information
+     * from the database of the backend and is used communicate between
+     * frontend and backend. Presents a single PortfolioItem.
+     * shareDTO:              A DTO of a share object, associated with the PortfolioItem.
+     * purchaseDTOList:       The list of purchases conducted.
+     * avgPrice:              The average purchase price per stock over all purchases.
+     * totalPrice:            The sum of purchase prices over all purchases.
+     * totalQuantity:         The total quantity of bought stocks.
+     * currentPurchasePrice:  The current Purchase price for a single stock.
+     * isFavorite:            Indicates whether a user likes the PortfolioItem.
+     * profitAndLoss:         The profit and loss per stock.
+     * profitAndLossCum:      The total profit and loss for the owned stocks.
+     *
+     */
+
+
     @JsonFilter("shareFilter")
     private ShareDTO shareDTO;
     private double avgPrice;
@@ -18,6 +33,9 @@ public class PortfolioItemDTO {
     private double profitAndLoss;
     private double profitAndLossCum;
     private ArrayList<PurchaseDTO> purchaseDTOList;
+
+
+    /* CONSTRUCTORS*/
 
     public PortfolioItemDTO(
             ShareDTO shareDTO, double avgPrice,
@@ -53,7 +71,7 @@ public class PortfolioItemDTO {
         this.currentPurchasePrice = shareSwaggerDTO.getPrice();
     }
 
-    public PortfolioItemDTO(){};
+    public PortfolioItemDTO(){}
 
     public ShareDTO getShareDTO() {
         return shareDTO;

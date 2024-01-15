@@ -15,18 +15,24 @@ import java.util.NoSuchElementException;
 @Service
 
 public class AccountService {
+    /** The Account service that is used to manage actions related with accounts.
+     * STRING_MAX_LENGTH: The max length of strings that can be used for account properties.
+     * accountRepository: The Account repository connected with the service.
+     * likesRepository:   The Likes repository connected with the service.
+     */
 
     public static final int STRING_MAX_LENGTH = 30;
 
     private final AccountRepository accountRepository;
     private final LikesRepository likesRepository;
 
+    /* CONSTRUCTOR */
     public AccountService(AccountRepository accountRepository, LikesRepository likesRepository) {
-
         this.accountRepository = accountRepository;
         this.likesRepository = likesRepository;
     }
 
+    /* METHODS */
     public AccountDTO getAccount(String username) throws NoSuchElementException {
         Account account = accountRepository.findByUsernameIgnoreCase(username);
         if (account == null){
@@ -47,7 +53,7 @@ public class AccountService {
         return new ArrayList<>(accountList.stream().map(AccountDTO::new).toList());
     }
 
-    public void addAccount(String username, AccountDTO accountDTO) throws FormNotValidException {
+    public void addAccount( AccountDTO accountDTO) throws FormNotValidException {
         ArrayList<ExceptionDTO> exceptionDTOList = this.validateAddForm(accountDTO);
         if (exceptionDTOList.isEmpty()){
             Account account = new Account (accountDTO);
@@ -57,8 +63,21 @@ public class AccountService {
             throw new FormNotValidException("Formfehler", exceptionDTOList);
         }
     }
+
     @Transactional
-    public void updateAccount(String username, AccountDTO accountDTO, Authentication authentication) throws FormNotValidException{
+    public void updateAccount(
+            String username, AccountDTO accountDTO,
+            Authentication authentication) throws FormNotValidException{
+        /* Method to update accounts. First, checks whether the updated user is not the
+         * authenticated user. Secondly, the user information is validated. Subsequently,
+         * the user information is updated based on multiple case differentiations.
+         * The case differentiations are necessary to allow the user keeping fields
+         * in the frontend empty without overwriting them.
+         * username: The username to be updated.
+         * accountDTO: The information from the frontend, wrapped in an accountDTO.
+         * authentication: The information about the authenticated user.
+         */
+
         if(!username.equals(authentication.getName())){
             Account existingAccount = accountRepository.findByUsernameIgnoreCase(username);
             ArrayList<ExceptionDTO> exceptionDTOList = this.validateUpdateForm(username, accountDTO);
@@ -69,7 +88,8 @@ public class AccountService {
                             accountDTO.getUsername(),
                             existingAccount.getPassword(),
                             existingAccount.getName(),
-                            existingAccount.getRole());
+                            existingAccount.getRole()
+                    );
                     accountRepository.deleteByUsername(username);
                 }
                 if(!existingAccount.getName().equals(accountDTO.getName()) && !accountDTO.getName().isEmpty()){
@@ -86,8 +106,8 @@ public class AccountService {
                 throw new FormNotValidException("Formfehler", exceptionDTOList);
             }
         }
-
     }
+
     @Transactional
     public void deleteAccountByUsername(String username, String authenticatedUsername) {
         if(!username.equals(authenticatedUsername)){
@@ -102,6 +122,10 @@ public class AccountService {
     }
 
     public ArrayList<ExceptionDTO> validateAddForm(AccountDTO accountDTO){
+        /* Validation Method for adding a user account
+        * accountDTO: Account information that is sent from the frontend.
+        * */
+
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
 
         if (checkAccountExists(accountDTO.getUsername())){
@@ -139,9 +163,12 @@ public class AccountService {
     }
 
     public ArrayList<ExceptionDTO> validateUpdateForm(String initUsername, AccountDTO accountDTO){
+        /* Validation method to update an account.
+           initUsername: The username before an update
+           accountDTO: The account information that should be updated
+         */
         Account account = accountRepository.findByUsernameIgnoreCase(initUsername);
         ArrayList<ExceptionDTO> exceptions = new ArrayList<>();
-
         if (!(accountDTO.getUsername().equalsIgnoreCase(account.getUsername())) && !accountDTO.getUsername().isEmpty()){
             if (checkAccountExists(accountDTO.getUsername())){
                 exceptions.add(new ExceptionDTO("username", "Account mit diesem Benutzernamen bereits vorhanden"));

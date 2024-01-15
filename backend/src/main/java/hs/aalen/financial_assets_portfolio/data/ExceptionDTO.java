@@ -1,8 +1,10 @@
 package hs.aalen.financial_assets_portfolio.data;
 
 public class ExceptionDTO {
-    /* Class to create Data Transfer Objects for exceptions used for communication with the frontend
-     * and not exposing too much information.
+    /** Class to create Data Transfer Objects for
+     * validation exceptions used for communication with the frontend.
+     * name:    The name of the attribute which failed validation
+     * message: The message that should be displayed by the frontend
      */
 
     private String name;

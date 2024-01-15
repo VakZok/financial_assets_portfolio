@@ -9,8 +9,16 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonFilter("purchaseFilter")
 public class PurchaseDTO {
-    /* Class to create Data Transfer Objects for portfolio items used for communication with the frontend
-     * and not exposing too much information.
+    /** This is the Data Transfer Object (DTO) for managing purchases.
+     * The transfer object PurchaseDTO aggregates information for a purchase and
+     * is used communicate between frontend and backend. Presents a single Purchase.
+     * id:            Identifier for the purchase.
+     * purchaseDate:  The purchase Date.
+     * purchasePrice: The purchase price for a single stock.
+     * totalPrice:    The cumulated purchase price made for this purchase (purchasePrice * quantity).
+     * quantity:      The quantity of stocks bought in this purchase.
+     * shareDTO:      The share associated with the purchase.
+     *
      */
 
     private Long id;
@@ -21,7 +29,7 @@ public class PurchaseDTO {
     private int quantity;
     private ShareDTO shareDTO;
 
-    /* Constructors inclusive copy constructors */
+    /* CONSTRUCTORS */
     public PurchaseDTO(
             Long id, LocalDate purchaseDate,
             double purchasePrice, int quantity

@@ -22,6 +22,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class BasicAuthenticationConfiguration {
+    /** The configuration for the
+     Basic Authentication used in the backend. */
+
 
     public BasicAuthenticationConfiguration(UserDetailsService userDetailsService){
     }
@@ -30,6 +33,7 @@ public class BasicAuthenticationConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity

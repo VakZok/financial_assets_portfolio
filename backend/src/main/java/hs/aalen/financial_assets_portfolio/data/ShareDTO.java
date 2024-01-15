@@ -4,8 +4,14 @@ import hs.aalen.financial_assets_portfolio.domain.Share;
 
 @JsonFilter("shareFilter")
 public class ShareDTO {
-    /* Class to create Data Transfer Objects for shares used for communication with the frontend
-     * and not exposing too much information.
+    /** This is the Data Transfer Object (DTO) for a share.
+     * The transfer object ShareDTO aggregates meta information for a PortfolioItem and
+     * is used communicate between frontend and backend. Presents a single Share.
+     * isin:          Identifier of the share.
+     * name:          The name of the share.
+     * category:      The category of the share.
+     * description:   A detailed description of the share.
+     *
      */
 
     private String isin;
@@ -13,7 +19,7 @@ public class ShareDTO {
     private String category;
     private String description;
 
-    /* Constructors */
+    /* CONSTRUCTORS */
     public ShareDTO(Share share) {
         this.isin = share.getIsin();
         this.name = share.getName();
