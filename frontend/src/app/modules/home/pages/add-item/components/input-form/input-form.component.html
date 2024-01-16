@@ -2,6 +2,10 @@
 
 <form class="form" [formGroup]="pItemForm" (ngSubmit)="onSubmit()">
 
+  <!--
+      Input fields for ISIN and quantity - with validation
+    -->
+
   <div class="row">
     <!-- new -->
     <div id="cont-isin" class="container">
@@ -34,7 +38,7 @@
     </div>
     <div id = "cont-category" class="container">
       <mat-label><b>Kategorie</b></mat-label>
-      <textarea matInput id="category" class="display-field-top" value="{{metaData?.shareDTO?.category}}"disabled></textarea>
+      <textarea matInput id="category" class="display-field-top" value="{{metaData?.shareDTO?.category}}" disabled></textarea>
     </div>
     <div id = "cont-price" class="container">
       <mat-label><b>Kaufpreis pro Stück</b></mat-label>

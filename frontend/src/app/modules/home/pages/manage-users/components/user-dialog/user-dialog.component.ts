@@ -12,6 +12,13 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./user-dialog.component.css']
 })
 export class UserDialogComponent implements OnInit{
+
+  /*
+  This component is used to create and edit users.
+  It realizes validation of the input fields and displayes
+  custom error messages, if the input is not valid.
+   */
+
   @ViewChild(FormGroupDirective) form: any;
   accountForm = new FormGroup({
     username: new FormControl('',[

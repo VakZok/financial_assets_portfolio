@@ -16,6 +16,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 
 export class PortfolioListComponent implements OnInit{
 
+  // This component allows the user to see a preview of his portfolio items or favorites.
+
   pItems:PortfolioItemModel[]=[];
   displayedColumns: string[] = ['isin', 'name', 'totalQuantity', 'avgPrice', 'totalPrice', 'profitAndLoss', 'buy'];
   dataSource = new MatTableDataSource<any>(this.pItems);

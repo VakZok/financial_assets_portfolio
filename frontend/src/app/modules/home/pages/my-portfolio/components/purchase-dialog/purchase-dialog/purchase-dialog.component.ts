@@ -15,6 +15,9 @@ import {PortfolioItemModel} from "../../../../../../../core/models/portfolio-ite
 })
 
 export class PurchaseDialogComponent implements OnInit {
+
+  // This component allows the user to buy additional shares of an existing portfolio item.
+
   public purchaseForm: FormGroup<{quantity: FormControl<string | null>}>;
   loading: boolean = false;
   sending: boolean = false;

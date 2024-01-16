@@ -1,5 +1,12 @@
 
 <ng-container class="metabody" *ngIf="data$ | async as data">
+
+  <!--
+    Loads meta data for a share from the backend and displays it.
+    The statistics are calculated by the backend which gets the current share information
+    from the external API.
+  -->
+
     <div class="metabody">
       <h2>Detailansicht: {{data.shareDTO?.name}} {{data.shareDTO?.isin}}</h2>
        <div class="row">

@@ -31,6 +31,13 @@ async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   styleUrls: ['./input-form.component.css']
 })
 export class InputFormComponent {
+
+  /*
+  This component is used to create a new portfolio item.
+  It realizes validation of the input fields and displayes
+  custom error messages, if the input is not valid.
+   */
+
   pItemForm: FormGroup;
   metaData: PortfolioItemModel | undefined;
   sending: boolean = false

@@ -9,6 +9,13 @@ import {AuthCoreService} from "../../../../../core/authentication/auth-core.serv
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
+
+  /*
+    This component is used to validate the user login.
+    It checks the backend if the user exists and if
+    the combination of username and password is correct.
+  */
+
   LoginForm: FormGroup;
 
   errorMap = new Map<string, string>([

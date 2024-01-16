@@ -25,6 +25,13 @@ async function waitForFormNotPending(formGroup: FormGroup): Promise<void> {
   styleUrls: ['./account-form.component.css']
 })
 export class AccountFormComponent {
+
+  /*
+  The AccountFormComponent is used to create a new account.
+  It realizes validation of the input fields and displayes
+  custom error messages, if the input is not valid.
+   */
+
   accountForm: FormGroup = new FormGroup({});
 
   errorMap = new Map<string, string>([

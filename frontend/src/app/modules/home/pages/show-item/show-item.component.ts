@@ -12,6 +12,12 @@ import {Observable, switchMap, take} from 'rxjs';
   styleUrls: ['./show-item.component.css']
 })
 export class ShowItemComponent implements OnInit {
+
+  /*
+  This component is used to show the details of a portfolio item, including the
+  meta data, the statistics, and the list of purchases.
+   */
+
   data$: Observable<PortfolioItemModel>| null = null;
   loading: boolean = false;
   dataSource = new MatTableDataSource<PurchaseModel>();
