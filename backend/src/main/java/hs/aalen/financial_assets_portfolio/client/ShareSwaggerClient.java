@@ -11,7 +11,9 @@ import java.util.concurrent.CompletableFuture;
 
 @FeignClient(value = "ShareSwagger", url = "https://hsaa-stock-exchange-service.azurewebsites.net/v1/stocks")
 public interface ShareSwaggerClient {
-
+    /** The interface with Request mapping that is used to request shares from
+     * the external API.
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/{isin}", consumes = "application/json")
     ShareSwaggerDTO getShare(@PathVariable String isin);
 }

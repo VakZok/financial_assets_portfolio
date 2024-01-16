@@ -46,7 +46,6 @@ public class ShareService {
         return new ShareDTO(share);
     }
 
-
     public void saveShare(ShareDTO shareDTO){
         Share share = new Share(shareDTO);
         this.shareRepository.save(share);

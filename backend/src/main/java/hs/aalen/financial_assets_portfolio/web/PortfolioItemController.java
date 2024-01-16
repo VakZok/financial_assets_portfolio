@@ -22,16 +22,20 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PortfolioItemController {
+    /** Controller Class that manages HTTP-Requests reagrding portfolio items */
 
     private final PortfolioItemService pItemService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
+
+    /* CONSTRUCTOR */
 
     public PortfolioItemController(PortfolioItemService pItemService) {
         this.pItemService = pItemService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
-    /* GET REQUESTS */
+    /* HTTP REQUEST METHODS */
+
     @GetMapping("swagger/pItem/{isin}")
     public ResponseEntity<Object> getPItemSwaggerByIsin(@PathVariable String isin) {
         try {
@@ -60,6 +64,7 @@ public class PortfolioItemController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("portfolioItems/{isin}")
     public ResponseEntity<Object> getPItemByIsin(@PathVariable String isin, Authentication authentication) {
         try {
@@ -110,6 +115,7 @@ public class PortfolioItemController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping(value = "/portfolioItems/liked")
     public ResponseEntity<Object> getPItemsLiked(@RequestParam boolean includePL, Authentication authentication) {
         try {

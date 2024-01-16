@@ -22,26 +22,31 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1/accounts")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AccountController {
+    /** Controller for actions regarding accounts.
+     *  Get requests are filtered, such that the response contains only
+     *  required values.
+     */
 
     private final AccountService accountService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
+    /* CONSTRUCTOR */
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
+    /* HTTP REQUEST METHODS */
+
     @GetMapping("/{username}")
     public ResponseEntity<Object> getAccount(@PathVariable String username) {
         try {
-
             SimpleFilterProvider filterProvider = new SimpleFilterProvider();
             filterProvider.addFilter("accFilter",
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "username", "role", "name"));
             AccountDTO accountDTO = accountService.getAccount(username);
-
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
             String mappedObject = om.writer(filterProvider).writeValueAsString(accountDTO);
@@ -100,9 +105,6 @@ public class AccountController {
                 return new ResponseEntity<>(e.getExceptions(), HttpStatus.BAD_REQUEST);
             }
     }
-
-
-
 
     @DeleteMapping("/{username}")
     public void deleteAccount(@PathVariable String username, Authentication authentication) {

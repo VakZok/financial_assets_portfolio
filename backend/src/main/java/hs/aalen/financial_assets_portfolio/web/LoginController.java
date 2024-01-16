@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
+    /** Controller used for authentication. The login method is primarily used
+     * to respond to the frontend whether the user credentials are accepted.*/
+
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
 
     private final AccountRepository accountRepo;
+
+    /* CONSTRUCTOR */
+
     public LoginController(AccountRepository accountRepo){
         this.accountRepo = accountRepo;
     }
+
+    /* HTTP REQUEST METHODS */
 
     @GetMapping("/logins")
     public ResponseEntity<Object> login(Authentication authentication )  {
@@ -35,7 +43,6 @@ public class LoginController {
             AccountDTO accountDTO = new AccountDTO();
             accountDTO.setName(account.getName());
             accountDTO.setRole(account.getRole());
-
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(accountDTO);
             return new ResponseEntity<>(mappedObject, JSON_HEADER, HttpStatus.OK);

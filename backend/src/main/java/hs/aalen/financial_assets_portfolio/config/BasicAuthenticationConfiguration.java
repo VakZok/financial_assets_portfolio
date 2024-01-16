@@ -25,10 +25,6 @@ public class BasicAuthenticationConfiguration {
     /** The configuration for the
      Basic Authentication used in the backend. */
 
-
-    public BasicAuthenticationConfiguration(UserDetailsService userDetailsService){
-    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -45,7 +41,6 @@ public class BasicAuthenticationConfiguration {
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(Customizer.withDefaults());
-
         return httpSecurity.build();
     }
 

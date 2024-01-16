@@ -14,7 +14,7 @@ import java.util.*;
 
 @Service
 public class PurchaseService {
-    /* Portfolio item service class to process
+    /** Portfolio item service class to process
      *  the requests received in the controller class
      */
 

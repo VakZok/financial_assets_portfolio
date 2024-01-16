@@ -21,16 +21,19 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PurchaseController {
+    /** Controller class that manages actions regarding purchases */
 
     private final PurchaseService purchaseService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
+
+    /* CONSTRUCTOR */
 
     public PurchaseController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
         JSON_HEADER.add(HttpHeaders.CONTENT_TYPE, "application/json");
     }
 
-    /* GET REQUESTS */
+    /* HTTP REQUEST METHODS */
     @GetMapping("purchases/{id}")
     public ResponseEntity<Object> getPurchase(@PathVariable Long id) {
         try {
@@ -73,7 +76,6 @@ public class PurchaseController {
         }
     }
 
-    /* POST REQUESTS */
     @PostMapping("portfolioItems/{isin}/purchases/add")
     public ResponseEntity<Object> addNewPurchase(@PathVariable String isin, @RequestBody PurchaseDTO purchaseDTO) {
         try {
