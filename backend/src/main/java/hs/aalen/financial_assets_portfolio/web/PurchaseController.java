@@ -21,10 +21,13 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PurchaseController {
-    /** Controller class that manages actions regarding purchases */
+    /** Controller class that manages actions regarding purchases
+     * JSON_HEADER: The header that is sent with each response.
+     * purchaseService: The purchase service that is connected with the controller.
+     * */
 
-    private final PurchaseService purchaseService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
+    private final PurchaseService purchaseService;
 
     /* CONSTRUCTOR */
 

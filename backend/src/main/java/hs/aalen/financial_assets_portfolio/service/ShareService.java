@@ -12,16 +12,20 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ShareService {
+    /** Service class that is used to process
+     * share objects.
+     * ISIN_LENGTH:       String Length of ISIN
+     * STRING_MAX_LENGTH: Max length of strings used in share objects
+     *
+     */
 
 
-    /* CONSTANTS */
     public static final int ISIN_LENGTH = 12;
     public static final int STRING_MAX_LENGTH = 255;
-
     private final ShareRepository shareRepository;
 
 
-
+    /* CONSTRUCTOR */
 
     public ShareService(ShareRepository shareRepository) {
         this.shareRepository = shareRepository;

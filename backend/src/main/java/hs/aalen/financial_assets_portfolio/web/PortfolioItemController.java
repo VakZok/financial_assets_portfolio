@@ -22,10 +22,13 @@ import java.util.NoSuchElementException;
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PortfolioItemController {
-    /** Controller Class that manages HTTP-Requests reagrding portfolio items */
+    /** Controller Class that manages HTTP-Requests regarding portfolio items
+     * JSON_HEADER:  The Header that is sent with each response.
+     * pItemService: The service that is connected to manage portfolio items.
+     * */
 
-    private final PortfolioItemService pItemService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
+    private final PortfolioItemService pItemService;
 
     /* CONSTRUCTOR */
 

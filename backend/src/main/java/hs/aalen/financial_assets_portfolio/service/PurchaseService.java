@@ -16,6 +16,11 @@ import java.util.*;
 public class PurchaseService {
     /** Portfolio item service class to process
      *  the requests received in the controller class
+     *  FORMATTER:          Date time formatter used to transfer date to german format
+     *  MIN_DATE:           Smallest possible date
+     *  MAX_DATE:           Largest possible date
+     *  purchaseRepository: Purchase repository object connected with the service
+     *  swaggerClient:      Client used to request prices from external API
      */
 
     /* CONSTANTS */
@@ -24,11 +29,12 @@ public class PurchaseService {
     private static final LocalDate MAX_DATE = LocalDate.of(2123,12,31);
 
 
-    /* CONNECTED REPOSITORIES AND SERVICES */
+
     private final PurchaseRepository purchaseRepository;
     private final ShareSwaggerClient swaggerClient;
 
-    /* PROCESSING METHODS */
+    /* CONSTRUCTOR */
+
     public PurchaseService(
             PurchaseRepository purchaseRepository,
             ShareSwaggerClient swaggerClient) {
@@ -36,6 +42,9 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
         this.swaggerClient = swaggerClient;
     }
+
+
+    /* METHODS */
 
     /* Method that returns the purchase searched by the id */
     public PurchaseDTO getPurchase(Long id)throws NoSuchElementException {

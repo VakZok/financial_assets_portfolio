@@ -17,7 +17,6 @@ public class AccountDetails implements UserDetails {
      * account:     The account object that tries to authenticate.
      */
 
-
     public static final String ROLE_PREFIX = "ROLE_";
 
     private final Account account;

@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
     /** Controller used for authentication. The login method is primarily used
-     * to respond to the frontend whether the user credentials are accepted.*/
+     * to respond to the frontend whether the user credentials are accepted.
+     *  JSON_HEADER:    The header that is sent with the responses.
+     *  accountRepo: The connected account Repository.
+     *
+     */
 
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
-
     private final AccountRepository accountRepo;
 
     /* CONSTRUCTOR */

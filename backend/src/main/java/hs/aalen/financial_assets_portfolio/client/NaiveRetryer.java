@@ -8,6 +8,7 @@ public class NaiveRetryer implements feign.Retryer {
      *  Waits 50 milliseconds after a Retryable Exception (e.g. timeout) occurs,
      *  then retries.
      */
+
     @Override
     public void continueOrPropagate(RetryableException e) {
         try {

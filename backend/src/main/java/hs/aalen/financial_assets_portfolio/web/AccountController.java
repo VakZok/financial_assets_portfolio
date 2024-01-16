@@ -25,10 +25,13 @@ public class AccountController {
     /** Controller for actions regarding accounts.
      *  Get requests are filtered, such that the response contains only
      *  required values.
+     *  JSON_HEADER:    The header that is sent with the responses.
+     *  accountService: The connected account service.
      */
 
-    private final AccountService accountService;
     private final HttpHeaders JSON_HEADER = new HttpHeaders();
+    private final AccountService accountService;
+
 
     /* CONSTRUCTOR */
 
@@ -66,7 +69,6 @@ public class AccountController {
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "username", "role", "name"));
             ArrayList<AccountDTO> accountDTOList = accountService.getAccounts();
-
             ObjectMapper om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
             String mappedObject = om.writer(filterProvider).writeValueAsString(accountDTOList);
