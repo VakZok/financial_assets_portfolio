@@ -22,7 +22,6 @@ public class AccountService {
      */
 
     public static final int STRING_MAX_LENGTH = 30;
-
     private final AccountRepository accountRepository;
     private final LikesRepository likesRepository;
 

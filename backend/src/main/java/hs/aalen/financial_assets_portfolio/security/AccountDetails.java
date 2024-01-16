@@ -26,6 +26,7 @@ public class AccountDetails implements UserDetails {
         this.account = account;
     }
 
+    /* METHODS */
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

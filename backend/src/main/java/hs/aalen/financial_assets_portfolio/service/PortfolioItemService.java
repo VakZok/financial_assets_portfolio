@@ -51,6 +51,8 @@ public class PortfolioItemService {
         this.accountRepository = accountRepository;
     }
 
+    /* METHODS */
+
     public ArrayList<PortfolioItemDTO> getLikedPItems(String username, boolean includePL){
         /* Method returns the list of liked PortfolioItems
         *  username:  The username associated with the liked PortfolioItems
