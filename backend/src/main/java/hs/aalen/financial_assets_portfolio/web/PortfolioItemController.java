@@ -99,7 +99,7 @@ public class PortfolioItemController {
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "shareDTO", "avgPrice", "totalPrice", "totalQuantity", "profitAndLossCum", "isFavorite"));
             filterProvider.addFilter("shareFilter",
-                    SimpleBeanPropertyFilter.serializeAll());
+                    SimpleBeanPropertyFilter.filterOutAllExcept("isin", "name"));
 
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
@@ -119,7 +119,7 @@ public class PortfolioItemController {
                     SimpleBeanPropertyFilter.filterOutAllExcept(
                             "shareDTO", "avgPrice", "totalPrice", "totalQuantity", "isFavorite", "profitAndLoss", "profitAndLossCum"));
             filterProvider.addFilter("shareFilter",
-                    SimpleBeanPropertyFilter.serializeAll());
+                    SimpleBeanPropertyFilter.filterOutAllExcept("isin", "name"));
 
             ObjectMapper om = new ObjectMapper();
             String mappedObject = om.writer(filterProvider).writeValueAsString(portfolioItemDTOList);
