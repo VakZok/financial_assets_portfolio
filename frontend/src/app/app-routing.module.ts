@@ -11,6 +11,11 @@ import {AddAccountComponent} from "./modules/home/pages/add-account/add-account.
 import {AuthGuardService} from "./core/authentication/auth-guard.service";
 import { ManageUsersComponent } from './modules/home/pages/manage-users/manage-users.component';
 
+/*
+  The routes are secured by the AuthGuardService which checks
+  if the user is logged in and if he has the required role/rights
+  to access the route.
+*/
 const routes: Routes = [
   { path: 'login',
     component: LoginComponent
