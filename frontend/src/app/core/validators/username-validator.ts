@@ -2,6 +2,7 @@ import {AbstractControl, ValidationErrors, AsyncValidatorFn} from '@angular/form
 import {catchError, debounceTime, map, Observable, of, switchMap, take} from "rxjs";
 import {UserManagementService} from "../services/user-management.service";
 
+// Validator to check if the username exists according to the Database
 export function UsernameValidator(userManService: UserManagementService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
         return control.valueChanges.pipe(

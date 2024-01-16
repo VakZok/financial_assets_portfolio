@@ -7,9 +7,13 @@ import { AuthCoreService } from './auth-core.service';
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-
+    /*
+    The AuthGuardService is responsible for protecting routes. It uses the AuthCoreService to check if the user is
+    logged in and if the user has the required role/rights to access the desired route.
+     */
     constructor(private authService: AuthCoreService, private router: Router) { }
 
+    // Checks if the user has the required role/rights to access the desired route.
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

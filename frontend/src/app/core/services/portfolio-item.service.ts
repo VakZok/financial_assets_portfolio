@@ -9,6 +9,11 @@ import {AuthCoreService} from "../authentication/auth-core.service";
 })
 export class PortfolioItemService {
 
+  /*
+  This service is responsible for all communication with the backend API regarding portfolio items.
+  It is injected with the HttpClient and the AuthCoreService to be able to send requests to the backend API.
+   */
+
   private apiUrl = 'http://localhost:8080/v1/portfolioItems';
   private swaggerUrl = 'http://localhost:8080/v1/swagger/pItem';
 
@@ -47,6 +52,7 @@ export class PortfolioItemService {
     return this.http.post<PortfolioItemModel>(this.apiUrl + '/add', pItem,{headers})
   }
 
+  // Swagger is used to get the portfolio item data from the backend API.
   getPItemSwagger(isin:string): Observable<PortfolioItemModel> {
     const headers = this.getHeader();
     return this.http.get<PortfolioItemModel>(this.swaggerUrl + '/' + isin, {headers})

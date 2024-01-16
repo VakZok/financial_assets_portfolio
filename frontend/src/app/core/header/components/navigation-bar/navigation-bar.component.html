@@ -1,5 +1,10 @@
 <div class="header-right">
 
+  <!--
+  The navigation buttons are protected by the authentication service which enables/disables them
+  depending on the current user's role/rights and whether he is logged in or not
+  -->
+
   <div *ngIf="this.authService.getToken()!== ''" class="welcome-text">
     <p>Willkommen, {{this.authService.getUsername()}}.</p>
   </div>

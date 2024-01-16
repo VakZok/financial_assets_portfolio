@@ -9,6 +9,11 @@ import {AuthCoreService} from "../authentication/auth-core.service";
 })
 export class UserManagementService {
 
+  /*
+  This service is responsible for all communication with the backend API regarding user management.
+  It is injected with the HttpClient and the AuthCoreService to be able to send requests to the backend API.
+   */
+
   private apiUrl = 'http://localhost:8080/v1/accounts';
 
   getHeader() {
