@@ -41,7 +41,7 @@ public class ShareService {
         return new ArrayList<>(shareList.stream().map(ShareDTO::new).toList());
     }
 
-    /* Method that returns the share searched by the wkn */
+    /* Method that returns the share searched by isin */
     public ShareDTO getShare(String isin) throws NoSuchElementException{
         Share share = shareRepository.findByIsin(isin.toUpperCase());
         if (share == null){
