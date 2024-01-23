@@ -26,6 +26,11 @@ Spring Boot == 3.1.4
 
 Maven == 3.9.5
 
+Please make sure that the JAVA_HOME Path variable is properly set. 
+For a tutorial, refer to [here](https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html)
+
+Note: We run and tested the application on Windows.
+
 **Frontend** 
 
 Angular CLI == 16.2.7
@@ -42,6 +47,8 @@ Package manager == npm 10.2.1
 
 After successfully booting the frontend and the backend, the application is available at: 
 http://localhost:4200/
+
+
 
 ## Teammembers:
 
