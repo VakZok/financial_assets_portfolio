@@ -20,7 +20,7 @@
 
 **Backend**
 
-Java SDK >= 17.0.10
+Java JDK >= 17.0.10 
 
 Spring Boot == 3.1.4
 
