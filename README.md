@@ -29,7 +29,7 @@ Maven == 3.9.5
 Please make sure that the JAVA_HOME variable is properly set to the jdk path. 
 For a tutorial, refer to [this page](https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html) .
 
-Note: We run and tested the application on Windows.
+Note: We run and tested the application on Windows 10 OS.
 
 **Frontend** 
 
@@ -60,4 +60,4 @@ Tobias Krebs,
 
 Nico Knödler,
 
-Manuel Wengert, 
+Manuel Wengert 
