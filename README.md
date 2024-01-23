@@ -16,9 +16,32 @@
 
 **Frontend Port**: 4200
 
-## Used packages | how to install: 
+## Dependencies: 
 
-**date-fns** | npm install date-fns
+**Backend**
+
+Java SDK >= 17.0.10
+
+Spring Boot == 3.1.4
+
+Maven == 3.9.5
+
+**Frontend** 
+
+Angular CLI == 16.2.7
+
+Node >= 18.18.2
+
+Package manager == npm 10.2.1 
+
+## How to Run the project: 
+
+1. Please make sure to have the required dependencies installed.
+3. Pull the Repo and install the frontend dependencies by running the init.bat file. 
+4. Run the start-app.bat file to boot frontend and backend. This file will start the backend first and the frontend after a 10 sec delay.
+
+After successfully booting the frontend and the backend, the application is available at: 
+http://localhost:4200/
 
 ## Teammembers:
 
