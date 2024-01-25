@@ -26,18 +26,18 @@ Spring Boot == 3.1.4
 
 Maven == 3.9.5
 
-Please make sure that the JAVA_HOME variable is properly set to the jdk path. 
+Please make sure that the JAVA_HOME variable is properly set to your devices' jdk path. 
 For a tutorial, refer to [this page](https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html) .
 
 Note: We run and tested the application on Windows 10 OS.
 
 **Frontend** 
 
-Angular CLI == 16.2.7
+Angular CLI == 16.2.7 [(how to)](https://angular.io/guide/setup-local)
 
-Node >= 18.18.2
+Node.js >= 18.18.2 [(how to)](https://nodejs.org/en/download)
 
-Package manager == npm 10.2.1 
+Package manager == npm 10.2.1 (typically comes with the installation of node.js) 
 
 ## How to Run the project: 
 
