@@ -1,0 +1,36 @@
+footer {
+  background-color: black;
+  height: 100px;
+  display: flex; /* Use Flexbox to arrange items horizontally */
+  align-items: center; /* vertically center items */
+}
+
+.footer-left {
+  color: white; /* text color to white */
+  min-height: 50px;
+  margin-left: 10px; /* so that the container is not directly on the side end of the window */
+}
+
+.footer-left a {
+  color: white; /* Change the color to your desired color */
+  text-decoration: none; /* Remove underline if needed */
+}
+
+.footer-left a:hover {
+  text-decoration: underline;
+}
+
+.footer-right {
+  margin-left: auto; /* aligns right header part on the right side */
+  margin-right: 20px; /* so that the container is not directly on the side end of the window */
+}
+
+.footer-right a {
+  color: white; /* Change the color to your desired color */
+  text-decoration: none; /* Remove underline if needed */
+  margin-left: 20px; /* put space between the two router links */
+}
+
+.footer-right a:hover {
+  text-decoration: underline;
+}

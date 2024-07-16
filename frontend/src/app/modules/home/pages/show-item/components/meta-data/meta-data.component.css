@@ -1,0 +1,54 @@
+.metabody {
+  padding:  1.2vh 1.2vw 1.2vh 0.7vw;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  min-height: 100%;
+  max-width: 30vw;
+  background-color: white;
+  border: 1px solid lightgrey;
+  border-radius:1vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.list {
+  column-count: 2;
+  list-style-type: none;
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  justify-content: center;
+  background-color: rgb(232, 231, 231);
+  font-size: 1.2em;
+  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  color: black;
+}
+
+.item {
+  border: 0.11em solid lightgrey;
+  border-radius: 1vh;
+  justify-content: center;
+  background-color: whitesmoke;
+  font-size: 1em;
+  margin-bottom: 1vh;
+  padding: 1.2vh 1.2vw 1.2vh 0.7vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  color: black;
+  overflow:auto;
+}
+
+.profit {
+  color: green;
+}
+.loss {
+  color: red;
+}
+
+.row{
+  display: inline-flex;
+  justify-content: space-between;
+}

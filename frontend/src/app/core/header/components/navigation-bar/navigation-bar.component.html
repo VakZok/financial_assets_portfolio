@@ -1,0 +1,26 @@
+<div class="header-right">
+
+  <!--
+  The navigation buttons are protected by the authentication service which enables/disables them
+  depending on the current user's role/rights and whether he is logged in or not
+  -->
+
+  <div *ngIf="this.authService.getToken()!== ''" class="welcome-text">
+    <p>Willkommen, {{this.authService.getUsername()}}.</p>
+  </div>
+
+  <button *ngIf="this.authService.getToken()!== ''" routerLink="/meinPortfolio" class="routing-button"
+          [disabled]="currentPage.endsWith('/meinPortfolio') ">Portfolio</button>
+
+  <button *ngIf="this.authService.getToken()!== ''" routerLink="/meineFavoriten" class="routing-button"
+          [disabled]="currentPage.endsWith('/meineFavoriten') ">Favoriten</button>
+
+  <button *ngIf="this.authService.getToken() !== '' && this.authService.getRole()=='ADMIN'" routerLink="/benutzer" class="routing-button"
+          [disabled]="currentPage.endsWith('/benutzer') ">Benutzerverwaltung</button>
+
+  <button *ngIf="this.authService.getToken() == '' " routerLink="/login" class="routing-button"
+          [disabled]="currentPage.endsWith('/login') ">Login</button>
+
+  <button *ngIf="this.authService.getToken()!== '' " (click)="logout()" class="routing-button">Logout</button>
+
+</div>

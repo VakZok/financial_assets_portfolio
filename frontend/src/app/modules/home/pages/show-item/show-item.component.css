@@ -1,0 +1,50 @@
+* {
+    font-family: Segoe UI, Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans, Helvetica Neue, Arial, sans-serif;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  .body {
+    background-color: whitesmoke;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10vh;
+  }
+
+  button{
+    border: none;
+    outline: none;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    border-radius: 4vh;
+    padding: 1vh 1vw 1vh 1vw;
+    font-size: 1.5vh;
+    user-select: none;
+  }
+
+  button:hover{
+    box-shadow: 0.15vw 0.4vh 0.15vw rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+    cursor: pointer;
+  }
+
+  button:active{
+    background-color: white;
+    color: black;
+    transform: translateY(0.2vh);
+  }
+
+  .button-area{
+    display: flex;
+  }
+
+  .spinner{
+    margin-top: 20%;
+  }
+
+
